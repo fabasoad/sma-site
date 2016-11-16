@@ -1,0 +1,22 @@
+{
+  "name": "sma-site-webapp",
+  "description": "Front end part of a site for \"Southern Maritime Agency\" company",
+  "version": "1.0",
+  "author": "Yevhen Fabizhevskyi <fabasoad@gmail.com>",
+  "contributors": [
+    {
+      "name": "Natalya Fabizhevska",
+      "email": "vanillacaramel88@gmail.com"
+    }
+  ],
+  "main": "src/main/webapp/index.jsp",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/fabasoad/sma-site"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-install": "^0.6.0"
+  }
+}

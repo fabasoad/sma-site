@@ -1,0 +1,12 @@
+{
+  "name": "sma-site-webapp",
+  "description": "Front end part of a site for \"Southern Maritime Agency\" company",
+  "main": [
+    "src/main/resources/js/scripts.js",
+    "src/main/resources/css/styles.css"
+  ],
+  "authors": [
+    "Yevhen Fabizhevskyi <fabasoad@gmail.com>"
+  ],
+  "license": "MIT"
+}
