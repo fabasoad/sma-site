@@ -32,7 +32,7 @@ Instead of commands above alternatively you can do the following steps:
 - Run **frontend-install** configuration
 - Run **frontend-build** configuration
 
-In the future you can just run the command below to build the project.
+In the future you can just run **frontend-build** configuration or the command below to build the project.
 ```sh
 $ mvn clean install -P frontend-build
 ```
