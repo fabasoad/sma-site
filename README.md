@@ -13,7 +13,7 @@ A web site for "Southern Maritime Agency" company.
   - [Npm](https://www.npmjs.com/): 3.10.10
   - [Jetty](http://www.eclipse.org/jetty/): 9.3.14
 
-You can get Jetty and Maven from the **lib** directory. Other libs are installed running command below on the **sma-site-webapp** module.
+You can get Jetty and Maven from the **lib** directory (you can find details below).
 ```sh
 $ mvn install
 ```
