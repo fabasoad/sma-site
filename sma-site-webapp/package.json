@@ -7,6 +7,10 @@
     {
       "name": "Natalya Fabizhevska",
       "email": "vanillacaramel88@gmail.com"
+    },
+    {
+      "name": "Alexandr Chernyavskiy",
+      "email": "designer.citi@gmail.com"
     }
   ],
   "main": "src/main/webapp/index.jsp",

@@ -6,7 +6,9 @@
     "src/main/resources/css/styles.css"
   ],
   "authors": [
-    "Yevhen Fabizhevskyi <fabasoad@gmail.com>"
+    "Yevhen Fabizhevskyi <fabasoad@gmail.com>",
+    "Natalya Fabizhevska <vanillacaramel88@gmail.com>",
+    "Alexandr Chernyavskiy <designer.citi@gmail.com>"
   ],
   "license": "MIT"
 }
