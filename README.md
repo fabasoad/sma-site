@@ -28,7 +28,7 @@ $ mvn install -P frontend-install
 $ mvn install -P frontend-build
 ```
 Instead of commands above alternatively you can do the following steps:
-- Copy **<project_folder>/lib/runConfigurations** folder to **<project_folder>/.idea**
+- Copy **sma-site-root/lib/runConfigurations** folder to **sma-site-root/.idea**
 - Run **frontend-install** configuration
 - Run **frontend-build** configuration
 
@@ -40,8 +40,8 @@ You can just run the command below if you don't want to build frontend part (not
 ```sh
 $ mvn clean install
 ```
-- Unpack **apache-maven-\*-bin.zip** and **jetty-distribution-\*.zip** archives to any place you want (e.g. **<project_folder>/../Tools**
-- Copy **<project_folder>/lib/runConfigurations** folder to **<project_folder>/.idea** if you still don't copy it
+- Unpack **apache-maven-\*-bin.zip** and **jetty-distribution-\*.zip** archives to any place you want (e.g. **sma-site-root/../Tools**)
+- Copy **sma-site-root/lib/runConfigurations** folder to **sma-site-root/.idea** if you still don't copy it
 - Open **Jetty** configuration for edit
 - Set **Application server** to unpacked Jetty folder
 - Save and close configuration
