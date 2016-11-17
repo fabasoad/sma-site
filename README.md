@@ -22,7 +22,7 @@ $ mvn install
 
 ### Using Intellij IDEA
 - Open **sma-site-root/pom.xml** as a project
-- Unpack **apache-maven-\*-bin.zip** and **jetty-distribution-\*.zip** archives to any place you want (e.g. **sma-site-root/../Tools**)
+- Unpack **apache-maven-\*-bin.zip** and **jetty-distribution-\*.zip** archives from **sma-site-root/lib** folder to any place you want (e.g. **sma-site-root/../Tools**)
 - Copy **sma-site-root/lib/runConfigurations** folder to **sma-site-root/.idea**
 - Open **Jetty** configuration for edit
 - Set **Application server** to unpacked Jetty folder
