@@ -14,19 +14,14 @@ A web site for "Southern Maritime Agency" company.
   - [Jetty](http://www.eclipse.org/jetty/): 9.3.14
 
 You can get Jetty and Maven from the **lib** directory (you can find details below).
-```sh
-$ mvn install
-```
 
 ## Installation
 
 ### Using Intellij IDEA
 - Open **sma-site-root/pom.xml** as a project
+- Go to **File->Settings->Plugins** and be sure that **IDEA Jetty Runner** plugin is installed
 - Unpack **apache-maven-\*-bin.zip** and **jetty-distribution-\*.zip** archives from **sma-site-root/lib** folder to any place you want (e.g. **sma-site-root/../Tools**)
 - Copy **sma-site-root/lib/runConfigurations** folder to **sma-site-root/.idea**
-- Open **Jetty** configuration for edit
-- Set **Application server** to unpacked Jetty folder
-- Save and close configuration
 - Go to **File->Settings->Build, Execution, Deployment->Build Tools->Maven** and set **Maven home directory** to unpacked Maven folder
 - Run the command below on a main **pom.xml**
 ```sh
