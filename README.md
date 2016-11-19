@@ -27,6 +27,13 @@ You can get Jetty and Maven from the **lib** directory (you can find details bel
 ```sh
 $ mvn install -P frontend-install
 ```
+- Open **Terminal** and run the commands below
+```sh
+$ cd sma-site-webapp
+$ npm install --save gulp-install
+$ npm install --save gulp
+$ npm install -g bower
+```
 - Run **frontend-build** configuration or the command below on a main **pom.xml**
 ```sh
 $ mvn install -P frontend-build
