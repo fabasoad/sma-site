@@ -41,7 +41,8 @@ hs_err_pid*
 .idea
 *.iml
 out
-gen### Maven template
+gen
+### Maven template
 target
 pom.xml.tag
 pom.xml.releaseBackup
@@ -53,3 +54,4 @@ buildNumber.properties
 .mvn/timing.properties
 
 sma-site-webapp/node
+sma-site-webapp/src/main/webapp/public/
