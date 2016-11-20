@@ -22,26 +22,13 @@ gulp.task('bower-min', () => {
     return merge(streams);
 });
 
-gulp.task('bower-dev', () => {
-    let streams = [];
-    for (let component of bowerComponents) {
-        streams.push(gulp.src([
-                'bower_components/' + component + '/dist/' + component + '.js',
-                !'bower_components/' + component + '/dist/' + component + '.min.js']
-            ).pipe(gulp.dest('src/main/webapp/public/js/lib'))
-        );
-    }
-    return merge(streams);
-});
-
 gulp.task('js-min', () =>
     gulp.src('src/main/ui/js/**/*.js')
         .pipe(babel({
             presets: ['es2015']
         }))
-        .pipe(concat('scripts.min.js'))
         .pipe(uglify())
-        .pipe(gulp.dest('src/main/webapp/public/js'))
+        .pipe(gulp.dest('src/main/webapp/public/js/min'))
 );
 
 gulp.task('js-dev', () =>
@@ -49,11 +36,7 @@ gulp.task('js-dev', () =>
         .pipe(babel({
             presets: ['es2015']
         }))
-        .pipe(concat('scripts.js'))
-        .pipe(gulp.dest('src/main/webapp/public/js'))
+        .pipe(gulp.dest('src/main/webapp/public/js/dev'))
 );
 
-gulp.task('build-js-min', ['bower-min', 'js-min']);
-gulp.task('build-js-dev', ['bower-dev', 'js-dev']);
-
-gulp.task('build-js', ['build-js-min', 'build-js-dev']);
+gulp.task('build-js', ['js-min', 'js-dev', 'bower-min']);
