@@ -20,7 +20,7 @@ You can get Jetty and Maven from the **lib** directory (you can find details bel
 ### Using Intellij IDEA
 - Open **sma-site-root/pom.xml** as a project
 - Go to **File->Settings->Plugins** and be sure that **IDEA Jetty Runner** plugin is installed
-- Unpack **apache-maven-\*-bin.zip** and **jetty-distribution-\*.zip** archives from **sma-site/lib** folder to any place you want (e.g. **sma-site/../Tools**)
+- Unpack **apache-maven-\*-bin.zip** archive from **sma-site/lib** folder to any place you want (e.g. **sma-site/../Tools**)
 - Copy **sma-site/lib/runConfigurations** folder to **sma-site/.idea**
 - Go to **File->Settings->Build, Execution, Deployment->Build Tools->Maven** and set **Maven home directory** to unpacked Maven folder
 - Run **frontend-install** configuration or the command below on a main **pom.xml**
