@@ -7,10 +7,22 @@ const install = require("gulp-install");
 const uglify = require('gulp-uglify');
 const babel = require('gulp-babel');
 const merge = require('merge-stream');
+const less = require('gulp-less');
+const watch = require('gulp-watch');
 
 const bowerComponents = ['jquery'];
 
 gulp.task('install', () => gulp.src(['./bower.json', './package.json']).pipe(install()));
+
+gulp.task('less', function () {
+  return gulp.src('./src/main/ui/styles/**/*.less')
+    .pipe(less())
+    .pipe(gulp.dest('./src/main/webapp/public/styles'));
+});
+
+gulp.task('watch-css', function () {
+	 gulp.watch('./src/main/ui/styles/**/*.less', ['less']);
+});
 
 gulp.task('bower-min', () => {
     let streams = [];
@@ -39,4 +51,4 @@ gulp.task('js-dev', () =>
 );
 
 gulp.task('build-js', ['js-min', 'js-dev', 'bower-min']);
-gulp.task('default', ['install', 'build-js']);
+gulp.task('default', ['install', 'build-js', 'less']);
