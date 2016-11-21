@@ -53,4 +53,5 @@ $ mvn clean install
 
 ## Run application
 
-Run **Jetty** configuration from Intellij IDEA.
+- Run **Jetty** configuration from Intellij IDEA.
+- Open http://127.0.0.1/ in browser.
