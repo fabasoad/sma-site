@@ -36,6 +36,7 @@ $ npm install -g bower
 $ npm install --save-dev gulp-uglify
 $ npm install --save-dev gulp-babel
 $ npm install --save-dev merge-stream
+$ npm install --save-dev babel-preset-es2015
 ```
 - Run **frontend-build** configuration or the command below on a main **pom.xml**
 ```sh
