@@ -10,7 +10,7 @@ const merge = require('merge-stream');
 
 const bowerComponents = ['jquery'];
 
-gulp.task('default', () => gulp.src(['./bower.json', './package.json']).pipe(install()));
+gulp.task('install', () => gulp.src(['./bower.json', './package.json']).pipe(install()));
 
 gulp.task('bower-min', () => {
     let streams = [];
@@ -39,3 +39,4 @@ gulp.task('js-dev', () =>
 );
 
 gulp.task('build-js', ['js-min', 'js-dev', 'bower-min']);
+gulp.task('default', ['install', 'build-js']);
