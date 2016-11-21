@@ -33,6 +33,9 @@ $ cd sma-site-webapp
 $ npm install --save gulp-install
 $ npm install --save gulp
 $ npm install -g bower
+$ npm install --save-dev gulp-uglify
+$ npm install --save-dev gulp-babel
+$ npm install --save-dev merge-stream
 ```
 - Run **frontend-build** configuration or the command below on a main **pom.xml**
 ```sh
