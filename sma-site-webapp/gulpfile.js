@@ -4,7 +4,6 @@
 */
 const gulp = require('gulp');
 const install = require("gulp-install");
-const concat = require('gulp-concat');
 const uglify = require('gulp-uglify');
 const babel = require('gulp-babel');
 const merge = require('merge-stream');
