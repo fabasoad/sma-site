@@ -1,5 +1,6 @@
 package org.fabasoad.rest;
 
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 /**
@@ -9,18 +10,26 @@ import org.json.simple.JSONObject;
 abstract class BaseResource {
 
     @SuppressWarnings("unchecked")
-    static String buildOk(String message) {
+    static JSONObject buildOk(String message) {
         final JSONObject json = new JSONObject();
         json.put("type", "success");
         json.put("message", message);
-        return json.toJSONString();
+        return json;
     }
 
     @SuppressWarnings("unchecked")
-    static String buildError(String message) {
+    static JSONObject buildError(String message) {
         final JSONObject json = new JSONObject();
         json.put("type", "error");
         json.put("message", message);
-        return json.toJSONString();
+        return json;
+    }
+
+    @SuppressWarnings("unchecked")
+    static JSONObject buildArray(JSONArray array) {
+        final JSONObject json = new JSONObject();
+        json.put("total-count", array.size());
+        json.put("data", array);
+        return json;
     }
 }
