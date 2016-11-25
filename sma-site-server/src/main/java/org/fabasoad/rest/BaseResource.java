@@ -9,6 +9,8 @@ import org.json.simple.JSONObject;
  */
 abstract class BaseResource {
 
+    final String UPLOAD_PATH = "C:/temp/";
+
     @SuppressWarnings("unchecked")
     static JSONObject buildOk(String message) {
         final JSONObject json = new JSONObject();
@@ -26,10 +28,21 @@ abstract class BaseResource {
     }
 
     @SuppressWarnings("unchecked")
-    static JSONObject buildArray(JSONArray array) {
+    private static JSONObject buildArray(JSONArray array) {
         final JSONObject json = new JSONObject();
         json.put("total-count", array.size());
         json.put("data", array);
         return json;
+    }
+
+    abstract JSONObject buildObject(int id);
+
+    @SuppressWarnings("unchecked")
+    JSONObject buildObjects() {
+        JSONArray array = new JSONArray();
+        array.add(buildObject(1));
+        array.add(buildObject(2));
+        array.add(buildObject(3));
+        return buildArray(array);
     }
 }
