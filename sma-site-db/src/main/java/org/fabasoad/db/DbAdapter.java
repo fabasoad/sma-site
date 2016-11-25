@@ -1,6 +1,7 @@
 package org.fabasoad.db;
 
 import java.io.BufferedReader;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -26,12 +27,13 @@ public abstract class DbAdapter {
     abstract String getUrl();
 
     private void initialize() {
-        String sql = new BufferedReader(new InputStreamReader(ClassLoader.getSystemResourceAsStream(
-                FOLDER_PATH_SQL + "init.sql"))).lines().collect(Collectors.joining());
-
         try (Connection conn = DriverManager.getConnection(getUrl()); Statement stmt = conn.createStatement()) {
             System.out.println("Database connected successfully");
-            stmt.execute(sql);
+            final InputStream stream = ClassLoader.getSystemResourceAsStream(FOLDER_PATH_SQL + "init.sql");
+            final String sqls = new BufferedReader(new InputStreamReader(stream)).lines().collect(Collectors.joining());
+            for (String sql : sqls.split(";")) {
+                stmt.execute(sql);
+            }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
