@@ -9,6 +9,7 @@
     <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
     <modules>
+        <module>sma-site-db</module>
         <module>sma-site-server</module>
         <module>sma-site-webapp</module>
     </modules>
