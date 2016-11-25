@@ -1,7 +1,7 @@
 {
   "name": "sma-site-webapp",
   "description": "Front end part of a site for \"Southern Maritime Agency\" company",
-  "version": "1.0",
+  "version": "1.0.0",
   "author": "Yevhen Fabizhevskyi <fabasoad@gmail.com>",
   "contributors": [
     {
@@ -31,7 +31,6 @@
     "gulp-rename": "^1.2.2",
     "gulp-uglify": "^2.0.0",
     "gulp-watch": "^4.3.11",
-    "less": "^2.7.1",
     "merge-stream": "^1.0.0"
   }
 }
