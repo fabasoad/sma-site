@@ -5,8 +5,13 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -35,8 +40,29 @@ public abstract class DbAdapter {
                 stmt.execute(sql);
             }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            System.err.println(e.getMessage());
         }
         System.out.println("Database closed");
+    }
+
+    public void run(String sql, Consumer<ResultSet> callback) {
+        try (Connection conn = DriverManager.getConnection(getUrl());
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+            callback.accept(rs);
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+        }
+    }
+
+    public <C> Optional<C> run(String sql, Function<ResultSet, C> callback) {
+        try (Connection conn = DriverManager.getConnection(getUrl());
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+            return Optional.of(callback.apply(rs));
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+        }
+        return Optional.empty();
     }
 }
