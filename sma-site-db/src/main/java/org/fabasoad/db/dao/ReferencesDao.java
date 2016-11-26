@@ -3,32 +3,33 @@ package org.fabasoad.db.dao;
 import org.fabasoad.db.DbAdapter;
 import org.fabasoad.db.pojo.ReferencePojo;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.stream.Stream;
+import static org.fabasoad.db.pojo.PojoProperties.References.ID;
+import static org.fabasoad.db.pojo.PojoProperties.References.TITLE;
+import static org.fabasoad.db.pojo.PojoProperties.References.FILE_NAME;
+import static org.fabasoad.db.pojo.PojoProperties.References.TABLE_NAME;
 
 /**
  * @author efabizhevsky
  * @date 11/25/2016.
  */
-public class ReferencesDao extends BaseDao<ReferencePojo> {
+class ReferencesDao extends BaseDao<ReferencePojo> {
 
-    public ReferencesDao(DbAdapter adapter) {
+    ReferencesDao(DbAdapter adapter) {
         super(adapter);
     }
 
     @Override
     String getTableName() {
-        return "SMA_REFERENCES";
+        return TABLE_NAME;
     }
 
     @Override
     String getIdColumn() {
-        return "SR_ID";
+        return ID.DB;
     }
 
     @Override
     String[] getColumns() {
-        return new String[] { "SR_ID", "SR_TITLE", "SR_FILE_NAME" };
+        return new String[] { ID.DB, TITLE.DB, FILE_NAME.DB };
     }
 }

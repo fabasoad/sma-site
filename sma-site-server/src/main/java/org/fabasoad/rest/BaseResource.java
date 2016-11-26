@@ -1,7 +1,15 @@
 package org.fabasoad.rest;
 
+import org.fabasoad.db.dao.BaseDao;
+import org.fabasoad.db.dao.DaoFactory;
+import org.fabasoad.db.dao.DaoType;
+import org.fabasoad.db.pojo.BasePojo;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+
+import javax.ws.rs.core.Response;
+import java.util.Collection;
+import java.util.Map;
 
 /**
  * @author efabizhevsky
@@ -11,8 +19,38 @@ abstract class BaseResource {
 
     final String UPLOAD_PATH = "C:/temp/";
 
+    abstract DaoType getDaoType();
+
+    abstract Map<String, String> getPojoProperties();
+
+    Response getAll() {
+        BaseDao<? extends BasePojo> dao = DaoFactory.create(getDaoType());
+        JSONObject json = buildObjects(dao.getAll());
+        return Response.ok(json.toJSONString()).build();
+    }
+
+    Response get(int id) {
+        BaseDao<? extends BasePojo> dao = DaoFactory.create(getDaoType());
+        BasePojo pojo = dao.get(id);
+        if (pojo == null) {
+            final String message = "There is no entity with id = " + id;
+            return Response.status(Response.Status.BAD_REQUEST)
+                    .entity(buildError(message).toJSONString())
+                    .build();
+        }
+        JSONObject json = buildObject(pojo);
+        return Response.ok(json.toJSONString()).build();
+    }
+
+    Response delete(int id) {
+        BaseDao<? extends BasePojo> dao = DaoFactory.create(getDaoType());
+        dao.delete(id);
+        String message = "Entity with id = " + id + " deleted successfully";
+        return Response.ok(buildSuccess(message).toJSONString()).build();
+    }
+
     @SuppressWarnings("unchecked")
-    static JSONObject buildOk(String message) {
+    private static JSONObject buildSuccess(String message) {
         final JSONObject json = new JSONObject();
         json.put("type", "success");
         json.put("message", message);
@@ -20,7 +58,7 @@ abstract class BaseResource {
     }
 
     @SuppressWarnings("unchecked")
-    static JSONObject buildError(String message) {
+    private static JSONObject buildError(String message) {
         final JSONObject json = new JSONObject();
         json.put("type", "error");
         json.put("message", message);
@@ -28,21 +66,22 @@ abstract class BaseResource {
     }
 
     @SuppressWarnings("unchecked")
-    private static JSONObject buildArray(JSONArray array) {
-        final JSONObject json = new JSONObject();
-        json.put("total-count", array.size());
-        json.put("data", array);
-        return json;
+    private JSONObject buildObjects(Collection<? extends BasePojo> pojos) {
+        JSONArray array = new JSONArray();
+        pojos.stream().map(this::buildObject).forEach(array::add);
+
+        final JSONObject result = new JSONObject();
+        result.put("total-count", pojos.size());
+        result.put("data", array);
+        return result;
     }
 
-    abstract JSONObject buildObject(int id);
-
     @SuppressWarnings("unchecked")
-    JSONObject buildObjects() {
-        JSONArray array = new JSONArray();
-        array.add(buildObject(1));
-        array.add(buildObject(2));
-        array.add(buildObject(3));
-        return buildArray(array);
+    private JSONObject buildObject(BasePojo pojo) {
+        final JSONObject result = new JSONObject();
+        for (Map.Entry<String, String> entry : getPojoProperties().entrySet()) {
+            result.put(entry.getValue(), pojo.getProperty(entry.getKey()));
+        }
+        return result;
     }
 }

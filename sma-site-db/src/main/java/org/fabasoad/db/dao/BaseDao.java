@@ -17,7 +17,7 @@ import java.util.stream.Stream;
  * @author efabizhevsky
  * @date 11/25/2016.
  */
-abstract class BaseDao<T extends BasePojo> {
+public abstract class BaseDao<T extends BasePojo> {
 
     private DbAdapter adapter;
 
@@ -72,11 +72,11 @@ abstract class BaseDao<T extends BasePojo> {
         return result;
     }
 
+    @SuppressWarnings("unchecked")
     public <C> T get(C id) {
         final String sql = String.format(
                 "SELECT %s FROM %s WHERE %s = %s", String.join(",", getColumns()), getTableName(), getIdColumn(), id);
-        @SuppressWarnings("unchecked")
-        final T[] result = (T[]) Array.newInstance(Object.class, 1);
+        final Object[] result = new Object[1];
         adapter.run(sql, rs -> {
             try {
                 result[0] = buildObject(rs);
@@ -84,7 +84,7 @@ abstract class BaseDao<T extends BasePojo> {
                 System.err.println(e.getMessage());
             }
         });
-        return result[0];
+        return (T) result[0];
     }
 
     public void create(T obj) {
