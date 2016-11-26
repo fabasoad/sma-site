@@ -6,13 +6,27 @@ package org.fabasoad.db.pojo;
  */
 public class ReferencePojo extends BasePojo {
 
-    private int id;
-    private String title;
-    private String fileName;
+    public int getId() {
+        return (int) getProperty("SR_ID");
+    }
 
-    public ReferencePojo(int id, String title, String fileName) {
-        this.id = id;
-        this.title = title;
-        this.fileName = fileName;
+    public void setId(int id) {
+        setProperty("SR_ID", id);
+    }
+
+    public String getTitle() {
+        return String.valueOf(getProperty("SR_TITLE"));
+    }
+
+    public void setTitle(String title) {
+        setProperty("SR_TITLE", title);
+    }
+
+    public String getFileName() {
+        return String.valueOf(getProperty("SR_FILE_NAME"));
+    }
+
+    public void setFileName(String fileName) {
+        setProperty("SR_FILE_NAME", fileName);
     }
 }

@@ -5,6 +5,7 @@ import org.fabasoad.db.pojo.ReferencePojo;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.stream.Stream;
 
 /**
  * @author efabizhevsky
@@ -29,14 +30,5 @@ public class ReferencesDao extends BaseDao<ReferencePojo> {
     @Override
     String[] getColumns() {
         return new String[] { "SR_ID", "SR_TITLE", "SR_FILE_NAME" };
-    }
-
-    @Override
-    ReferencePojo buildObject(ResultSet rs) throws SQLException {
-        return new ReferencePojo(
-            rs.getInt(getColumns()[0]),
-            rs.getString(getColumns()[1]),
-            rs.getString(getColumns()[2])
-        );
     }
 }

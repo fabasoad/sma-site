@@ -31,9 +31,19 @@ public abstract class DbAdapter {
 
     abstract String getUrl();
 
-    private void initialize() {
-        try (Connection conn = DriverManager.getConnection(getUrl()); Statement stmt = conn.createStatement()) {
+    private Connection connect() {
+        Connection result = null;
+        try {
+            result = DriverManager.getConnection(getUrl());
             System.out.println("Database connected successfully");
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+        }
+        return result;
+    }
+
+    private void initialize() {
+        try (Connection conn = connect(); Statement stmt = conn.createStatement()) {
             final InputStream stream = ClassLoader.getSystemResourceAsStream(FOLDER_PATH_SQL + "init.sql");
             final String sqls = new BufferedReader(new InputStreamReader(stream)).lines().collect(Collectors.joining());
             for (String sql : sqls.split(";")) {
@@ -41,28 +51,31 @@ public abstract class DbAdapter {
             }
         } catch (SQLException e) {
             System.err.println(e.getMessage());
+        } finally {
+            System.out.println("Database connection closed");
         }
-        System.out.println("Database closed");
     }
 
     public void run(String sql, Consumer<ResultSet> callback) {
-        try (Connection conn = DriverManager.getConnection(getUrl());
+        try (Connection conn = connect();
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
             callback.accept(rs);
         } catch (SQLException e) {
             System.err.println(e.getMessage());
+        } finally {
+            System.out.println("Database connection closed");
         }
     }
 
-    public <C> Optional<C> run(String sql, Function<ResultSet, C> callback) {
-        try (Connection conn = DriverManager.getConnection(getUrl());
-             Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery(sql)) {
-            return Optional.of(callback.apply(rs));
+    public void run(String sql) {
+        try (Connection conn = connect();
+             Statement stmt = conn.createStatement()) {
+            stmt.execute(sql);
         } catch (SQLException e) {
             System.err.println(e.getMessage());
+        } finally {
+            System.out.println("Database connection closed");
         }
-        return Optional.empty();
     }
 }
