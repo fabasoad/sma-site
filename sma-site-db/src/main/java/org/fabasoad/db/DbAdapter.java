@@ -1,5 +1,7 @@
 package org.fabasoad.db;
 
+import org.fabasoad.log.Logger;
+
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -8,10 +10,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.Objects;
-import java.util.Optional;
 import java.util.function.Consumer;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -35,9 +34,9 @@ public abstract class DbAdapter {
         Connection result = null;
         try {
             result = DriverManager.getConnection(getUrl());
-            System.out.println("Database connected successfully");
+            Logger.getInstance().flow(this.getClass(), "Database connected successfully");
         } catch (SQLException e) {
-            System.err.println(e.getMessage());
+            Logger.getInstance().error(this.getClass(), e.getMessage());
         }
         return result;
     }
@@ -50,9 +49,9 @@ public abstract class DbAdapter {
                 stmt.execute(sql);
             }
         } catch (SQLException e) {
-            System.err.println(e.getMessage());
+            Logger.getInstance().error(this.getClass(), e.getMessage());
         } finally {
-            System.out.println("Database connection closed");
+            Logger.getInstance().flow(this.getClass(), "Database connection closed");
         }
     }
 
@@ -62,9 +61,9 @@ public abstract class DbAdapter {
              ResultSet rs = stmt.executeQuery(sql)) {
             callback.accept(rs);
         } catch (SQLException e) {
-            System.err.println(e.getMessage());
+            Logger.getInstance().error(this.getClass(), e.getMessage());
         } finally {
-            System.out.println("Database connection closed");
+            Logger.getInstance().flow(this.getClass(), "Database connection closed");
         }
     }
 
@@ -73,9 +72,9 @@ public abstract class DbAdapter {
              Statement stmt = conn.createStatement()) {
             stmt.execute(sql);
         } catch (SQLException e) {
-            System.err.println(e.getMessage());
+            Logger.getInstance().error(this.getClass(), e.getMessage());
         } finally {
-            System.out.println("Database connection closed");
+            Logger.getInstance().flow(this.getClass(), "Database connection closed");
         }
     }
 }

@@ -70,11 +70,10 @@ public class ApplicationFormsResource extends BaseResource {
 //        }
 //        return Response.status(Response.Status.CREATED).entity(buildObject(generatedId).toJSONString()).build();
 //    }
-//
-//    @DELETE
-//    @Path("{id}")
-//    public Response deleteApplicationForm(@PathParam("id") int id) {
-//        String message = String.format("Application form 'application-form-%s.csv' has been deleted successfully", id);
-//        return Response.ok(buildOk(message)).build();
-//    }
+
+    @DELETE
+    @Path("{id}")
+    public Response deleteApplicationForm(@PathParam("id") int id) {
+        return delete(id);
+    }
 }

@@ -4,10 +4,17 @@ import org.fabasoad.db.dao.BaseDao;
 import org.fabasoad.db.dao.DaoFactory;
 import org.fabasoad.db.dao.DaoType;
 import org.fabasoad.db.pojo.BasePojo;
+import org.fabasoad.log.Logger;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import javax.ws.rs.core.Response;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.nio.file.Path;
 import java.util.Collection;
 import java.util.Map;
 
@@ -17,7 +24,9 @@ import java.util.Map;
  */
 abstract class BaseResource {
 
-    final String UPLOAD_PATH = "C:/temp/";
+    Path getUploadPath() {
+        return null;
+    }
 
     abstract DaoType getDaoType();
 
@@ -47,6 +56,19 @@ abstract class BaseResource {
         dao.delete(id);
         String message = "Entity with id = " + id + " deleted successfully";
         return Response.ok(buildSuccess(message).toJSONString()).build();
+    }
+
+    void upload(InputStream fileInputStream, String fileName) {
+        try (OutputStream out = new FileOutputStream(new File(getUploadPath().toString(), fileName))) {
+            int read;
+            byte[] bytes = new byte[1024];
+
+            while ((read = fileInputStream.read(bytes)) != -1) {
+                out.write(bytes, 0, read);
+            }
+        } catch (IOException e) {
+            Logger.getInstance().error(getClass(), String.format("Error while uploading '%s' file", fileName));
+        }
     }
 
     @SuppressWarnings("unchecked")
