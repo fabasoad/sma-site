@@ -30,6 +30,8 @@ abstract class BaseResource {
 
     abstract DaoType getDaoType();
 
+    abstract BasePojo buildPojo(JSONObject json);
+
     abstract Map<String, String> getPojoProperties();
 
     Response getAll() {

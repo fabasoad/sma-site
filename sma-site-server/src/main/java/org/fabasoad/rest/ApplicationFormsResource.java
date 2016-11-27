@@ -1,6 +1,7 @@
 package org.fabasoad.rest;
 
 import org.fabasoad.db.dao.DaoType;
+import org.fabasoad.db.pojo.BasePojo;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.json.simple.JSONObject;
@@ -31,6 +32,11 @@ public class ApplicationFormsResource extends BaseResource {
     @Override
     DaoType getDaoType() {
         return DaoType.APPLICATION_FORMS;
+    }
+
+    @Override
+    BasePojo buildPojo(JSONObject json) {
+        return null;
     }
 
     @Override
