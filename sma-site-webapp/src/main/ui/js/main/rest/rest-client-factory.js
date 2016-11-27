@@ -1,6 +1,11 @@
 import RestClientBuilder from './rest-client-builder.js';
 
-export const REST_CLIENT_RESOURCE = { NEWS: 'news', MAIN: 'main', VACANCIES: 'vacancies' };
+export const REST_CLIENT_RESOURCE = {
+    NEWS: 'news',
+    MAIN: 'main',
+    VACANCIES: 'vacancies',
+    REFERENCES: 'references'
+};
 
 let __resources = {
     news: new RestClientBuilder('news')

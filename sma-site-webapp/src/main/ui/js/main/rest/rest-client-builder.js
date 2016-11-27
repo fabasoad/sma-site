@@ -1,11 +1,11 @@
 export default function RestClientBuilder(url) {
-    this.__url = url;
+    let __url = '/api/v1/' + url;
 
     let methods = {
         getAll(callback) {
             $.ajax({
                 type: 'GET',
-                url: this.__url,
+                url: __url,
                 success: data => {
                     if (typeof callback === 'function') {
                         callback(data);
@@ -16,7 +16,7 @@ export default function RestClientBuilder(url) {
         getById(id, callback) {
             $.ajax({
                 type: 'GET',
-                url: this.__url + '/' + id,
+                url: __url + '/' + id,
                 success: data => {
                     if (typeof callback === 'function') {
                         callback(data);
@@ -27,7 +27,7 @@ export default function RestClientBuilder(url) {
         create(obj, callback) {
             $.ajax({
                 type: 'POST',
-                url: this.__url,
+                url: __url,
                 dataType: 'json',
                 data: obj,
                 success: data => {
@@ -40,7 +40,7 @@ export default function RestClientBuilder(url) {
         update(id, obj, callback) {
             $.ajax({
                 type: 'PUT',
-                url: this.__url + '/' + id,
+                url: __url + '/' + id,
                 dataType: 'json',
                 data: obj,
                 success: data => {
@@ -53,7 +53,7 @@ export default function RestClientBuilder(url) {
         delete(id, callback) {
             $.ajax({
                 type: 'DELETE',
-                url: this.__url + '/' + id,
+                url: __url + '/' + id,
                 success: data => {
                     if (typeof callback === 'function') {
                         callback(data);
@@ -66,7 +66,7 @@ export default function RestClientBuilder(url) {
     let result = {};
 
     return {
-        add(methods) {
+        add(method) {
             if (typeof method === 'object') {
                 Object.assign(result, method);
             } else {
@@ -79,7 +79,3 @@ export default function RestClientBuilder(url) {
         }
     }
 }
-
-Object.defineProperty(RestClientBuilder, '__url', {
-    set: val => 'api/v1/' + val
-});

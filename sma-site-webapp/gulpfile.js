@@ -11,7 +11,7 @@ const less = require('gulp-less');
 const watch = require('gulp-watch');
 const concat = require('gulp-concat');
 
-const bowerComponents = ['jquery', 'require', 'system'];
+const bowerComponents = ['jquery', 'require.js', 'system.js'];
 
 gulp.task('install', () => gulp.src(['./bower.json', './package.json']).pipe(install()));
 
@@ -25,10 +25,10 @@ gulp.task('watch-css', function () {
 	 gulp.watch('./src/main/ui/styles/**/*.less', ['less']);
 });
 
-gulp.task('bower-min', () => {
+gulp.task('js-bower', () => {
     let streams = [];
     for (let component of bowerComponents) {
-        streams.push(gulp.src('bower_components/' + component + '/dist/' + component + '.min.js')
+        streams.push(gulp.src('bower_components/' + component + '/dist/*.js')
             .pipe(gulp.dest('src/main/webapp/public/js/lib')));
     }
     return merge(streams);
@@ -53,5 +53,5 @@ gulp.task('js-dev', () =>
         .pipe(gulp.dest('src/main/webapp/public/js/dev'))
 );
 
-gulp.task('build-js', ['js-min', 'js-dev', 'bower-min']);
+gulp.task('build-js', ['js-min', 'js-dev', 'js-bower']);
 gulp.task('default', ['install', 'build-js', 'less']);

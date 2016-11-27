@@ -10,5 +10,9 @@
     "Natalya Fabizhevska <vanillacaramel88@gmail.com>",
     "Alexandr Chernyavskiy <designer.citi@gmail.com>"
   ],
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "jquery": "^3.1.1",
+    "system.js": "^0.19.41"
+  }
 }
