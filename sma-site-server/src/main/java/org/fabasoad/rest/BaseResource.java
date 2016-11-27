@@ -17,6 +17,8 @@ import java.io.OutputStream;
 import java.nio.file.Path;
 import java.util.Collection;
 import java.util.Map;
+import java.util.Optional;
+import java.util.function.Function;
 
 /**
  * @author efabizhevsky
@@ -30,7 +32,9 @@ abstract class BaseResource {
 
     abstract DaoType getDaoType();
 
-    abstract BasePojo buildPojo(JSONObject json);
+    abstract <T extends BasePojo> T createEmptyPojo();
+
+    abstract Function<String, Optional<String>> fromDto();
 
     abstract Map<String, String> getPojoProperties();
 
@@ -73,6 +77,11 @@ abstract class BaseResource {
         }
     }
 
+    void create(JSONObject json) {
+        BaseDao<? extends BasePojo> dao = DaoFactory.create(DaoType.REFERENCES);
+        dao.create(buildPojo(json));
+    }
+
     @SuppressWarnings("unchecked")
     private static JSONObject buildSuccess(String message) {
         final JSONObject json = new JSONObject();
@@ -107,5 +116,12 @@ abstract class BaseResource {
             result.put(entry.getValue(), pojo.getProperty(entry.getKey()));
         }
         return result;
+    }
+
+    @SuppressWarnings("unchecked")
+    <T extends BasePojo> T buildPojo(JSONObject json) {
+        T pojo = createEmptyPojo();
+        json.forEach((k,v) -> fromDto().apply(String.valueOf(k)).ifPresent(p -> pojo.setProperty(p, v)));
+        return pojo;
     }
 }

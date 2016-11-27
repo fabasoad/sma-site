@@ -20,13 +20,17 @@ let __resources = {
         .add('create')
         .add('update')
         .add('delete')
+        .build(),
+    references: new RestClientBuilder('references')
+        .add('getAll')
+        .add('getById')
+        .add('create')
+        .add('delete')
         .build()
 };
 
-export function RestClientFactory() {
-    return {
-        get(type) {
-            return __resources[type];
-        }
-    };
+export class RestClientFactory {
+    static get(type) {
+        return __resources[type];
+    }
 }

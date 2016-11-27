@@ -1,4 +1,4 @@
-export function RestClientBuilder(url) {
+export default function RestClientBuilder(url) {
     this.__url = url;
 
     let methods = {
@@ -79,3 +79,7 @@ export function RestClientBuilder(url) {
         }
     }
 }
+
+Object.defineProperty(RestClientBuilder, '__url', {
+    set: val => 'api/v1/' + val
+});

@@ -6,7 +6,6 @@ import org.fabasoad.db.pojo.PojoProperties;
 import org.fabasoad.db.pojo.ReferencePojo;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataParam;
-import org.json.simple.JSONObject;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -19,8 +18,9 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.InputStream;
 import java.nio.file.Paths;
-import java.util.EnumSet;
 import java.util.Map;
+import java.util.Optional;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -36,12 +36,15 @@ public class ReferencesResource extends BaseResource {
         return DaoType.REFERENCES;
     }
 
-    @Override
     @SuppressWarnings("unchecked")
-    BasePojo buildPojo(JSONObject json) {
-        BasePojo pojo = new ReferencePojo();
-        json.forEach((k,v) -> PojoProperties.References.fromDto(String.valueOf(k)).ifPresent(p -> pojo.setProperty(p, v)));
-        return pojo;
+    @Override
+    <T extends BasePojo> T createEmptyPojo() {
+        return (T) new ReferencePojo();
+    }
+
+    @Override
+    Function<String, Optional<String>> fromDto() {
+        return PojoProperties.References::fromDto;
     }
 
     @Override
@@ -74,6 +77,7 @@ public class ReferencesResource extends BaseResource {
                                     @FormDataParam("file") FormDataContentDisposition fileMetaData,
                                     @FormDataParam("title") String title) {
         upload(fileInputStream, fileMetaData.getFileName());
+        //create();
         return Response.status(Response.Status.CREATED).build();
 //        int generatedId = 999;
 //        try (OutputStream out = new FileOutputStream(new File(UPLOAD_PATH + fileMetaData.getFileName()))) {

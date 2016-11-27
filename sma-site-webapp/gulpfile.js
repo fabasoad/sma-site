@@ -9,8 +9,9 @@ const babel = require('gulp-babel');
 const merge = require('merge-stream');
 const less = require('gulp-less');
 const watch = require('gulp-watch');
+const concat = require('gulp-concat');
 
-const bowerComponents = ['jquery'];
+const bowerComponents = ['jquery', 'require', 'system'];
 
 gulp.task('install', () => gulp.src(['./bower.json', './package.json']).pipe(install()));
 
@@ -34,19 +35,21 @@ gulp.task('bower-min', () => {
 });
 
 gulp.task('js-min', () =>
-    gulp.src('src/main/ui/js/**/*.js')
+    gulp.src('src/main/ui/js/main/rest/**/*.js')
         .pipe(babel({
             presets: ['es2015']
         }))
+        //.pipe(concat('rest-scripts.js'))
         .pipe(uglify())
         .pipe(gulp.dest('src/main/webapp/public/js/min'))
 );
 
 gulp.task('js-dev', () =>
-    gulp.src('src/main/ui/js/**/*.js')
+    gulp.src('src/main/ui/js/main/rest/**/*.js')
         .pipe(babel({
             presets: ['es2015']
         }))
+        //.pipe(concat('rest-scripts.js'))
         .pipe(gulp.dest('src/main/webapp/public/js/dev'))
 );
 

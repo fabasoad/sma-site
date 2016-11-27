@@ -2,8 +2,8 @@
   "name": "sma-site-webapp",
   "description": "Front end part of a site for \"Southern Maritime Agency\" company",
   "main": [
-    "src/main/ui/js/scripts.js",
-    "src/main/ui/styles/styles.css"
+    "src/main/webapp/public/js/min/rest-scripts.js",
+    "src/main/webapp/public/styles/styles.css"
   ],
   "authors": [
     "Yevhen Fabizhevskyi <fabasoad@gmail.com>",

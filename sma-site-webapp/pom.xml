@@ -22,22 +22,6 @@
             <artifactId>jersey-container-servlet-core</artifactId>
             <version>2.24.1</version>
         </dependency>
-
-        <!--<dependency>-->
-            <!--<groupId>javax.ws.rs</groupId>-->
-            <!--<artifactId>jsr311-api</artifactId>-->
-            <!--<version>1.1.1</version>-->
-        <!--</dependency>-->
-        <!--<dependency>-->
-            <!--<groupId>javax.ws.rs</groupId>-->
-            <!--<artifactId>javax.ws.rs-api</artifactId>-->
-            <!--<version>2.1-m01</version>-->
-        <!--</dependency>-->
-        <!--<dependency>-->
-            <!--<groupId>org.apache.commons</groupId>-->
-            <!--<artifactId>commons-lang3</artifactId>-->
-            <!--<version>3.5</version>-->
-        <!--</dependency>-->
     </dependencies>
 
     <profiles>
@@ -57,9 +41,98 @@
                                 </goals>
                                 <phase>verify</phase>
                                 <configuration>
-                                    <!-- See https://nodejs.org/en/download/ for latest node and npm (lts) versions -->
                                     <nodeVersion>v7.1.0</nodeVersion>
                                     <npmVersion>3.10.10</npmVersion>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>gulp-install install</id>
+                                <goals>
+                                    <goal>npm</goal>
+                                </goals>
+                                <configuration>
+                                    <arguments>install gulp-install</arguments>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>gulp install</id>
+                                <goals>
+                                    <goal>npm</goal>
+                                </goals>
+                                <configuration>
+                                    <arguments>install gulp</arguments>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>bower install</id>
+                                <goals>
+                                    <goal>npm</goal>
+                                </goals>
+                                <configuration>
+                                    <arguments>install -g bower</arguments>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>gulp-uglify install</id>
+                                <goals>
+                                    <goal>npm</goal>
+                                </goals>
+                                <configuration>
+                                    <arguments>install gulp-uglify</arguments>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>gulp-babel install</id>
+                                <goals>
+                                    <goal>npm</goal>
+                                </goals>
+                                <configuration>
+                                    <arguments>install gulp-babel</arguments>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>babel-preset-es2015 install</id>
+                                <goals>
+                                    <goal>npm</goal>
+                                </goals>
+                                <configuration>
+                                    <arguments>install babel-preset-es2015</arguments>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>merge-stream install</id>
+                                <goals>
+                                    <goal>npm</goal>
+                                </goals>
+                                <configuration>
+                                    <arguments>install merge-stream</arguments>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>gulp-less install</id>
+                                <goals>
+                                    <goal>npm</goal>
+                                </goals>
+                                <configuration>
+                                    <arguments>install gulp-less</arguments>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>gulp-watch install</id>
+                                <goals>
+                                    <goal>npm</goal>
+                                </goals>
+                                <configuration>
+                                    <arguments>install gulp-watch</arguments>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>gulp-concat install</id>
+                                <goals>
+                                    <goal>npm</goal>
+                                </goals>
+                                <configuration>
+                                    <arguments>install gulp-concat</arguments>
                                 </configuration>
                             </execution>
                         </executions>
@@ -82,7 +155,6 @@
                                 <goals>
                                     <goal>npm</goal>
                                 </goals>
-                                <!-- Optional configuration which provides for running any npm command -->
                                 <configuration>
                                     <arguments>install</arguments>
                                 </configuration>

@@ -22,6 +22,8 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
+import java.util.function.Function;
 
 /**
  * @author efabizhevsky
@@ -35,7 +37,12 @@ public class ApplicationFormsResource extends BaseResource {
     }
 
     @Override
-    BasePojo buildPojo(JSONObject json) {
+    <T extends BasePojo> T createEmptyPojo() {
+        return null;
+    }
+
+    @Override
+    Function<String, Optional<String>> fromDto() {
         return null;
     }
 
