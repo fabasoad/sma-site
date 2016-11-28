@@ -60,6 +60,9 @@ export default function RestClientBuilder(url) {
                     }
                 }
             });
+        },
+        upload(callback) {
+
         }
     };
 

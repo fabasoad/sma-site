@@ -4,7 +4,9 @@ export const REST_CLIENT_RESOURCE = {
     NEWS: 'news',
     MAIN: 'main',
     VACANCIES: 'vacancies',
-    REFERENCES: 'references'
+    REFERENCES: 'references',
+    CONTACTS: 'contacts',
+    APPLICATION_FORMS: 'application-forms'
 };
 
 let __resources = {
@@ -29,7 +31,17 @@ let __resources = {
     references: new RestClientBuilder('references')
         .add('getAll')
         .add('getById')
-        .add('create')
+        .add('upload')
+        .add('delete')
+        .build(),
+    contacts: new RestClientBuilder('contacts')
+        .add('getAll')
+        .add('update')
+        .build(),
+    'application-forms': new RestClientBuilder('application-forms')
+        .add('getAll')
+        .add('getById')
+        .add('upload')
         .add('delete')
         .build()
 };
