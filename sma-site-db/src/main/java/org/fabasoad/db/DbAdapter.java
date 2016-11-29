@@ -22,13 +22,14 @@ public abstract class DbAdapter {
     static String FOLDER_PATH_MAIN;
     private static String FOLDER_PATH_SQL;
 
-    DbAdapter(SqlType type) {
-        FOLDER_PATH_MAIN = String.format("db/%s/", type.getFolderName());
+    DbAdapter() {
+        FOLDER_PATH_MAIN = String.format("db/%s/", getType().getFolderName());
         FOLDER_PATH_SQL = FOLDER_PATH_MAIN + "sql/";
-        initialize();
     }
 
     abstract String getUrl();
+
+    abstract SqlType getType();
 
     private Connection connect() {
         Connection result = null;
@@ -41,7 +42,7 @@ public abstract class DbAdapter {
         return result;
     }
 
-    private void initialize() {
+    public void setUp(String deployPath) {
         try (Connection conn = connect(); Statement stmt = conn.createStatement()) {
             final InputStream stream = ClassLoader.getSystemResourceAsStream(FOLDER_PATH_SQL + "init.sql");
             final String sqls = new BufferedReader(new InputStreamReader(stream)).lines().collect(Collectors.joining());

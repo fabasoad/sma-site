@@ -8,7 +8,7 @@ public class DbAdapterFactory {
 
     public static DbAdapter create(SqlType type) {
         if (type == SqlType.SQLITE) {
-            return new SqliteDbAdapter(type);
+            return new SqliteDbAdapter();
         }
         throw new RuntimeException(String.format("DB type '%s' is not implemented yet", type.name()));
     }

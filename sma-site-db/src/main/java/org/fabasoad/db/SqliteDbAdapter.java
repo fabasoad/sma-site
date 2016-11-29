@@ -10,8 +10,9 @@ class SqliteDbAdapter extends DbAdapter {
 
     private String url;
 
-    SqliteDbAdapter(SqlType type) {
-        super(type);
+    @Override
+    SqlType getType() {
+        return SqlType.SQLITE;
     }
 
     @Override

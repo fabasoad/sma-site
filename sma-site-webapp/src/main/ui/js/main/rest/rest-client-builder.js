@@ -69,7 +69,7 @@ export default function RestClientBuilder(url) {
         add(method) {
             if (typeof method === 'object') {
                 Object.assign(result, method);
-            } else {
+            } else if (methods.hasOwnProperty(method)) {
                 Object.assign(result, { [method]: methods[method] });
             }
             return this;
