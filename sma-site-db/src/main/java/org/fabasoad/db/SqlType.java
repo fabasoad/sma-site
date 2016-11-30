@@ -5,15 +5,13 @@ package org.fabasoad.db;
  * @date 11/25/2016.
  */
 public enum SqlType {
-    SQLITE("sqlite");
-
-    private String folderName;
-
-    SqlType(String folderName) {
-        this.folderName = folderName;
-    }
+    SQLITE;
 
     public String getFolderName() {
-        return folderName;
+        return name().toLowerCase();
+    }
+
+    public static SqlType valueOfIgnoreCase(String value) {
+        return SqlType.valueOf(value.toUpperCase());
     }
 }

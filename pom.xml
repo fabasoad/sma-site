@@ -13,7 +13,14 @@
         <module>sma-site-db</module>
         <module>sma-site-server</module>
         <module>sma-site-webapp</module>
+        <module>sma-site-api</module>
     </modules>
+
+    <properties>
+        <apache.commons-lang3.version>3.5</apache.commons-lang3.version>
+        <apache.commons-io.version>2.5</apache.commons-io.version>
+        <fabasoad.commons-lang.version>0.2</fabasoad.commons-lang.version>
+    </properties>
 
     <repositories>
         <repository>
@@ -36,5 +43,25 @@
             </plugin>
         </plugins>
     </build>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>commons-io</groupId>
+                <artifactId>commons-io</artifactId>
+                <version>${apache.commons-io.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>${apache.commons-lang3.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.fabasoad</groupId>
+                <artifactId>commons-lang</artifactId>
+                <version>${fabasoad.commons-lang.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
 </project>

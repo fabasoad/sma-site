@@ -3,7 +3,6 @@ package org.fabasoad.db.dao;
 import org.fabasoad.db.DbAdapter;
 import org.fabasoad.db.pojo.BasePojo;
 
-import java.lang.reflect.Array;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.sql.ResultSet;
@@ -12,6 +11,8 @@ import java.util.Collection;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import static org.fabasoad.api.Logger.getLogger;
 
 /**
  * @author efabizhevsky
@@ -53,20 +54,20 @@ public abstract class BaseDao<T extends BasePojo> {
         return result;
     }
 
-    public BaseDao(DbAdapter adapter) {
+    BaseDao(DbAdapter adapter) {
         this.adapter = adapter;
     }
 
     public Collection<T> getAll() {
         final String sql = String.format("SELECT %s FROM %s", String.join(",", getColumns()), getTableName());
-        Collection<T> result = new ArrayList<T>();
+        Collection<T> result = new ArrayList<>();
         adapter.run(sql, rs -> {
             try {
                 while (rs.next()) {
                     result.add(buildObject(rs));
                 }
             } catch (Exception e) {
-                System.err.println(e.getMessage());
+                getLogger().error(getClass(), e.getMessage());
             }
         });
         return result;
@@ -81,7 +82,7 @@ public abstract class BaseDao<T extends BasePojo> {
             try {
                 result[0] = buildObject(rs);
             } catch (Exception e) {
-                System.err.println(e.getMessage());
+                getLogger().error(getClass(), e.getMessage());
             }
         });
         return (T) result[0];

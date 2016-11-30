@@ -41,6 +41,10 @@ You can just run the command below if you don't want to build frontend part (not
 $ mvn clean install
 ```
 
+## DB installation
+Run **Setup** configuration to install DB.
+> Edit **Setup** configuration and change second program argument to any path in case you want to change default deploy path.
+
 ## Run application
 
 - Run **Jetty** configuration from Intellij IDEA.

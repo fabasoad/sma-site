@@ -6,18 +6,23 @@ package org.fabasoad.db;
  */
 class SqliteDbAdapter extends DbAdapter {
 
-    private static final String DB_NAME = "sma-db.s3db";
+    public static final String DB_NAME = "sma-db.s3db";
 
     private String url;
 
-    SqliteDbAdapter(SqlType type) {
-        super(type);
+    SqliteDbAdapter(String dbPath) {
+        super(dbPath);
+    }
+
+    @Override
+    SqlType getType() {
+        return SqlType.SQLITE;
     }
 
     @Override
     String getUrl() {
         if (url == null) {
-            url = "jdbc:sqlite:" + ClassLoader.getSystemResource(FOLDER_PATH_MAIN + DB_NAME).getPath();
+            url = "jdbc:sqlite:" + DB_PATH;
         }
         return url;
     }
