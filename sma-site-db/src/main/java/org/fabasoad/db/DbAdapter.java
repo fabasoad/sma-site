@@ -1,10 +1,10 @@
 package org.fabasoad.db;
 
-import org.fabasoad.log.Logger;
-
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -13,18 +13,20 @@ import java.sql.Statement;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
+import static org.fabasoad.api.Logger.getLogger;
+
 /**
  * @author efabizhevsky
  * @date 11/25/2016.
  */
 public abstract class DbAdapter {
 
-    static String FOLDER_PATH_MAIN;
-    private static String FOLDER_PATH_SQL;
+    static Path DB_PATH;
+    private static Path FOLDER_PATH_SQL;
 
-    DbAdapter() {
-        FOLDER_PATH_MAIN = String.format("db/%s/", getType().getFolderName());
-        FOLDER_PATH_SQL = FOLDER_PATH_MAIN + "sql/";
+    DbAdapter(String dbPath) {
+        DB_PATH = Paths.get(dbPath);
+        FOLDER_PATH_SQL = Paths.get("db", getType().getFolderName(), "sql");
     }
 
     abstract String getUrl();
@@ -35,24 +37,24 @@ public abstract class DbAdapter {
         Connection result = null;
         try {
             result = DriverManager.getConnection(getUrl());
-            Logger.getInstance().flow(this.getClass(), "Database connected successfully");
+            getLogger().flow(this.getClass(), "Database connected successfully");
         } catch (SQLException e) {
-            Logger.getInstance().error(this.getClass(), e.getMessage());
+            getLogger().error(this.getClass(), e.getMessage());
         }
         return result;
     }
 
-    public void setUp(String deployPath) {
+    public void setUp() {
         try (Connection conn = connect(); Statement stmt = conn.createStatement()) {
-            final InputStream stream = ClassLoader.getSystemResourceAsStream(FOLDER_PATH_SQL + "init.sql");
+            final InputStream stream = ClassLoader.getSystemResourceAsStream(Paths.get(FOLDER_PATH_SQL.toString(), "init.sql").toString());
             final String sqls = new BufferedReader(new InputStreamReader(stream)).lines().collect(Collectors.joining());
             for (String sql : sqls.split(";")) {
                 stmt.execute(sql);
             }
         } catch (SQLException e) {
-            Logger.getInstance().error(this.getClass(), e.getMessage());
+            getLogger().error(this.getClass(), e.getMessage());
         } finally {
-            Logger.getInstance().flow(this.getClass(), "Database connection closed");
+            getLogger().flow(this.getClass(), "Database connection closed");
         }
     }
 
@@ -62,9 +64,9 @@ public abstract class DbAdapter {
              ResultSet rs = stmt.executeQuery(sql)) {
             callback.accept(rs);
         } catch (SQLException e) {
-            Logger.getInstance().error(this.getClass(), e.getMessage());
+            getLogger().error(this.getClass(), e.getMessage());
         } finally {
-            Logger.getInstance().flow(this.getClass(), "Database connection closed");
+            getLogger().flow(this.getClass(), "Database connection closed");
         }
     }
 
@@ -73,9 +75,9 @@ public abstract class DbAdapter {
              Statement stmt = conn.createStatement()) {
             stmt.execute(sql);
         } catch (SQLException e) {
-            Logger.getInstance().error(this.getClass(), e.getMessage());
+            getLogger().error(this.getClass(), e.getMessage());
         } finally {
-            Logger.getInstance().flow(this.getClass(), "Database connection closed");
+            getLogger().flow(this.getClass(), "Database connection closed");
         }
     }
 }

@@ -1,75 +1,63 @@
 package org.fabasoad.db.runner;
 
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.fabasoad.db.DbAdapterFactory;
+import org.fabasoad.db.ParametersAware;
 import org.fabasoad.db.SqlType;
-import org.fabasoad.log.Logger;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.nio.file.Files;
-import java.util.Properties;
+import java.nio.file.Paths;
+
+import static org.fabasoad.api.Logger.getLogger;
 
 /**
  * @author efabizhevsky
  * @date 11/25/2016.
  */
-public class Setup {
-
-    private static Properties properties = new Properties();
-    private static String PROPERTIES_FILE_NAME = "sma-db-setup.properties";
-
-    private static String DB_TYPE_PARAM_NAME = "db-type";
-    private static String DEPLOY_PATH_PARAM_NAME = "deploy-path";
+public class Setup extends ParametersAware {
 
     public static void main(String[] args) {
         readParameters();
 
-        String dbType;
+        SqlType dbType;
         String deployPath;
 
         if (args.length == 0) {
-            dbType = properties.getProperty(DB_TYPE_PARAM_NAME);
+            dbType = SqlType.valueOfIgnoreCase(properties.getProperty(DB_TYPE_PARAM_NAME));
             deployPath = properties.getProperty(DEPLOY_PATH_PARAM_NAME);
         } else if (args.length == 2) {
-            dbType = args[0];
-            deployPath = args[1];
+            dbType = SqlType.valueOfIgnoreCase(args[0]);
+            deployPath = Paths.get(args[1], DbAdapterFactory.getDbName(dbType)).toString();
 
-            if (!properties.getProperty(DB_TYPE_PARAM_NAME).equalsIgnoreCase(dbType)
-                    || !properties.getProperty(DEPLOY_PATH_PARAM_NAME).equalsIgnoreCase(deployPath)) {
-                writeParameters(dbType, deployPath);
+            if (!StringUtils.equalsIgnoreCase(properties.getProperty(DB_TYPE_PARAM_NAME), dbType.name())
+                    || !StringUtils.equalsIgnoreCase(properties.getProperty(DEPLOY_PATH_PARAM_NAME), deployPath)) {
+                writeParameters(dbType.name().toLowerCase(), deployPath);
             }
         } else {
             String message = "Arguments are missing";
-            Logger.getInstance().error(Setup.class, message);
+            getLogger().error(Setup.class, message);
             throw new RuntimeException(message);
         }
 
-        DbAdapterFactory.create(SqlType.valueOf(dbType.toUpperCase())).setUp(deployPath);
-    }
-
-    private static void readParameters() {
-        final File file = new File(System.getProperty("user.home"), PROPERTIES_FILE_NAME);
-        if (file.exists() && !file.isDirectory() && Files.isReadable(file.toPath())) {
-            try (InputStream input = new FileInputStream(file)) {
-                properties.load(input);
-            } catch (IOException e) {
-                Logger.getInstance().error(Setup.class, e.getMessage());
+        if (!StringUtils.isEmpty(deployPath)) {
+            if (deployDb(dbType, deployPath)) {
+                DbAdapterFactory.create(dbType, deployPath).setUp();
             }
+        } else {
+            getLogger().error(Setup.class, "Deploy path is empty");
         }
     }
 
-    private static void writeParameters(String dbType, String deployPath) {
-        properties.setProperty(DB_TYPE_PARAM_NAME, dbType);
-        properties.setProperty(DEPLOY_PATH_PARAM_NAME, deployPath);
-
-        try (OutputStream output = new FileOutputStream(PROPERTIES_FILE_NAME)) {
-            properties.store(output, null);
+    private static boolean deployDb(SqlType dbType, String deployPath) {
+        String from = Paths.get("db", dbType.name().toLowerCase(), DbAdapterFactory.getDbName(dbType)).toString();
+        try {
+            FileUtils.copyURLToFile(ClassLoader.getSystemResource(from), new File(deployPath));
+            return true;
         } catch (IOException e) {
-            Logger.getInstance().error(Setup.class, e.getMessage());
+            getLogger().error(Setup.class, e.getMessage());
+            return false;
         }
     }
 }

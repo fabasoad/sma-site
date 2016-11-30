@@ -4,7 +4,6 @@ import org.fabasoad.db.dao.BaseDao;
 import org.fabasoad.db.dao.DaoFactory;
 import org.fabasoad.db.dao.DaoType;
 import org.fabasoad.db.pojo.BasePojo;
-import org.fabasoad.log.Logger;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -19,6 +18,8 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
+
+import static org.fabasoad.api.Logger.getLogger;
 
 /**
  * @author efabizhevsky
@@ -73,7 +74,7 @@ abstract class BaseResource {
                 out.write(bytes, 0, read);
             }
         } catch (IOException e) {
-            Logger.getInstance().error(getClass(), String.format("Error while uploading '%s' file", fileName));
+            getLogger().error(getClass(), String.format("Error while uploading '%s' file", fileName));
         }
     }
 
