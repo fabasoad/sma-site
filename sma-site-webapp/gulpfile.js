@@ -39,7 +39,6 @@ gulp.task('js-min', () =>
         .pipe(babel({
             presets: ['es2015']
         }))
-        //.pipe(concat('rest-scripts.js'))
         .pipe(uglify())
         .pipe(gulp.dest('src/main/webapp/public/js/min'))
 );
@@ -49,9 +48,10 @@ gulp.task('js-dev', () =>
         .pipe(babel({
             presets: ['es2015']
         }))
-        //.pipe(concat('rest-scripts.js'))
         .pipe(gulp.dest('src/main/webapp/public/js/dev'))
 );
+
+gulp.task('watch-js', () => gulp.watch('src/main/ui/js/main/rest/**/*.js', ['js-dev']));
 
 gulp.task('build-js', ['js-min', 'js-dev', 'js-bower']);
 gulp.task('default', ['install', 'build-js', 'less']);

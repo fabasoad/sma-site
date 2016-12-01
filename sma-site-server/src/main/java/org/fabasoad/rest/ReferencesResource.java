@@ -7,6 +7,8 @@ import org.fabasoad.db.pojo.ReferencePojo;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 
+import javax.annotation.security.PermitAll;
+import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -14,8 +16,10 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.SecurityContext;
 import java.io.InputStream;
 import java.nio.file.Paths;
 import java.util.Map;
@@ -28,6 +32,7 @@ import java.util.stream.Stream;
  * @author efabizhevsky
  * @date 11/24/2016.
  */
+@PermitAll
 @Path("references")
 public class ReferencesResource extends BaseResource {
 
@@ -70,13 +75,15 @@ public class ReferencesResource extends BaseResource {
         return Paths.get(".", "sma-site-webapp", "src", "main", "webapp", "public", "data", "references");
     }
 
+    @RolesAllowed("admin")
     @POST
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.APPLICATION_JSON)
     public Response createReference(@FormDataParam("file") InputStream fileInputStream,
                                     @FormDataParam("file") FormDataContentDisposition fileMetaData,
-                                    @FormDataParam("title") String title) {
-        upload(fileInputStream, fileMetaData.getFileName());
+                                    @FormDataParam("title") String title,
+                                    @Context SecurityContext context) {
+        upload(context, fileInputStream, fileMetaData.getFileName());
         //create();
         return Response.status(Response.Status.CREATED).build();
 //        int generatedId = 999;
@@ -94,9 +101,10 @@ public class ReferencesResource extends BaseResource {
 //        return Response.status(Response.Status.CREATED).entity(buildObject(generatedId).toJSONString()).build();
     }
 
+    @RolesAllowed("admin")
     @DELETE
     @Path("{id}")
-    public Response deleteReference(@PathParam("id") int id) {
-        return delete(id);
+    public Response deleteReference(@PathParam("id") int id, @Context SecurityContext context) {
+        return delete(context, id);
     }
 }
