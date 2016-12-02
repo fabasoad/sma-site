@@ -2,24 +2,16 @@ package org.fabasoad.rest;
 
 import org.fabasoad.db.dao.DaoType;
 import org.fabasoad.db.pojo.BasePojo;
-import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
-import org.glassfish.jersey.media.multipart.FormDataParam;
-import org.json.simple.JSONObject;
 
-import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
-import javax.ws.rs.POST;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.io.IOException;
-import java.io.OutputStream;
+import javax.ws.rs.core.SecurityContext;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -30,24 +22,24 @@ import java.util.function.Function;
  * @date 11/22/2016.
  */
 @Path("application-forms")
-public class ApplicationFormsResource extends BaseResource {
+public class ApplicationFormsResource implements BaseResource {
     @Override
-    DaoType getDaoType() {
+    public DaoType getDaoType() {
         return DaoType.APPLICATION_FORMS;
     }
 
     @Override
-    <T extends BasePojo> T createEmptyPojo() {
+    public <T extends BasePojo> T createEmptyPojo() {
         return null;
     }
 
     @Override
-    Function<String, Optional<String>> fromDto() {
+    public Function<String, Optional<String>> fromDto() {
         return null;
     }
 
     @Override
-    Map<String, String> getPojoProperties() {
+    public Map<String, String> getPojoProperties() {
         return new HashMap<>();
     }
 
@@ -86,7 +78,7 @@ public class ApplicationFormsResource extends BaseResource {
 
     @DELETE
     @Path("{id}")
-    public Response deleteApplicationForm(@PathParam("id") int id) {
-        return delete(id);
+    public Response deleteApplicationForm(@PathParam("id") int id, @Context SecurityContext context) {
+        return delete(context, id);
     }
 }

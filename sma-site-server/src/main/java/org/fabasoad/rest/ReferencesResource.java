@@ -7,7 +7,6 @@ import org.fabasoad.db.pojo.ReferencePojo;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 
-import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -32,31 +31,31 @@ import java.util.stream.Stream;
  * @author efabizhevsky
  * @date 11/24/2016.
  */
-@PermitAll
 @Path("references")
-public class ReferencesResource extends BaseResource {
+public class ReferencesResource implements BaseResource {
 
     @Override
-    DaoType getDaoType() {
+    public DaoType getDaoType() {
         return DaoType.REFERENCES;
     }
 
     @SuppressWarnings("unchecked")
     @Override
-    <T extends BasePojo> T createEmptyPojo() {
+    public <T extends BasePojo> T createEmptyPojo() {
         return (T) new ReferencePojo();
     }
 
     @Override
-    Function<String, Optional<String>> fromDto() {
+    public Function<String, Optional<String>> fromDto() {
         return PojoProperties.References::fromDto;
     }
 
     @Override
-    Map<String, String> getPojoProperties() {
+    public Map<String, String> getPojoProperties() {
         return Stream.of(PojoProperties.References.values()).collect(Collectors.toMap(v -> v.DB, v -> v.DTO));
     }
 
+    @RolesAllowed("admin")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response getReferences() {
@@ -71,8 +70,8 @@ public class ReferencesResource extends BaseResource {
     }
 
     @Override
-    java.nio.file.Path getUploadPath() {
-        return Paths.get(".", "sma-site-webapp", "src", "main", "webapp", "public", "data", "references");
+    public Optional<java.nio.file.Path> getUploadPath() {
+        return Optional.of(Paths.get(".", "sma-site-webapp", "src", "main", "webapp", "public", "data", "references"));
     }
 
     @RolesAllowed("admin")

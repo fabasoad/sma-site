@@ -4,8 +4,6 @@ import org.fabasoad.db.dao.BaseDao;
 import org.fabasoad.db.dao.DaoFactory;
 import org.fabasoad.db.dao.DaoType;
 import org.fabasoad.db.pojo.BasePojo;
-import org.glassfish.jersey.server.ResourceConfig;
-import org.glassfish.jersey.server.filter.RolesAllowedDynamicFeature;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -28,31 +26,27 @@ import static org.fabasoad.api.Logger.getLogger;
  * @author efabizhevsky
  * @date 11/22/2016.
  */
-abstract class BaseResource extends ResourceConfig {
+interface BaseResource {
 
-    Path getUploadPath() {
-        return null;
+    default Optional<Path> getUploadPath() {
+        return Optional.empty();
     }
 
-    abstract DaoType getDaoType();
+    DaoType getDaoType();
 
-    abstract <T extends BasePojo> T createEmptyPojo();
+    <T extends BasePojo> T createEmptyPojo();
 
-    abstract Function<String, Optional<String>> fromDto();
+    Function<String, Optional<String>> fromDto();
 
-    abstract Map<String, String> getPojoProperties();
+    Map<String, String> getPojoProperties();
 
-    BaseResource() {
-        register(RolesAllowedDynamicFeature.class);
-    }
-
-    Response getAll() {
+    default Response getAll() {
         BaseDao<? extends BasePojo> dao = DaoFactory.create(getDaoType());
         JSONObject json = buildObjects(dao.getAll());
         return Response.ok(json.toJSONString()).build();
     }
 
-    Response get(int id) {
+    default Response get(int id) {
         BaseDao<? extends BasePojo> dao = DaoFactory.create(getDaoType());
         BasePojo pojo = dao.get(id);
         if (pojo == null) {
@@ -65,7 +59,7 @@ abstract class BaseResource extends ResourceConfig {
         return Response.ok(json.toJSONString()).build();
     }
 
-    Response delete(SecurityContext context, int id) {
+    default Response delete(SecurityContext context, int id) {
         if (context.isUserInRole("admin")) {
             BaseDao<? extends BasePojo> dao = DaoFactory.create(getDaoType());
             dao.delete(id);
@@ -76,22 +70,24 @@ abstract class BaseResource extends ResourceConfig {
         }
     }
 
-    void upload(SecurityContext context, InputStream fileInputStream, String fileName) {
-        if (context.isUserInRole("admin")) {
-            try (OutputStream out = new FileOutputStream(new File(getUploadPath().toString(), fileName))) {
-                int read;
-                byte[] bytes = new byte[1024];
+    default void upload(SecurityContext context, InputStream fileInputStream, String fileName) {
+        getUploadPath().ifPresent(path -> {
+            if (context.isUserInRole("admin")) {
+                try (OutputStream out = new FileOutputStream(new File(path.toString(), fileName))) {
+                    int read;
+                    byte[] bytes = new byte[1024];
 
-                while ((read = fileInputStream.read(bytes)) != -1) {
-                    out.write(bytes, 0, read);
+                    while ((read = fileInputStream.read(bytes)) != -1) {
+                        out.write(bytes, 0, read);
+                    }
+                } catch (IOException e) {
+                    getLogger().error(getClass(), String.format("Error while uploading '%s' file", fileName));
                 }
-            } catch (IOException e) {
-                getLogger().error(getClass(), String.format("Error while uploading '%s' file", fileName));
             }
-        }
+        });
     }
 
-    Response create(SecurityContext context, JSONObject json) {
+    default Response create(SecurityContext context, JSONObject json) {
         if (context.isUserInRole("admin")) {
             BaseDao<? extends BasePojo> dao = DaoFactory.create(DaoType.REFERENCES);
             dao.create(buildPojo(json));
@@ -103,23 +99,7 @@ abstract class BaseResource extends ResourceConfig {
     }
 
     @SuppressWarnings("unchecked")
-    private static JSONObject buildSuccess(String message) {
-        final JSONObject json = new JSONObject();
-        json.put("type", "success");
-        json.put("message", message);
-        return json;
-    }
-
-    @SuppressWarnings("unchecked")
-    private static JSONObject buildError(String message) {
-        final JSONObject json = new JSONObject();
-        json.put("type", "error");
-        json.put("message", message);
-        return json;
-    }
-
-    @SuppressWarnings("unchecked")
-    private JSONObject buildObjects(Collection<? extends BasePojo> pojos) {
+    default JSONObject buildObjects(Collection<? extends BasePojo> pojos) {
         JSONArray array = new JSONArray();
         pojos.stream().map(this::buildObject).forEach(array::add);
 
@@ -130,7 +110,7 @@ abstract class BaseResource extends ResourceConfig {
     }
 
     @SuppressWarnings("unchecked")
-    private JSONObject buildObject(BasePojo pojo) {
+    default JSONObject buildObject(BasePojo pojo) {
         final JSONObject result = new JSONObject();
         for (Map.Entry<String, String> entry : getPojoProperties().entrySet()) {
             result.put(entry.getValue(), pojo.getProperty(entry.getKey()));
@@ -139,9 +119,25 @@ abstract class BaseResource extends ResourceConfig {
     }
 
     @SuppressWarnings("unchecked")
-    <T extends BasePojo> T buildPojo(JSONObject json) {
+    default <T extends BasePojo> T buildPojo(JSONObject json) {
         T pojo = createEmptyPojo();
         json.forEach((k,v) -> fromDto().apply(String.valueOf(k)).ifPresent(p -> pojo.setProperty(p, v)));
         return pojo;
+    }
+
+    @SuppressWarnings("unchecked")
+    default JSONObject buildSuccess(String message) {
+        final JSONObject json = new JSONObject();
+        json.put("type", "success");
+        json.put("message", message);
+        return json;
+    }
+
+    @SuppressWarnings("unchecked")
+    default JSONObject buildError(String message) {
+        final JSONObject json = new JSONObject();
+        json.put("type", "error");
+        json.put("message", message);
+        return json;
     }
 }
