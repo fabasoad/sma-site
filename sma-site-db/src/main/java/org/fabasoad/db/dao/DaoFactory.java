@@ -5,6 +5,8 @@ import org.fabasoad.db.DbAdapterFactory;
 import org.fabasoad.db.ParametersAware;
 import org.fabasoad.db.SqlType;
 import org.fabasoad.db.pojo.BasePojo;
+import org.fabasoad.db.pojo.ReferencePojo;
+import org.fabasoad.db.pojo.UserPojo;
 
 /**
  * @author Yevhen Fabizhevskyi
@@ -12,13 +14,17 @@ import org.fabasoad.db.pojo.BasePojo;
  */
 public class DaoFactory extends ParametersAware {
 
-    public static BaseDao<? extends BasePojo> create(DaoType type) {
+    @SuppressWarnings("unchecked")
+    public static <T extends BasePojo> BaseDao<T> create(Class<T> pojoClazz) {
         readParameters();
 
         DbAdapter adapter = DbAdapterFactory.create(SqlType.SQLITE, properties.getProperty(DEPLOY_PATH_PARAM_NAME));
-        if (type == DaoType.REFERENCES) {
-            return new ReferencesDao(adapter);
+        if (pojoClazz == ReferencePojo.class) {
+            return (BaseDao<T>) new ReferencesDao(adapter);
+        } else if (pojoClazz == UserPojo.class) {
+            return (BaseDao<T>) new UsersDao(adapter);
+        } else {
+            throw new RuntimeException(String.format("Unknown type '%s'", pojoClazz.getSimpleName()));
         }
-        throw new RuntimeException(String.format("Unknown type '%s'", type.name()));
     }
 }

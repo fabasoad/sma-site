@@ -1,10 +1,15 @@
 package org.fabasoad.rest.provider;
 
+import org.fabasoad.api.Logger;
+import org.fabasoad.db.dao.BaseDao;
+import org.fabasoad.db.dao.DaoFactory;
+import org.fabasoad.db.pojo.UserPojo;
 import org.glassfish.jersey.internal.util.Base64;
 
 import javax.annotation.security.DenyAll;
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
+import javax.ws.rs.Path;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
 import javax.ws.rs.container.ResourceInfo;
@@ -15,7 +20,11 @@ import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.StringTokenizer;
+
+import static org.fabasoad.db.pojo.PojoProperties.Users.EMAIL;
+import static org.fabasoad.db.pojo.PojoProperties.Users.PASSWORD;
 
 /**
  * @author efabizhevsky
@@ -26,22 +35,15 @@ public class AuthenticationFilter implements ContainerRequestFilter {
     private static final String AUTHORIZATION_PROPERTY = "Authorization";
     private static final String AUTHENTICATION_SCHEME = "Basic";
 
-    private final Response ACCESS_DENIED = Response.status(Response.Status.UNAUTHORIZED)
-            .entity("You are not authorized to access this resource").build();
-    private final Response ACCESS_FORBIDDEN = Response.status(Response.Status.FORBIDDEN)
-            .entity("You have no permissions to access this resource").build();
-
     @Context
     private ResourceInfo resourceInfo;
 
     @Override
     public void filter(ContainerRequestContext requestContext) throws IOException {
         Method method = resourceInfo.getResourceMethod();
-        //Access allowed for all
         if (!method.isAnnotationPresent(PermitAll.class)) {
-            //Access denied for all
             if (method.isAnnotationPresent(DenyAll.class)) {
-                requestContext.abortWith(ACCESS_FORBIDDEN);
+                abort(requestContext, Response.Status.FORBIDDEN);
                 return;
             }
 
@@ -57,14 +59,14 @@ public class AuthenticationFilter implements ContainerRequestFilter {
 
             //If no authorization information present; block access
             if (authorization == null || authorization.isEmpty()) {
-                requestContext.abortWith(ACCESS_DENIED);
+                abort(requestContext, Response.Status.UNAUTHORIZED);
                 return;
             }
 
             //Get encoded username and password
             String encodedValue = authorization.get(0);
             if (!encodedValue.startsWith(AUTHENTICATION_SCHEME)) {
-                requestContext.abortWith(ACCESS_DENIED);
+                abort(requestContext, Response.Status.UNAUTHORIZED);
                 return;
             }
             final String encodedUserPassword = encodedValue.replaceFirst(AUTHENTICATION_SCHEME + " ", "");
@@ -74,38 +76,58 @@ public class AuthenticationFilter implements ContainerRequestFilter {
 
             //Split username and password tokens
             final StringTokenizer tokenizer = new StringTokenizer(usernameAndPassword, ":");
-            final String username = tokenizer.nextToken();
+            final String email = tokenizer.nextToken();
             final String password = tokenizer.nextToken();
 
-            //Verifying Username and password
-            //Logger.getLogger().flow(getClass(), String.format("User '%s' accessing ", username));
+            String message = String.format("User '%s' trying to accessed '%s' resource",
+                    email, resourceInfo.getResourceClass().getAnnotation(Path.class).value());
+            Logger.getLogger().flow(getClass(), message);
 
             //Verify user access
             RolesAllowed rolesAnnotation = method.getAnnotation(RolesAllowed.class);
 
             //Is user valid?
-            if (!isUserAllowed(username, password, rolesAnnotation.value())) {
-                requestContext.abortWith(ACCESS_FORBIDDEN);
+            if (!isUserAllowed(email, password, rolesAnnotation.value())) {
+                abort(requestContext, Response.Status.FORBIDDEN);
             }
         }
     }
 
-    private boolean isUserAllowed(final String username, final String password, final String[] roles) {
-        boolean isAllowed = false;
+    private boolean isUserAllowed(final String email, final String password, final String[] roles) {
+        boolean[] isAllowed = { false };
 
         //Step 1. Fetch password from database and match with password in argument
         //If both match then get the defined role for user from database and continue; else return isAllowed [false]
         //Access the database and do this part yourself
         //String userRole = userMgr.getUserRole(username);
 
-        if (username.equals("howtodoinjava") && password.equals("password")) {
-            String userRole = "ADMIN";
+        BaseDao<UserPojo> dao = DaoFactory.create(UserPojo.class);
+        dao.getAll().stream().filter(u -> Objects.equals(email, u.getProperty(EMAIL.DB))
+                && Objects.equals(password, u.getProperty(PASSWORD.DB))).findAny().ifPresent(u -> {
+            String userRole = String.valueOf(u.getProperty("ROLE"));
 
             //Step 2. Verify user role
             if (Arrays.asList(roles).contains(userRole)) {
-                isAllowed = true;
+                isAllowed[0] = true;
             }
+        });
+        return isAllowed[0];
+    }
+
+    private static void abort(ContainerRequestContext requestContext, Response.Status status) {
+        String message;
+        switch (status) {
+            case UNAUTHORIZED:
+                message = "You are not authorized to access this resource";
+                break;
+            case FORBIDDEN:
+                message = "You have no permissions to access this resource";
+                break;
+            default:
+                message = "Server error";
+                break;
         }
-        return isAllowed;
+        Logger.getLogger().warning(AuthenticationFilter.class, message);
+        requestContext.abortWith(Response.status(status).entity(message).build());
     }
 }

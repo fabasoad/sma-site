@@ -1,7 +1,5 @@
 package org.fabasoad.rest;
 
-import org.fabasoad.db.dao.DaoType;
-import org.fabasoad.db.pojo.BasePojo;
 import org.fabasoad.db.pojo.PojoProperties;
 import org.fabasoad.db.pojo.ReferencePojo;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
@@ -15,10 +13,8 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import javax.ws.rs.core.SecurityContext;
 import java.io.InputStream;
 import java.nio.file.Paths;
 import java.util.Map;
@@ -32,17 +28,11 @@ import java.util.stream.Stream;
  * @date 11/24/2016.
  */
 @Path("references")
-public class ReferencesResource implements BaseResource {
+public class ReferencesResource implements BaseResource<ReferencePojo> {
 
     @Override
-    public DaoType getDaoType() {
-        return DaoType.REFERENCES;
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public <T extends BasePojo> T createEmptyPojo() {
-        return (T) new ReferencePojo();
+    public Class<ReferencePojo> getPojoClass() {
+        return ReferencePojo.class;
     }
 
     @Override
@@ -80,9 +70,8 @@ public class ReferencesResource implements BaseResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response createReference(@FormDataParam("file") InputStream fileInputStream,
                                     @FormDataParam("file") FormDataContentDisposition fileMetaData,
-                                    @FormDataParam("title") String title,
-                                    @Context SecurityContext context) {
-        upload(context, fileInputStream, fileMetaData.getFileName());
+                                    @FormDataParam("title") String title) {
+        upload(fileInputStream, fileMetaData.getFileName());
         //create();
         return Response.status(Response.Status.CREATED).build();
 //        int generatedId = 999;
@@ -103,7 +92,7 @@ public class ReferencesResource implements BaseResource {
     @RolesAllowed("admin")
     @DELETE
     @Path("{id}")
-    public Response deleteReference(@PathParam("id") int id, @Context SecurityContext context) {
-        return delete(context, id);
+    public Response deleteReference(@PathParam("id") int id) {
+        return delete(id);
     }
 }

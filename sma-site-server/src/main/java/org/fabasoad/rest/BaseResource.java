@@ -1,14 +1,13 @@
 package org.fabasoad.rest;
 
+import org.fabasoad.api.Logger;
 import org.fabasoad.db.dao.BaseDao;
 import org.fabasoad.db.dao.DaoFactory;
-import org.fabasoad.db.dao.DaoType;
 import org.fabasoad.db.pojo.BasePojo;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import javax.ws.rs.core.Response;
-import javax.ws.rs.core.SecurityContext;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -26,28 +25,26 @@ import static org.fabasoad.api.Logger.getLogger;
  * @author efabizhevsky
  * @date 11/22/2016.
  */
-interface BaseResource {
+interface BaseResource<T extends BasePojo> {
 
     default Optional<Path> getUploadPath() {
         return Optional.empty();
     }
 
-    DaoType getDaoType();
-
-    <T extends BasePojo> T createEmptyPojo();
+    Class<T> getPojoClass();
 
     Function<String, Optional<String>> fromDto();
 
     Map<String, String> getPojoProperties();
 
     default Response getAll() {
-        BaseDao<? extends BasePojo> dao = DaoFactory.create(getDaoType());
+        BaseDao<T> dao = DaoFactory.create(getPojoClass());
         JSONObject json = buildObjects(dao.getAll());
         return Response.ok(json.toJSONString()).build();
     }
 
     default Response get(int id) {
-        BaseDao<? extends BasePojo> dao = DaoFactory.create(getDaoType());
+        BaseDao<T> dao = DaoFactory.create(getPojoClass());
         BasePojo pojo = dao.get(id);
         if (pojo == null) {
             final String message = "There is no entity with id = " + id;
@@ -59,43 +56,33 @@ interface BaseResource {
         return Response.ok(json.toJSONString()).build();
     }
 
-    default Response delete(SecurityContext context, int id) {
-        if (context.isUserInRole("admin")) {
-            BaseDao<? extends BasePojo> dao = DaoFactory.create(getDaoType());
-            dao.delete(id);
-            String message = "Entity with id = " + id + " deleted successfully";
-            return Response.ok(buildSuccess(message).toJSONString()).build();
-        } else {
-            return Response.status(Response.Status.FORBIDDEN).build();
-        }
+    default Response delete(int id) {
+        BaseDao<T> dao = DaoFactory.create(getPojoClass());
+        dao.delete(id);
+        String message = "Entity with id = " + id + " deleted successfully";
+        return Response.ok(buildSuccess(message).toJSONString()).build();
     }
 
-    default void upload(SecurityContext context, InputStream fileInputStream, String fileName) {
+    default void upload(InputStream fileInputStream, String fileName) {
         getUploadPath().ifPresent(path -> {
-            if (context.isUserInRole("admin")) {
-                try (OutputStream out = new FileOutputStream(new File(path.toString(), fileName))) {
-                    int read;
-                    byte[] bytes = new byte[1024];
+            try (OutputStream out = new FileOutputStream(new File(path.toString(), fileName))) {
+                int read;
+                byte[] bytes = new byte[1024];
 
-                    while ((read = fileInputStream.read(bytes)) != -1) {
-                        out.write(bytes, 0, read);
-                    }
-                } catch (IOException e) {
-                    getLogger().error(getClass(), String.format("Error while uploading '%s' file", fileName));
+                while ((read = fileInputStream.read(bytes)) != -1) {
+                    out.write(bytes, 0, read);
                 }
+            } catch (IOException e) {
+                getLogger().error(getClass(), String.format("Error while uploading '%s' file", fileName));
             }
         });
     }
 
-    default Response create(SecurityContext context, JSONObject json) {
-        if (context.isUserInRole("admin")) {
-            BaseDao<? extends BasePojo> dao = DaoFactory.create(DaoType.REFERENCES);
-            dao.create(buildPojo(json));
-            String message = "Entity created successfully";
-            return Response.ok(buildSuccess(message).toJSONString()).build();
-        } else {
-            return Response.status(Response.Status.FORBIDDEN).build();
-        }
+    default Response create(JSONObject json) {
+        BaseDao<T> dao = DaoFactory.create(getPojoClass());
+        dao.create(buildPojo(json));
+        String message = "Entity created successfully";
+        return Response.ok(buildSuccess(message).toJSONString()).build();
     }
 
     @SuppressWarnings("unchecked")
@@ -119,10 +106,15 @@ interface BaseResource {
     }
 
     @SuppressWarnings("unchecked")
-    default <T extends BasePojo> T buildPojo(JSONObject json) {
-        T pojo = createEmptyPojo();
-        json.forEach((k,v) -> fromDto().apply(String.valueOf(k)).ifPresent(p -> pojo.setProperty(p, v)));
-        return pojo;
+    default T buildPojo(JSONObject json) {
+        Object[] pojo = new Object[1];
+        try {
+            pojo[0] = getPojoClass().newInstance();
+            json.forEach((k,v) -> fromDto().apply(String.valueOf(k)).ifPresent(p -> ((T) pojo[0]).setProperty(p, v)));
+        } catch (InstantiationException | IllegalAccessException e) {
+            Logger.getLogger().error(getClass(), e.getMessage());
+        }
+        return (T) pojo[0];
     }
 
     @SuppressWarnings("unchecked")

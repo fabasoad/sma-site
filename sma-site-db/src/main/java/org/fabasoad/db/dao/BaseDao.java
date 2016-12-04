@@ -58,8 +58,12 @@ public abstract class BaseDao<T extends BasePojo> {
         this.adapter = adapter;
     }
 
+    String sqlSelect() {
+        return String.format("SELECT %s FROM %s", String.join(",", getColumns()), getTableName());
+    }
+
     public Collection<T> getAll() {
-        final String sql = String.format("SELECT %s FROM %s", String.join(",", getColumns()), getTableName());
+        final String sql = sqlSelect();
         Collection<T> result = new ArrayList<>();
         adapter.run(sql, rs -> {
             try {

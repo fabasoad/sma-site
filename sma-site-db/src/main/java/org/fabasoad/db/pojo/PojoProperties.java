@@ -26,4 +26,40 @@ public interface PojoProperties {
 
         public final static String TABLE_NAME = "SMA_REFERENCES";
     }
+
+    enum Users {
+        ID("SU_ID", "id"), EMAIL("SU_EMAIL", "email"), PASSWORD("SU_PASSWORD", "password"), SECURITY_SCHEMA_ID("SU_SECURITY_SCHEMA_ID", "security-schema-id");
+
+        public String DB;
+        public String DTO;
+
+        Users(String dbProperty, String dtoProperty) {
+            this.DB = dbProperty;
+            this.DTO = dtoProperty;
+        }
+
+        public static Optional<String> fromDto(String dtoProp) {
+            return Stream.of(values()).filter(v -> Objects.equals(v.DTO, dtoProp)).map(v -> v.DB).findAny();
+        }
+
+        public final static String TABLE_NAME = "SMA_USERS";
+    }
+
+    enum SecuritySchemas {
+        ID("SSS_ID", "id"), NAME("SSS_NAME", "name");
+
+        public String DB;
+        public String DTO;
+
+        SecuritySchemas(String dbProperty, String dtoProperty) {
+            this.DB = dbProperty;
+            this.DTO = dtoProperty;
+        }
+
+        public static Optional<String> fromDto(String dtoProp) {
+            return Stream.of(values()).filter(v -> Objects.equals(v.DTO, dtoProp)).map(v -> v.DB).findAny();
+        }
+
+        public final static String TABLE_NAME = "SMA_SECURITY_SCHEMAS";
+    }
 }

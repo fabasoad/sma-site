@@ -1,17 +1,12 @@
 package org.fabasoad.rest;
 
-import org.fabasoad.db.dao.DaoType;
-import org.fabasoad.db.pojo.BasePojo;
-
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import javax.ws.rs.core.SecurityContext;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -23,13 +18,9 @@ import java.util.function.Function;
  */
 @Path("application-forms")
 public class ApplicationFormsResource implements BaseResource {
-    @Override
-    public DaoType getDaoType() {
-        return DaoType.APPLICATION_FORMS;
-    }
 
     @Override
-    public <T extends BasePojo> T createEmptyPojo() {
+    public Class getPojoClass() {
         return null;
     }
 
@@ -78,7 +69,7 @@ public class ApplicationFormsResource implements BaseResource {
 
     @DELETE
     @Path("{id}")
-    public Response deleteApplicationForm(@PathParam("id") int id, @Context SecurityContext context) {
-        return delete(context, id);
+    public Response deleteApplicationForm(@PathParam("id") int id) {
+        return delete(id);
     }
 }
