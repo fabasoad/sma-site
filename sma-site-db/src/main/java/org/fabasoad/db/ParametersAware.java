@@ -26,6 +26,7 @@ public class ParametersAware {
 
     protected static void readParameters() {
         if (PROPERTIES_FILE.toFile().exists() && !PROPERTIES_FILE.toFile().isDirectory() && Files.isReadable(PROPERTIES_FILE)) {
+            getLogger().flow(ParametersAware.class, String.format("Read parameters from %s file", PROPERTIES_FILE.toAbsolutePath()));
             try (InputStream input = new FileInputStream(PROPERTIES_FILE.toFile())) {
                 properties.load(input);
             } catch (IOException e) {

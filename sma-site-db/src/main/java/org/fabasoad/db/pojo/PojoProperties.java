@@ -62,4 +62,40 @@ public interface PojoProperties {
 
         public final static String TABLE_NAME = "SMA_SECURITY_SCHEMAS";
     }
+
+    enum UserRoles {
+        ID("SUR_ID", "id"), NAME("SUR_NAME", "name");
+
+        public String DB;
+        public String DTO;
+
+        UserRoles(String dbProperty, String dtoProperty) {
+            this.DB = dbProperty;
+            this.DTO = dtoProperty;
+        }
+
+        public static Optional<String> fromDto(String dtoProp) {
+            return Stream.of(values()).filter(v -> Objects.equals(v.DTO, dtoProp)).map(v -> v.DB).findAny();
+        }
+
+        public final static String TABLE_NAME = "SMA_USER_ROLES";
+    }
+
+    enum UsersRolesRelations {
+        USER_ID("SURR_USER_ID", "user-id"), ROLE_ID("SURR_ROLE_ID", "role-id");
+
+        public String DB;
+        public String DTO;
+
+        UsersRolesRelations(String dbProperty, String dtoProperty) {
+            this.DB = dbProperty;
+            this.DTO = dtoProperty;
+        }
+
+        public static Optional<String> fromDto(String dtoProp) {
+            return Stream.of(values()).filter(v -> Objects.equals(v.DTO, dtoProp)).map(v -> v.DB).findAny();
+        }
+
+        public final static String TABLE_NAME = "SMA_USERS_ROLES_RELATIONS";
+    }
 }

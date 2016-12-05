@@ -9,6 +9,8 @@ import org.fabasoad.db.SqlType;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import static org.fabasoad.api.Logger.getLogger;
 
@@ -19,6 +21,8 @@ import static org.fabasoad.api.Logger.getLogger;
 public class Setup extends ParametersAware {
 
     public static void main(String[] args) {
+        long startTime = System.currentTimeMillis();
+        getLogger().flow(Setup.class, "Starting database creation...");
         readParameters();
 
         SqlType dbType;
@@ -40,6 +44,8 @@ public class Setup extends ParametersAware {
             getLogger().error(Setup.class, message);
             throw new RuntimeException(message);
         }
+        getLogger().flow(Setup.class, "Database type: " + dbType.name());
+        getLogger().flow(Setup.class, "Deployment path: " + deployPath);
 
         if (!StringUtils.isEmpty(deployPath)) {
             if (deployDb(dbType, deployPath)) {
@@ -48,6 +54,12 @@ public class Setup extends ParametersAware {
         } else {
             getLogger().error(Setup.class, "Deploy path is empty");
         }
+        long endTime = System.currentTimeMillis();
+        getLogger().flow(Setup.class, "Database created successfully. Time: " + timeFormat(endTime - startTime));
+    }
+
+    private static String timeFormat(long time) {
+        return new SimpleDateFormat("ss:S").format(new Date(time));
     }
 
     private static boolean deployDb(SqlType dbType, String deployPath) {

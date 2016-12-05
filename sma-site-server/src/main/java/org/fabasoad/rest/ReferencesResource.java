@@ -45,7 +45,6 @@ public class ReferencesResource implements BaseResource<ReferencePojo> {
         return Stream.of(PojoProperties.References.values()).collect(Collectors.toMap(v -> v.DB, v -> v.DTO));
     }
 
-    @RolesAllowed("admin")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response getReferences() {

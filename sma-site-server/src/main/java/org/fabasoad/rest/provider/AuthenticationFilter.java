@@ -1,7 +1,6 @@
 package org.fabasoad.rest.provider;
 
 import org.fabasoad.api.Logger;
-import org.fabasoad.db.dao.BaseDao;
 import org.fabasoad.db.dao.DaoFactory;
 import org.fabasoad.db.pojo.UserPojo;
 import org.glassfish.jersey.internal.util.Base64;
@@ -22,9 +21,11 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.StringTokenizer;
+import java.util.function.Predicate;
 
 import static org.fabasoad.db.pojo.PojoProperties.Users.EMAIL;
 import static org.fabasoad.db.pojo.PojoProperties.Users.PASSWORD;
+import static org.fabasoad.db.pojo.PojoProperties.UserRoles.NAME;
 
 /**
  * @author efabizhevsky
@@ -94,24 +95,14 @@ public class AuthenticationFilter implements ContainerRequestFilter {
     }
 
     private boolean isUserAllowed(final String email, final String password, final String[] roles) {
-        boolean[] isAllowed = { false };
+        final Predicate<UserPojo> matches = u -> Objects.equals(email, u.getProperty(EMAIL.DB))
+                && Objects.equals(encode(email, password), u.getProperty(PASSWORD.DB));
 
-        //Step 1. Fetch password from database and match with password in argument
-        //If both match then get the defined role for user from database and continue; else return isAllowed [false]
-        //Access the database and do this part yourself
-        //String userRole = userMgr.getUserRole(username);
-
-        BaseDao<UserPojo> dao = DaoFactory.create(UserPojo.class);
-        dao.getAll().stream().filter(u -> Objects.equals(email, u.getProperty(EMAIL.DB))
-                && Objects.equals(password, u.getProperty(PASSWORD.DB))).findAny().ifPresent(u -> {
-            String userRole = String.valueOf(u.getProperty("ROLE"));
-
-            //Step 2. Verify user role
-            if (Arrays.asList(roles).contains(userRole)) {
-                isAllowed[0] = true;
-            }
-        });
-        return isAllowed[0];
+        return DaoFactory.create(UserPojo.class).getAll().stream()
+                .filter(matches)
+                .map(u -> u.getProperty(NAME.DB))
+                .map(String::valueOf)
+                .anyMatch(Arrays.asList(roles)::contains);
     }
 
     private static void abort(ContainerRequestContext requestContext, Response.Status status) {
@@ -129,5 +120,9 @@ public class AuthenticationFilter implements ContainerRequestFilter {
         }
         Logger.getLogger().warning(AuthenticationFilter.class, message);
         requestContext.abortWith(Response.status(status).entity(message).build());
+    }
+
+    private static String encode(String email, String password) {
+        return new String(Base64.encode(String.format("%s:%s", email, password).getBytes()));
     }
 }
