@@ -11,25 +11,35 @@ const less = require('gulp-less');
 const watch = require('gulp-watch');
 const concat = require('gulp-concat');
 
-const bowerComponents = ['jquery', 'require.js', 'system.js'];
+const jsBowerComponents = ['jquery', 'require.js', 'system.js'];
+const cssBowerComponents = ['bootstrap'];
 
 gulp.task('install', () => gulp.src(['./bower.json', './package.json']).pipe(install()));
 
 gulp.task('less', function () {
-  return gulp.src('./src/main/ui/styles/**/*.less')
+  return gulp.src('./src/main/ui/less/**/*.less')
     .pipe(less())
-    .pipe(gulp.dest('./src/main/webapp/public/styles'));
+    .pipe(gulp.dest('./src/main/webapp/public/css'));
 });
 
 gulp.task('watch-css', function () {
-	 gulp.watch('./src/main/ui/styles/**/*.less', ['less']);
+	 gulp.watch('./src/main/ui/less/**/*.less', ['less']);
 });
 
 gulp.task('js-bower', () => {
     let streams = [];
-    for (let component of bowerComponents) {
+    for (let component of jsBowerComponents) {
         streams.push(gulp.src('bower_components/' + component + '/dist/*.js')
             .pipe(gulp.dest('src/main/webapp/public/js/lib')));
+    }
+    return merge(streams);
+});
+
+gulp.task('css-bower', () => {
+    let streams = [];
+    for (let component of cssBowerComponents) {
+        streams.push(gulp.src('bower_components/' + component + '/dist/css/*.css')
+            .pipe(gulp.dest('src/main/webapp/public/css/' + component)));
     }
     return merge(streams);
 });
@@ -54,4 +64,5 @@ gulp.task('js-dev', () =>
 gulp.task('watch-js', () => gulp.watch('src/main/ui/js/main/rest/**/*.js', ['js-dev']));
 
 gulp.task('build-js', ['js-min', 'js-dev', 'js-bower']);
-gulp.task('default', ['install', 'build-js', 'less']);
+gulp.task('build-css', ['less', 'css-bower']);
+gulp.task('default', ['install', 'build-js', 'build-css']);
