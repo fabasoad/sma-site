@@ -9,8 +9,27 @@ import java.util.stream.Stream;
  * @date 26.11.2016.
  */
 public interface PojoProperties {
+
+    enum ApplicationForms {
+        ID("SAF_ID", "id"), FILE_NAME("SAF_FILE_NAME", "file-name");
+
+        public String DB;
+        public String DTO;
+
+        ApplicationForms(String dbProperty, String dtoProperty) {
+            this.DB = dbProperty;
+            this.DTO = dtoProperty;
+        }
+
+        public static Optional<String> fromDto(String dtoProp) {
+            return Stream.of(values()).filter(v -> Objects.equals(v.DTO, dtoProp)).map(v -> v.DB).findAny();
+        }
+
+        public final static String TABLE_NAME = "SMA_APPLICATION_FORMS";
+    }
+
     enum References {
-        ID("SR_ID", "id"), TITLE("SR_TITLE", "title"), FILE_NAME("SR_FILE_NAME", "src");
+        ID("SR_ID", "id"), TITLE("SR_TITLE", "title"), FILE_NAME("SR_FILE_NAME", "file-name");
 
         public String DB;
         public String DTO;

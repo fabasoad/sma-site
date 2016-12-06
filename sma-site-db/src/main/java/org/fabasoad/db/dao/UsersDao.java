@@ -12,7 +12,7 @@ import static org.fabasoad.db.pojo.PojoProperties.UsersRolesRelations;
  * @author Yevhen Fabizhevskyi
  * @date 04.12.2016.
  */
-public class UsersDao extends BaseDao<UserPojo> {
+class UsersDao extends BaseDao<UserPojo> {
 
     UsersDao(DbAdapter adapter) {
         super(adapter);

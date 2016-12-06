@@ -82,7 +82,7 @@ interface BaseResource<T extends BasePojo> {
         BaseDao<T> dao = DaoFactory.create(getPojoClass());
         dao.create(buildPojo(json));
         String message = "Entity created successfully";
-        return Response.ok(buildSuccess(message).toJSONString()).build();
+        return Response.status(Response.Status.CREATED).entity(buildSuccess(message).toJSONString()).build();
     }
 
     @SuppressWarnings("unchecked")
@@ -102,6 +102,13 @@ interface BaseResource<T extends BasePojo> {
         for (Map.Entry<String, String> entry : getPojoProperties().entrySet()) {
             result.put(entry.getValue(), pojo.getProperty(entry.getKey()));
         }
+        return result;
+    }
+
+    @SuppressWarnings("unchecked")
+    default JSONObject buildObject(Map<String, String> properties) {
+        final JSONObject result = new JSONObject();
+        properties.forEach(result::put);
         return result;
     }
 
