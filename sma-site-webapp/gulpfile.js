@@ -11,8 +11,35 @@ const less = require('gulp-less');
 const watch = require('gulp-watch');
 const concat = require('gulp-concat');
 
-const jsBowerComponents = ['jquery', 'require.js', 'system.js'];
-const cssBowerComponents = ['bootstrap'];
+const jsBowerComponents = [
+    {
+        component: 'jquery',
+        path: '/dist/'
+    },
+    {
+        component: 'require.js',
+        path: '/'
+    },
+    {
+        component: 'system.js',
+        path: '/dist/'
+    },
+    {
+        component: 'bootstrap-fileinput',
+        path: '/js/',
+        themes: '/themes/**/'
+    }
+];
+const cssBowerComponents = [
+    {
+        component: 'bootstrap',
+        path: '/dist/css/'
+    },
+    {
+        component: 'bootstrap-fileinput',
+        path: '/css/'
+    }
+];
 
 gulp.task('install', () => gulp.src(['./bower.json', './package.json']).pipe(install()));
 
@@ -28,18 +55,23 @@ gulp.task('watch-css', function () {
 
 gulp.task('js-bower', () => {
     let streams = [];
-    for (let component of jsBowerComponents) {
-        streams.push(gulp.src('bower_components/' + component + '/dist/*.js')
-            .pipe(gulp.dest('src/main/webapp/public/js/lib')));
+    for (let item of jsBowerComponents) {
+        streams.push(gulp.src('bower_components/' + item.component + item.path + '*.js')
+            .pipe(gulp.dest('src/main/webapp/public/js/' + item.component)));
+
+        if (item.themes) {
+            streams.push(gulp.src('bower_components/' + item.component + item.themes + '*.js')
+                .pipe(gulp.dest('src/main/webapp/public/js/' + item.component + '/themes')));
+        }
     }
     return merge(streams);
 });
 
 gulp.task('css-bower', () => {
     let streams = [];
-    for (let component of cssBowerComponents) {
-        streams.push(gulp.src('bower_components/' + component + '/dist/css/*.css')
-            .pipe(gulp.dest('src/main/webapp/public/css/' + component)));
+    for (let item of cssBowerComponents) {
+        streams.push(gulp.src('bower_components/' + item.component + item.path + '*.css')
+            .pipe(gulp.dest('src/main/webapp/public/css/' + item.component)));
     }
     return merge(streams);
 });

@@ -3,11 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <title>Application Forms</title>
+    <link type="text/css" rel="/public/css/bootstrap/bootstrap.min.css" />
+    <link type="text/css" rel="/public/css/bootstrap-fileinput/fileinput.min.css" />
+    <script type="application/javascript" src="/public/js/jquery/jquery.min.js"></script>
+    <script type="application/javascript" src="/public/js/bootstrap-fileinput/fileinput.min.js"></script>
+    <script type="application/javascript" src="/public/js/bootstrap-fileinput/themes/fa/theme.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#input-1a").fileinput();
+        });
+    </script>
 </head>
 <body>
-    <form action="/api/v1/application-forms" method="post" enctype="multipart/form-data">
-        <p>Select a file : <input type="file" name="file" size="45" accept=".pdf" /></p>
-        <input type="submit" value="Upload PDF" />
-    </form>
+    <label class="control-label">Select File</label>
+    <input id="input-1a" type="file" class="file" data-show-preview="false" />
+    <!--<form action="/api/v1/application-forms" method="post" enctype="multipart/form-data">-->
+        <!--<p>Select a file : <input type="file" name="file" size="45" accept=".png" /></p>-->
+        <!--<input type="submit" value="Upload" />-->
+    <!--</form>-->
 </body>
 </html>
