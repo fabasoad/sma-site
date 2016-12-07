@@ -15,11 +15,9 @@
     </script>
 </head>
 <body>
-    <label class="control-label">Select File</label>
-    <input id="input-1a" type="file" class="file" data-show-preview="false" />
-    <!--<form action="/api/v1/application-forms" method="post" enctype="multipart/form-data">-->
-        <!--<p>Select a file : <input type="file" name="file" size="45" accept=".png" /></p>-->
-        <!--<input type="submit" value="Upload" />-->
-    <!--</form>-->
+    <form action="/api/v1/application-forms" method="post" enctype="multipart/form-data">
+        <p>Select a file : <input type="file" name="file" size="45" accept=".pdf" /></p>
+        <input type="submit" value="Upload PDF" />
+    </form>
 </body>
 </html>

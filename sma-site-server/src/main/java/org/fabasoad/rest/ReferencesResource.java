@@ -63,8 +63,8 @@ public class ReferencesResource implements BaseResource<ReferencePojo> {
         return Optional.of(Paths.get(".", "sma-site-webapp", "src", "main", "webapp", "public", "data", "references"));
     }
 
-    @RolesAllowed("admin")
     @POST
+    @RolesAllowed("admin")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.APPLICATION_JSON)
     public Response createReference(@FormDataParam("file") InputStream fileInputStream,
@@ -73,24 +73,11 @@ public class ReferencesResource implements BaseResource<ReferencePojo> {
         upload(fileInputStream, fileMetaData.getFileName());
         //create();
         return Response.status(Response.Status.CREATED).build();
-//        int generatedId = 999;
-//        try (OutputStream out = new FileOutputStream(new File(UPLOAD_PATH + fileMetaData.getFileName()))) {
-//            int read;
-//            byte[] bytes = new byte[1024];
-//
-//            while ((read = fileInputStream.read(bytes)) != -1) {
-//                out.write(bytes, 0, read);
-//            }
-//        } catch (IOException e) {
-//            JSONObject entity = buildError("Error while uploading file");
-//            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(entity.toJSONString()).build();
-//        }
-//        return Response.status(Response.Status.CREATED).entity(buildObject(generatedId).toJSONString()).build();
     }
 
-    @RolesAllowed("admin")
     @DELETE
     @Path("{id}")
+    @RolesAllowed("admin")
     public Response deleteReference(@PathParam("id") int id) {
         return delete(id);
     }
