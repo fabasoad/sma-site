@@ -11,35 +11,86 @@ const less = require('gulp-less');
 const watch = require('gulp-watch');
 const concat = require('gulp-concat');
 
-const jsBowerComponents = [
-    {
-        component: 'jquery',
-        path: '/dist/'
-    },
-    {
-        component: 'require.js',
-        path: '/'
-    },
-    {
-        component: 'system.js',
-        path: '/dist/'
-    },
-    {
-        component: 'bootstrap-fileinput',
-        path: '/js/',
-        themes: '/themes/**/'
-    }
-];
-const cssBowerComponents = [
-    {
-        component: 'bootstrap',
-        path: '/dist/css/'
-    },
-    {
-        component: 'bootstrap-fileinput',
-        path: '/css/'
-    }
-];
+const jsBowerComponents = {
+    target: 'js',
+    extensions: ['js'],
+    data: [
+        {
+            component: 'jquery',
+            locations: [{
+                from: '/dist/',
+                to: '/'
+            }]
+        },
+        {
+            component: 'require.js',
+            locations: [{
+                from: '/',
+                to: '/'
+            }]
+        },
+        {
+            component: 'system.js',
+            locations: [{
+                from: '/dist/',
+                to: '/'
+            }]
+        },
+        {
+            component: 'bootstrap-fileinput',
+            locations: [{
+                from: '/js/',
+                to: '/'
+            }]
+        }
+    ]
+};
+const cssBowerComponents = {
+    target: 'css',
+    extensions: ['css'],
+    data: [
+        {
+            component: 'bootstrap',
+            locations: [{
+                from: '/dist/css/',
+                to: '/'
+            }]
+        },
+        {
+            component: 'bootstrap-fileinput',
+            locations: [{
+                from: '/css/',
+                to: '/'
+            }]
+        }
+    ]
+};
+const fontsBowerComponents = {
+    target: 'css',
+    extensions: ['eot','svg','ttf','woff','woff2'],
+    data: [
+        {
+            component: 'bootstrap',
+            locations: [{
+                from: '/fonts/',
+                to: '/../fonts/'
+            }]
+        }
+    ]
+};
+const imagesBowerComponents = {
+    target: 'css',
+    extensions: ['gif'],
+    data: [
+        {
+            component: 'bootstrap-fileinput',
+            locations: [{
+                from: '/img/',
+                to: '/../img/'
+            }]
+        }
+    ]
+};
 
 gulp.task('install', () => gulp.src(['./bower.json', './package.json']).pipe(install()));
 
@@ -53,28 +104,23 @@ gulp.task('watch-css', function () {
 	 gulp.watch('./src/main/ui/less/**/*.less', ['less']);
 });
 
-gulp.task('js-bower', () => {
+let buildBower = components => {
     let streams = [];
-    for (let item of jsBowerComponents) {
-        streams.push(gulp.src('bower_components/' + item.component + item.path + '*.js')
-            .pipe(gulp.dest('src/main/webapp/public/js/' + item.component)));
-
-        if (item.themes) {
-            streams.push(gulp.src('bower_components/' + item.component + item.themes + '*.js')
-                .pipe(gulp.dest('src/main/webapp/public/js/' + item.component + '/themes')));
+    for (let extension of components.extensions) {
+        for (let item of components.data) {
+            for (let location of item.locations) {
+                streams.push(gulp.src('bower_components/' + item.component + location.from + '*.' + extension)
+                    .pipe(gulp.dest('src/main/webapp/public/' + components.target + '/' + item.component + location.to)));
+            }
         }
     }
     return merge(streams);
-});
+};
 
-gulp.task('css-bower', () => {
-    let streams = [];
-    for (let item of cssBowerComponents) {
-        streams.push(gulp.src('bower_components/' + item.component + item.path + '*.css')
-            .pipe(gulp.dest('src/main/webapp/public/css/' + item.component)));
-    }
-    return merge(streams);
-});
+gulp.task('js-bower', () => buildBower(jsBowerComponents));
+gulp.task('css-bower', () => buildBower(cssBowerComponents));
+gulp.task('fonts-bower', () => buildBower(fontsBowerComponents));
+gulp.task('images-bower', () => buildBower(imagesBowerComponents));
 
 gulp.task('js-min', () =>
     gulp.src('src/main/ui/js/main/rest/**/*.js')
@@ -95,6 +141,6 @@ gulp.task('js-dev', () =>
 
 gulp.task('watch-js', () => gulp.watch('src/main/ui/js/main/rest/**/*.js', ['js-dev']));
 
-gulp.task('build-js', ['js-min', 'js-dev', 'js-bower']);
-gulp.task('build-css', ['less', 'css-bower']);
-gulp.task('default', ['install', 'build-js', 'build-css']);
+gulp.task('build-js', ['js-min', 'js-dev']);
+gulp.task('build-bower', ['js-bower', 'css-bower', 'fonts-bower', 'images-bower']);
+gulp.task('default', ['install', 'build-js', 'less', 'build-bower']);

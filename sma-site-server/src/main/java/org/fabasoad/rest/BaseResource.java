@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Optional;
@@ -27,8 +28,12 @@ import static org.fabasoad.api.Logger.getLogger;
  */
 interface BaseResource<T extends BasePojo> {
 
-    default Optional<Path> getUploadPath() {
-        return Optional.empty();
+    default Path getUploadPath() throws IOException {
+        if (getClass().isAnnotationPresent(javax.ws.rs.Path.class)) {
+            String folder = getClass().getAnnotation(javax.ws.rs.Path.class).value();
+            return Paths.get(System.getProperty("user.dir"), "sma-site-webapp", "src", "main", "webapp", "public", "data", folder);
+        }
+        throw new IOException("Upload path is not accessible");
     }
 
     Class<T> getPojoClass();
@@ -63,19 +68,20 @@ interface BaseResource<T extends BasePojo> {
         return Response.ok(buildSuccess(message).toJSONString()).build();
     }
 
-    default void upload(InputStream fileInputStream, String fileName) {
-        getUploadPath().ifPresent(path -> {
-            try (OutputStream out = new FileOutputStream(new File(path.toString(), fileName))) {
-                int read;
-                byte[] bytes = new byte[1024];
+    default void upload(InputStream fileInputStream, String fileName) throws IOException {
+        File file = new File(getUploadPath().toString(), fileName);
+        file.getParentFile().mkdirs();
+        try (OutputStream out = new FileOutputStream(file, false)) {
+            int read;
+            byte[] bytes = new byte[1024];
 
-                while ((read = fileInputStream.read(bytes)) != -1) {
-                    out.write(bytes, 0, read);
-                }
-            } catch (IOException e) {
-                getLogger().error(getClass(), String.format("Error while uploading '%s' file", fileName));
+            while ((read = fileInputStream.read(bytes)) != -1) {
+                out.write(bytes, 0, read);
             }
-        });
+        } catch (IOException e) {
+            getLogger().error(getClass(), String.format("Error while uploading '%s' file", fileName));
+            throw e;
+        }
     }
 
     default Response create(JSONObject json) {

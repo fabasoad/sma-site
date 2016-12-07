@@ -15,8 +15,8 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.Paths;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
@@ -58,11 +58,6 @@ public class ReferencesResource implements BaseResource<ReferencePojo> {
         return get(id);
     }
 
-    @Override
-    public Optional<java.nio.file.Path> getUploadPath() {
-        return Optional.of(Paths.get(".", "sma-site-webapp", "src", "main", "webapp", "public", "data", "references"));
-    }
-
     @POST
     @RolesAllowed("admin")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
@@ -70,7 +65,13 @@ public class ReferencesResource implements BaseResource<ReferencePojo> {
     public Response createReference(@FormDataParam("file") InputStream fileInputStream,
                                     @FormDataParam("file") FormDataContentDisposition fileMetaData,
                                     @FormDataParam("title") String title) {
-        upload(fileInputStream, fileMetaData.getFileName());
+        try {
+            upload(fileInputStream, fileMetaData.getFileName());
+        } catch (IOException e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity(buildError(e.getMessage()).toJSONString())
+                    .build();
+        }
         //create();
         return Response.status(Response.Status.CREATED).build();
     }
