@@ -12,6 +12,9 @@
   ],
   "license": "MIT",
   "dependencies": {
+    "bootstrap": "^3.3.7",
+    "bootstrap-fileinput": "^4.3.5",
+    "ekko-lightbox": "4.0.2",
     "jquery": "^3.1.1",
     "system.js": "^0.19.41"
   }

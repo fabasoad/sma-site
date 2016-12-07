@@ -37,9 +37,23 @@ const jsBowerComponents = {
             }]
         },
         {
+            component: 'bootstrap',
+            locations: [{
+                from: '/js/',
+                to: '/'
+            }]
+        },
+        {
             component: 'bootstrap-fileinput',
             locations: [{
                 from: '/js/',
+                to: '/'
+            }]
+        },
+        {
+            component: 'ekko-lightbox',
+            locations: [{
+                from: '/dist/',
                 to: '/'
             }]
         }
@@ -60,6 +74,13 @@ const cssBowerComponents = {
             component: 'bootstrap-fileinput',
             locations: [{
                 from: '/css/',
+                to: '/'
+            }]
+        },
+        {
+            component: 'ekko-lightbox',
+            locations: [{
+                from: '/dist/',
                 to: '/'
             }]
         }
@@ -123,7 +144,7 @@ gulp.task('fonts-bower', () => buildBower(fontsBowerComponents));
 gulp.task('images-bower', () => buildBower(imagesBowerComponents));
 
 gulp.task('js-min', () =>
-    gulp.src('src/main/ui/js/main/rest/**/*.js')
+    gulp.src('src/main/ui/js/main/**/*.js')
         .pipe(babel({
             presets: ['es2015']
         }))
@@ -132,7 +153,7 @@ gulp.task('js-min', () =>
 );
 
 gulp.task('js-dev', () =>
-    gulp.src('src/main/ui/js/main/rest/**/*.js')
+    gulp.src('src/main/ui/js/main/**/*.js')
         .pipe(babel({
             presets: ['es2015']
         }))

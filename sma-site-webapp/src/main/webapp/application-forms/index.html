@@ -8,7 +8,7 @@
     <script type="application/javascript" src="/public/js/jquery/jquery.min.js"></script>
     <script type="application/javascript" src="/public/js/bootstrap-fileinput/fileinput.min.js"></script>
     <script>
-        $(document).ready(function () {
+        document.addEventListener("DOMContentLoaded", function () {
             $("#input-1a").fileinput({
                 uploadUrl: '/api/v1/application-forms',
                 uploadAsync: true,

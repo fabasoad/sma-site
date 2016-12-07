@@ -2,17 +2,20 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <script src="/public/js/lib/require.js"></script>
-    <script src="/public/js/lib/system.js"></script>
-    <script src="/public/js/lib/jquery.min.js"></script>
+    <link rel="stylesheet" href="/public/css/bootstrap/bootstrap.min.css" />
+    <script src="/public/js/require.js/require.js"></script>
+    <script src="/public/js/system.js/system.js"></script>
+    <script src="/public/js/jquery/jquery.min.js"></script>
+    <script src="/public/js/bootstrap/modal.js"></script>
+    <script src="/public/js/ekko-lightbox/ekko-lightbox.min.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-            SystemJS.import('/public/js/dev/references-rest-client.js');
+            SystemJS.import('/public/js/dev/references/index.js');
         });
     </script>
-    <title>Title</title>
+    <title>References</title>
 </head>
 <body>
-
+<div id="references-gallery" class="row"></div>
 </body>
 </html>

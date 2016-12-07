@@ -29,7 +29,7 @@ public interface PojoProperties {
     }
 
     enum References {
-        ID("SR_ID", "id"), TITLE("SR_TITLE", "title"), FILE_NAME("SR_FILE_NAME", "file-name");
+        ID("SR_ID", "id"), TITLE("SR_TITLE", "title"), FILE_NAME("SR_FILE_NAME", "src");
 
         public String DB;
         public String DTO;
