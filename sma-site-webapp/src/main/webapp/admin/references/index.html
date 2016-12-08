@@ -12,13 +12,15 @@
             $("#input-1a").fileinput({
                 uploadUrl: '/api/v1/references',
                 uploadAsync: true,
-                maxFileCount: 1
+                maxFileCount: 5,
+                previewFileType: 'image',
+                allowedFileTypes: ['image']
             });
         });
     </script>
 </head>
 <body>
-<label class="control-label">Select Reference</label>
-<input id="input-1a" type="file" name="reference" class="file-loading" data-show-preview="true" />
+    <label class="control-label">Select Reference</label>
+    <input id="input-1a" type="file" name="reference" class="file-loading" data-show-preview="true" />
 </body>
 </html>

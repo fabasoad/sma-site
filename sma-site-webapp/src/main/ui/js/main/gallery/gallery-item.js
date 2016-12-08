@@ -14,7 +14,7 @@ export default class GalleryItem {
         a.setAttribute('href', this.src);
         a.setAttribute('data-title', this.title);
         a.setAttribute('data-toggle', 'lightbox');
-        a.setAttribute('data-gallery', 'references-gallery');
+        a.setAttribute('data-gallery', 'sma-gallery');
         a.setAttribute('class', 'col-sm-4');
         a.appendChild(img);
 
