@@ -39,6 +39,9 @@ const jsBowerComponents = {
         {
             component: 'bootstrap',
             locations: [{
+                from: '/dist/js/',
+                to: '/'
+            },{
                 from: '/js/',
                 to: '/'
             }]
