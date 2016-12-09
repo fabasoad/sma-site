@@ -13,25 +13,25 @@
         <!-- Wrapper for slides -->
         <div class="carousel-inner" role="listbox">
             <div class="item active">
-                <img src="http://synicsys.com/wp-content/uploads/2014/08/seo-banner-bgd.jpg" alt="Chania">
-                <div class="carousel-caption">
-                    <h3>Header of Slide 1</h3>
-                    <p>Details of Slide 1. Lorem Ipsum Blah Blah Blah....</p>
-                </div>
+                <img src="/public/img/carousel/carousel-01.JPG" alt="Chania">
+                <%--<div class="carousel-caption">--%>
+                    <%--<h3>Header of Slide 1</h3>--%>
+                    <%--<p>Details of Slide 1. Lorem Ipsum Blah Blah Blah....</p>--%>
+                <%--</div>--%>
             </div>
             <div class="item">
-                <img src="http://allpoints.ph/wp-content/uploads/2013/10/banner.jpg" alt="Chania">
-                <div class="carousel-caption">
-                    <h3>Header of Slide 2</h3>
-                    <p>Details of Slide 2. Lorem Ipsum Blah Blah Blah....</p>
-                </div>
+                <img src="/public/img/carousel/carousel-02.JPG" alt="Chania">
+                <%--<div class="carousel-caption">--%>
+                    <%--<h3>Header of Slide 2</h3>--%>
+                    <%--<p>Details of Slide 2. Lorem Ipsum Blah Blah Blah....</p>--%>
+                <%--</div>--%>
             </div>
             <div class="item">
-                <img src="http://www.nimble-solution.com/images/slider/banner4.png" alt="Flower">
-                <div class="carousel-caption">
-                    <h3>Header of Slide3</h3>
-                    <p>Details of Slide 3. Lorem Ipsum Blah Blah Blah....</p>
-                </div>
+                <img src="/public/img/carousel/carousel-03.JPG" alt="Flower">
+                <%--<div class="carousel-caption">--%>
+                    <%--<h3>Header of Slide3</h3>--%>
+                    <%--<p>Details of Slide 3. Lorem Ipsum Blah Blah Blah....</p>--%>
+                <%--</div>--%>
             </div>
         </div>
         <!-- Left and right controls -->
