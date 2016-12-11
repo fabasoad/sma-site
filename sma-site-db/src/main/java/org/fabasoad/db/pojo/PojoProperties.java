@@ -45,6 +45,23 @@ public interface PojoProperties {
 
         public final static String TABLE_NAME = "SMA_REFERENCES";
     }
+    enum News {
+        ID("SN_ID", "id" ) , TITLE("SN_TITLE", "title"), BODY("SN_BODY", "body"), CREATION_DATE("SN_CREATION_DATE", "creation-date");
+
+        public String DB;
+        public String DTO;
+
+        News(String dbProperty, String dtoProperty) {
+            this.DB = dbProperty;
+            this.DTO = dtoProperty;
+        }
+
+        public static Optional<String> fromDto(String dtoProp) {
+            return Stream.of(values()).filter(v -> Objects.equals(v.DTO, dtoProp)).map(v -> v.DB).findAny();
+        }
+
+        public final static String TABLE_NAME = "SMA_NEWS";
+    }
 
     enum Users {
         ID("SU_ID", "id"), EMAIL("SU_EMAIL", "email"), PASSWORD("SU_PASSWORD", "password"), SECURITY_SCHEMA_ID("SU_SECURITY_SCHEMA_ID", "security-schema-id");
