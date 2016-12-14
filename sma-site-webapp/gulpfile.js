@@ -39,6 +39,9 @@ const jsBowerComponents = {
         {
             component: 'bootstrap',
             locations: [{
+                from: '/dist/js/',
+                to: '/'
+            },{
                 from: '/js/',
                 to: '/'
             }]
@@ -162,6 +165,7 @@ gulp.task('js-dev', () =>
 
 gulp.task('watch-js', () => gulp.watch('src/main/ui/js/main/rest/**/*.js', ['js-dev']));
 
+gulp.task('build-img', () => gulp.src('src/main/ui/img/**/*.*').pipe(gulp.dest('src/main/webapp/public/img')));
 gulp.task('build-js', ['js-min', 'js-dev']);
 gulp.task('build-bower', ['js-bower', 'css-bower', 'fonts-bower', 'images-bower']);
-gulp.task('default', ['install', 'build-js', 'less', 'build-bower']);
+gulp.task('default', ['install', 'build-js', 'less', 'build-bower', 'build-img']);

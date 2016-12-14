@@ -9,8 +9,13 @@
     <link rel="stylesheet" href="public/css/test.css">
 </head>
 <body>
-    <div class="test">
-        <h1>Hello people!</h1>
+    <jsp:include page="/header.jsp"/>
+    <jsp:include page="/carousel.jsp"/>
+    <div class="container">
+        <div>
+            <b>MAIN</b>
+        </div>
     </div>
+    <jsp:include page="/footer.jsp"/>
 </body>
 </html>

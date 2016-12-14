@@ -62,8 +62,8 @@ public class ReferencesResource implements BaseResource<ReferencePojo> {
     @RolesAllowed("admin")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response createReference(@FormDataParam("file") InputStream fileInputStream,
-                                    @FormDataParam("file") FormDataContentDisposition fileMetaData,
+    public Response createReference(@FormDataParam("reference") InputStream fileInputStream,
+                                    @FormDataParam("reference") FormDataContentDisposition fileMetaData,
                                     @FormDataParam("title") String title) {
         try {
             upload(fileInputStream, fileMetaData.getFileName());
