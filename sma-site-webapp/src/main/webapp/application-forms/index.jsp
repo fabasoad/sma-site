@@ -19,7 +19,9 @@
     </script>
 </head>
 <body>
-    <jsp:include page="/header.jsp"/>
+    <jsp:include page="/header.jsp">
+        <jsp:param name="title" value="Southern Maritime Agency" />
+    </jsp:include>
     <jsp:include page="/carousel.jsp"/>
     <label class="control-label">Select Application Form</label>
     <input id="input-1a" type="file" name="application-form" class="file-loading" data-show-preview="false" />

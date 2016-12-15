@@ -148,7 +148,7 @@ gulp.task('fonts-bower', () => buildBower(fontsBowerComponents));
 gulp.task('images-bower', () => buildBower(imagesBowerComponents));
 
 gulp.task('js-min', () =>
-    gulp.src('src/main/ui/js/main/**/*.js')
+    gulp.src('src/main/ui/js/**/*.js')
         .pipe(babel({
             presets: ['es2015']
         }))
@@ -157,7 +157,7 @@ gulp.task('js-min', () =>
 );
 
 gulp.task('js-dev', () =>
-    gulp.src('src/main/ui/js/main/**/*.js')
+    gulp.src('src/main/ui/js/**/*.js')
         .pipe(babel({
             presets: ['es2015']
         }))

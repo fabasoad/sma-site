@@ -13,16 +13,16 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="/">Southern Maritime Agency</a>
+                <a class="navbar-brand" href="${param.locationPrefix}/">${param.title}</a>
             </div>
             <div class="collapse navbar-collapse">
                 <ul class="nav navbar-nav">
-                    <li><a href="/">Main</a></li>
-                    <li><a href="/news">News</a></li>
-                    <li><a href="/vacancies">Vacancies</a></li>
-                    <li><a href="/references">References</a></li>
-                    <li><a href="/application-forms">Application Forms</a></li>
-                    <li><a href="/contacts">Contacts</a></li>
+                    <li><a href="${param.locationPrefix}/">Main</a></li>
+                    <li><a href="${param.locationPrefix}/news">News</a></li>
+                    <li><a href="${param.locationPrefix}/vacancies">Vacancies</a></li>
+                    <li><a href="${param.locationPrefix}/references">References</a></li>
+                    <li><a href="${param.locationPrefix}/application-forms">Application Forms</a></li>
+                    <li><a href="${param.locationPrefix}/contacts">Contacts</a></li>
                 </ul>
             </div>
         </div>

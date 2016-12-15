@@ -17,7 +17,9 @@
     </script>
 </head>
 <body>
-    <jsp:include page="/header.jsp"/>
+    <jsp:include page="/header.jsp">
+        <jsp:param name="title" value="Southern Maritime Agency" />
+    </jsp:include>
     <jsp:include page="/carousel.jsp"/>
     <div>
         Vacancies
