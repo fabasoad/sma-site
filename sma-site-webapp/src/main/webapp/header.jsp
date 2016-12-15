@@ -1,4 +1,9 @@
 <link rel="stylesheet" href="/public/css/header.css">
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        SystemJS.import('/public/js/dev/header.js');
+    });
+</script>
 <header>
     <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
         <div class="container">
@@ -8,11 +13,11 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#">Southern Maritime Agency</a>
+                <a class="navbar-brand" href="/">Southern Maritime Agency</a>
             </div>
             <div class="collapse navbar-collapse">
                 <ul class="nav navbar-nav">
-                    <li class="active"><a href="/">Main</a></li>
+                    <li><a href="/">Main</a></li>
                     <li><a href="/news">News</a></li>
                     <li><a href="/vacancies">Vacancies</a></li>
                     <li><a href="/references">References</a></li>

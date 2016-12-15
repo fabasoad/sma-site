@@ -124,8 +124,9 @@ gulp.task('less', function () {
     .pipe(gulp.dest('./src/main/webapp/public/css'));
 });
 
-gulp.task('watch-css', function () {
-	 gulp.watch('./src/main/ui/less/**/*.less', ['less']);
+gulp.task('watch', () => {
+    gulp.watch('src/main/ui/less/**/*.less', ['less']);
+    gulp.watch('src/main/ui/js/**/*.js', ['build-js'])
 });
 
 let buildBower = components => {
@@ -162,8 +163,6 @@ gulp.task('js-dev', () =>
         }))
         .pipe(gulp.dest('src/main/webapp/public/js/dev'))
 );
-
-gulp.task('watch-js', () => gulp.watch('src/main/ui/js/main/rest/**/*.js', ['js-dev']));
 
 gulp.task('build-img', () => gulp.src('src/main/ui/img/**/*.*').pipe(gulp.dest('src/main/webapp/public/img')));
 gulp.task('build-js', ['js-min', 'js-dev']);
