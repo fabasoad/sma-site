@@ -2,20 +2,13 @@ import GalleryItem from './gallery-item.js';
 import GalleryRow from './gallery-row.js';
 
 export default class GalleryBuilder {
-    constructor(json) {
-        this.items = [];
-        for (let ref of json.data) {
-            this.items.push(new GalleryItem(ref.id, ref.title, ref.src));
-        }
-    }
-
-    build() {
+    static build(json) {
         let rows = [];
-        for (let i = 0; i < this.items.length; i++) {
+        for (let i = 0; i < json.data.length; i++) {
             if (i % 3 == 0) {
                 rows.push(new GalleryRow());
             }
-            rows[rows.length - 1].append(this.items[i]);
+            rows[rows.length - 1].append(new GalleryItem(json.data[i].id, json.data[i].title, json.data[i].src));
         }
 
         let div = document.createElement('div');
