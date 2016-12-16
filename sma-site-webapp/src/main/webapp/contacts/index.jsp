@@ -21,9 +21,7 @@
         <jsp:param name="title" value="Southern Maritime Agency" />
     </jsp:include>
     <jsp:include page="/carousel.jsp"/>
-    <div>
-        Contacts
-    </div>
+    <div id="contacts-container" class="container"></div>
     <jsp:include page="/footer.jsp"/>
 </body>
 </html>
