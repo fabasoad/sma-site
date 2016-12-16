@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="/public/css/footer.css">
+<link rel="stylesheet" href="/public/css/min/footer.css">
 <div id="justpushtobottom">
 </div>
 

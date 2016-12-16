@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="/public/css/carousel.css" />
+<link rel="stylesheet" href="/public/css/min/carousel.css" />
 <script type="application/javascript" src="/public/js/bootstrap/carousel.js"></script>
 <script>
     document.addEventListener("DOMContentLoaded", function () {

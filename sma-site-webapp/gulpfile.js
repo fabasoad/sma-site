@@ -10,6 +10,7 @@ const merge = require('merge-stream');
 const less = require('gulp-less');
 const watch = require('gulp-watch');
 const concat = require('gulp-concat');
+const cssmin = require('gulp-cssmin');
 
 const jsBowerComponents = {
     target: 'js',
@@ -121,7 +122,8 @@ gulp.task('install', () => gulp.src(['./bower.json', './package.json']).pipe(ins
 gulp.task('less', function () {
   return gulp.src('./src/main/ui/less/**/*.less')
     .pipe(less())
-    .pipe(gulp.dest('./src/main/webapp/public/css'));
+    .pipe(cssmin())
+    .pipe(gulp.dest('./src/main/webapp/public/css/min'));
 });
 
 gulp.task('watch', () => {
@@ -164,7 +166,8 @@ gulp.task('js-dev', () =>
         .pipe(gulp.dest('src/main/webapp/public/js/dev'))
 );
 
+gulp.task('build-fonts', () => gulp.src('src/main/ui/fonts/**/*.*').pipe(gulp.dest('src/main/webapp/public/fonts')));
 gulp.task('build-img', () => gulp.src('src/main/ui/img/**/*.*').pipe(gulp.dest('src/main/webapp/public/img')));
 gulp.task('build-js', ['js-min', 'js-dev']);
 gulp.task('build-bower', ['js-bower', 'css-bower', 'fonts-bower', 'images-bower']);
-gulp.task('default', ['install', 'build-js', 'less', 'build-bower', 'build-img']);
+gulp.task('default', ['install', 'build-js', 'less', 'build-bower', 'build-img', 'build-fonts']);
