@@ -46,7 +46,7 @@
                                 </configuration>
                             </execution>
                             <execution>
-                                <id>gulp-install install</id>
+                                <id>gulp-install</id>
                                 <goals>
                                     <goal>npm</goal>
                                 </goals>
@@ -55,7 +55,7 @@
                                 </configuration>
                             </execution>
                             <execution>
-                                <id>gulp install</id>
+                                <id>gulp</id>
                                 <goals>
                                     <goal>npm</goal>
                                 </goals>
@@ -64,7 +64,7 @@
                                 </configuration>
                             </execution>
                             <execution>
-                                <id>bower install</id>
+                                <id>bower</id>
                                 <goals>
                                     <goal>npm</goal>
                                 </goals>
@@ -73,7 +73,7 @@
                                 </configuration>
                             </execution>
                             <execution>
-                                <id>gulp-uglify install</id>
+                                <id>gulp-uglify</id>
                                 <goals>
                                     <goal>npm</goal>
                                 </goals>
@@ -82,7 +82,7 @@
                                 </configuration>
                             </execution>
                             <execution>
-                                <id>gulp-babel install</id>
+                                <id>gulp-babel</id>
                                 <goals>
                                     <goal>npm</goal>
                                 </goals>
@@ -91,7 +91,7 @@
                                 </configuration>
                             </execution>
                             <execution>
-                                <id>babel-preset-es2015 install</id>
+                                <id>babel-preset-es2015</id>
                                 <goals>
                                     <goal>npm</goal>
                                 </goals>
@@ -100,7 +100,7 @@
                                 </configuration>
                             </execution>
                             <execution>
-                                <id>merge-stream install</id>
+                                <id>merge-stream</id>
                                 <goals>
                                     <goal>npm</goal>
                                 </goals>
@@ -109,7 +109,7 @@
                                 </configuration>
                             </execution>
                             <execution>
-                                <id>gulp-less install</id>
+                                <id>gulp-less</id>
                                 <goals>
                                     <goal>npm</goal>
                                 </goals>
@@ -118,7 +118,7 @@
                                 </configuration>
                             </execution>
                             <execution>
-                                <id>gulp-watch install</id>
+                                <id>gulp-watch</id>
                                 <goals>
                                     <goal>npm</goal>
                                 </goals>
@@ -127,12 +127,21 @@
                                 </configuration>
                             </execution>
                             <execution>
-                                <id>gulp-concat install</id>
+                                <id>gulp-concat</id>
                                 <goals>
                                     <goal>npm</goal>
                                 </goals>
                                 <configuration>
                                     <arguments>install gulp-concat</arguments>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>gulp-cssmin</id>
+                                <goals>
+                                    <goal>npm</goal>
+                                </goals>
+                                <configuration>
+                                    <arguments>install gulp-cssmin</arguments>
                                 </configuration>
                             </execution>
                         </executions>
