@@ -7,6 +7,8 @@ import org.fabasoad.db.SqlType;
 import org.fabasoad.db.pojo.ApplicationFormPojo;
 import org.fabasoad.db.pojo.BasePojo;
 import org.fabasoad.db.pojo.ReferencePojo;
+import org.fabasoad.db.pojo.NewsPojo;
+import org.fabasoad.db.pojo.VacanciesPojo;
 import org.fabasoad.db.pojo.UserPojo;
 
 /**
@@ -26,6 +28,10 @@ public class DaoFactory extends ParametersAware {
             return (BaseDao<T>) new UsersDao(adapter);
         } else if (pojoClazz == ApplicationFormPojo.class) {
             return (BaseDao<T>) new ApplicationFormsDao(adapter);
+        } else if (pojoClazz == NewsPojo.class) {
+            return (BaseDao<T>) new NewsDao(adapter);
+        } else if (pojoClazz == VacanciesPojo.class) {
+        return (BaseDao<T>) new VacanciesDao(adapter);
         } else {
             throw new RuntimeException(String.format("Unknown type '%s'", pojoClazz.getSimpleName()));
         }

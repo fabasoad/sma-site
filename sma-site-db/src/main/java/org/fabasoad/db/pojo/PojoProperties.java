@@ -63,6 +63,26 @@ public interface PojoProperties {
         public final static String TABLE_NAME = "SMA_NEWS";
     }
 
+    enum Vacancies {
+        ID("SV_ID", "id"), RANK("SV_RANK", "rank"), VESSEL_TYPE("SV_VESSEL_TYPE", "vessel-type"), JOINING_DATE("SV_JOINING_DATE", "joining-date"),
+        CONTRACT_DURATION("SV_CONTRACT_DURATION", "contract-duration"), NATIONALITY("SV_NATIONALITY", "nationality"), WAGE("SV_WAGE", "wage"),
+        DESCRIPTION("SV_DESCRIPTION", "description");
+
+        public String DB;
+        public String DTO;
+
+        Vacancies(String dbProperty, String dtoProperty) {
+            this.DB = dbProperty;
+            this.DTO = dtoProperty;
+        }
+
+        public static Optional<String> fromDto(String dtoProp) {
+            return Stream.of(values()).filter(v -> Objects.equals(v.DTO, dtoProp)).map(v -> v.DB).findAny();
+        }
+
+        public final static String TABLE_NAME = "SMA_VACANCIES";
+    }
+
     enum Users {
         ID("SU_ID", "id"), EMAIL("SU_EMAIL", "email"), PASSWORD("SU_PASSWORD", "password"), SECURITY_SCHEMA_ID("SU_SECURITY_SCHEMA_ID", "security-schema-id");
 

@@ -9,7 +9,7 @@ import static org.fabasoad.db.pojo.PojoProperties.News.BODY;
 import static org.fabasoad.db.pojo.PojoProperties.News.CREATION_DATE;
 import static org.fabasoad.db.pojo.PojoProperties.News.TABLE_NAME;
 
-public class NewsDao extends BaseDao<NewsPojo> {
+class NewsDao extends BaseDao<NewsPojo> {
 
     NewsDao(DbAdapter adapter) { super(adapter); }
 
