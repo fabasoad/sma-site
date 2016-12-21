@@ -27,4 +27,9 @@ class NewsDao extends BaseDao<NewsPojo> {
     String[] getColumns() {
         return new String[] { ID.DB, TITLE.DB, BODY.DB, CREATION_DATE.DB };
     }
+
+    @Override
+    String[] getColumnsForUpdate() {
+        return new String[] { TITLE.DB, BODY.DB };
+    }
 }

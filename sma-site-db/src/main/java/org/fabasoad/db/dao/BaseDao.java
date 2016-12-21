@@ -32,6 +32,8 @@ public abstract class BaseDao<T extends BasePojo> {
         return Stream.of(getColumns()).filter(c -> !Objects.equals(c, getIdColumn())).toArray(String[]::new);
     }
 
+    abstract String[] getColumnsForUpdate();
+
     private String getValuesForInsert(T obj) {
         return Stream.of(getColumnsForInsert())
                 .map(obj::getProperty)
@@ -96,6 +98,16 @@ public abstract class BaseDao<T extends BasePojo> {
         final String sql = String.format("INSERT INTO %s (%s) VALUES (%s)",
                 getTableName(), String.join(",", getColumnsForInsert()), getValuesForInsert(obj));
         adapter.run(sql);
+    }
+
+    public void update(T obj) {
+        String[] columns = getColumnsForUpdate();
+        if (columns.length > 0) {
+            final String sql = Stream.of(columns)
+                    .map(c -> String.format("%s = '%s'", c, obj.getProperty(c)))
+                    .collect(Collectors.joining(",", String.format("UPDATE %s SET ", getTableName()), ""));
+            adapter.run(sql);
+        }
     }
 
     public <C> void delete(C id) {

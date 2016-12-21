@@ -36,6 +36,11 @@ class UsersDao extends BaseDao<UserPojo> {
     }
 
     @Override
+    String[] getColumnsForUpdate() {
+        return new String[0];
+    }
+
+    @Override
     String sqlSelect() {
         /*
         * SELECT SU_ID, SU_EMAIL, SU_PASSWORD, SSS_NAME, SUR_NAME

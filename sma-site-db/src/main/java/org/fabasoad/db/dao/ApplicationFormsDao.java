@@ -29,4 +29,9 @@ class ApplicationFormsDao extends BaseDao<ApplicationFormPojo> {
     String[] getColumns() {
         return new String[] { ApplicationForms.ID.DB, ApplicationForms.FILE_NAME.DB };
     }
+
+    @Override
+    String[] getColumnsForUpdate() {
+        return new String[] { ApplicationForms.FILE_NAME.DB };
+    }
 }

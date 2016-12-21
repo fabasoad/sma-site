@@ -32,4 +32,10 @@ class VacanciesDao extends BaseDao<VacanciesPojo> {
         return new String[] { ID.DB, RANK.DB, VESSEL_TYPE.DB, JOINING_DATE.DB,
                 CONTRACT_DURATION.DB, NATIONALITY.DB, WAGE.DB, DESCRIPTION.DB };
     }
+
+    @Override
+    String[] getColumnsForUpdate() {
+        return new String[] { RANK.DB, VESSEL_TYPE.DB, JOINING_DATE.DB,
+                CONTRACT_DURATION.DB, NATIONALITY.DB, WAGE.DB, DESCRIPTION.DB };
+    }
 }

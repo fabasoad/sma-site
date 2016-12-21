@@ -32,4 +32,9 @@ class ReferencesDao extends BaseDao<ReferencePojo> {
     String[] getColumns() {
         return new String[] { ID.DB, TITLE.DB, FILE_NAME.DB };
     }
+
+    @Override
+    String[] getColumnsForUpdate() {
+        return new String[] { TITLE.DB, FILE_NAME.DB };
+    }
 }
