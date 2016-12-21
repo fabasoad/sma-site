@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:jsp="http://www.w3.org/2001/XMLSchema">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
@@ -19,12 +19,21 @@
     </script>
 </head>
 <body>
+<div class="container sma-container">
     <jsp:include page="/header.jsp">
-        <jsp:param name="title" value="Southern Maritime Agency" />
+        <jsp:param name="title" value="Southern Maritime Agency"/>
     </jsp:include>
     <jsp:include page="/carousel.jsp"/>
-    <label class="control-label">Select Application Form</label>
-    <input id="input-1a" type="file" name="application-form" class="file-loading" data-show-preview="false" />
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-6 col-md-4 col-md-offset-4">
+                <h1 class="text-center login-title">Select Application Form</h1>
+            </div>
+        </div>
+    </div>
+    <!--<label class="control-label">Select Application Form</label>-->
+    <input id="input-1a" type="file" name="application-form" class="file-loading" data-show-preview="false"/>
     <jsp:include page="/footer.jsp"/>
+</div>
 </body>
 </html>
