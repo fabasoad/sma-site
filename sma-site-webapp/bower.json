@@ -16,6 +16,7 @@
     "bootstrap-fileinput": "^4.3.5",
     "ekko-lightbox": "4.0.2",
     "jquery": "^3.1.1",
-    "system.js": "^0.19.41"
+    "system.js": "^0.19.41",
+    "bootstrap-wysiwyg": "*"
   }
 }
