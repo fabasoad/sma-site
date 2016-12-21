@@ -47,6 +47,7 @@ gulp.task('js-bower', () => {
         'bower_components/bootstrap/js/modal.js',
         'bower_components/bootstrap-fileinput/js/fileinput.min.js',
         'bower_components/bootstrap-wysiwyg/bootstrap-wysiwyg.js',
+        'bower_components/bootstrap-wysiwyg/external/jquery.hotkeys.js',
         'bower_components/ekko-lightbox/dist/ekko-lightbox.min.js',
         'bower_components/jquery/dist/jquery.min.js',
         'bower_components/require.js/require.js',

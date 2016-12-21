@@ -21,8 +21,8 @@
         <jsp:param name="title" value="Administration" />
         <jsp:param name="locationPrefix" value="/admin" />
     </jsp:include>
-    <div>
-        Contacts
+    <div class="container">
+        <jsp:include page="/wysiwyg.jsp"/>
     </div>
     <jsp:include page="/footer.jsp"/>
 </body>
