@@ -7,7 +7,7 @@ export default class NewsBody {
     //     quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
     //     consequat. Duis aute irure dolor in... <a href="/news/2">Read more</a>
     // </div>
-    static build(id, body) {
+    build(id, body) {
         let div = document.createElement('div');
         div.setAttribute('class', 'panel-body');
 

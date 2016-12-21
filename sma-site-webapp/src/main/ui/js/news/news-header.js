@@ -2,6 +2,18 @@ import NewsCreationDate from './news-creation-date.js';
 import NewsTitle from './news-title.js';
 
 export default class NewsHeader {
+
+    createNewsTitle() {
+        return new NewsTitle();
+    }
+
+    createNewsCreationDate() {
+        return new NewsCreationDate();
+    }
+
+    createNewsEditButton() {
+    }
+
     // <div class="panel-heading">
     //     <div class="text-center">
     //         <div class="row">
@@ -10,11 +22,16 @@ export default class NewsHeader {
     //         </div>
     //     </div>
     // </div>
-    static build(title, creationDate) {
+    build(title, creationDate) {
         let divRow = document.createElement('div');
         divRow.setAttribute('class', 'row');
-        divRow.appendChild(NewsTitle.build(title));
-        divRow.appendChild(NewsCreationDate.build(creationDate));
+        divRow.appendChild(this.createNewsTitle().build(title));
+        divRow.appendChild(this.createNewsCreationDate().build(creationDate));
+
+        let editButton = this.createNewsEditButton();
+        if (editButton) {
+            divRow.appendChild(editButton.build());
+        }
 
         let divTextCenter = document.createElement('div');
         divTextCenter.setAttribute('class', 'text-center');

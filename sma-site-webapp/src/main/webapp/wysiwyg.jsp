@@ -1,3 +1,4 @@
+<!-- http://www.bootply.com/87859 -->
 <style rel="stylesheet">
     #editor {
         overflow: scroll;
@@ -65,8 +66,6 @@
         </div>
     </div>
 
-    <div id="editor" class="well col-md-9">
-        Go ahead..
-    </div>
+    <div id="editor" class="well col-md-9"></div>
 
 </div>

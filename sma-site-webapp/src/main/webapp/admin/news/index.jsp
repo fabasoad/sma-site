@@ -21,8 +21,8 @@
         <jsp:param name="title" value="Administration" />
         <jsp:param name="locationPrefix" value="/admin" />
     </jsp:include>
-    <div>
-        News
+    <div class="container">
+        <div id="news-container" class="row"></div>
     </div>
     <jsp:include page="/footer.jsp"/>
 </body>

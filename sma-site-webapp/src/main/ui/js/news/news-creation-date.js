@@ -1,10 +1,15 @@
 export default class NewsCreationDate {
+
+    divClass() {
+        return 'col-sm-3';
+    }
+
     // <div class="col-sm-3">
     //  <h4 class="pull-right">
     //   <small><em>2014-07-30 18:30:00</em></small>
     //  </h4>
     // </div>
-    static build(creationDate) {
+    build(creationDate) {
         let text = document.createTextNode(creationDate);
 
         let em = document.createElement('em');
@@ -18,7 +23,7 @@ export default class NewsCreationDate {
         h4.appendChild(small);
 
         let div = document.createElement('div');
-        div.setAttribute('class', 'col-sm-3');
+        div.setAttribute('class', this.divClass());
         div.appendChild(h4);
 
         return div;

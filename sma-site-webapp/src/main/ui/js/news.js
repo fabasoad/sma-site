@@ -3,5 +3,5 @@ import NewsBuilder from './news/news-builder.js';
 
 restClient.getAll(data => {
     let div = document.getElementById('news-container');
-    div.appendChild(NewsBuilder.build(data));
+    div.appendChild(new NewsBuilder().build(data));
 });

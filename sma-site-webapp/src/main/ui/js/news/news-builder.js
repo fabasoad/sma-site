@@ -1,6 +1,11 @@
 import NewsItem from './news-item.js';
 
 export default class NewsBuilder {
+
+    createNewsItem() {
+        return new NewsItem();
+    }
+
     /*
     <div class="col-md-12">
         <div>
@@ -13,13 +18,13 @@ export default class NewsBuilder {
         </div>
     </div>
      */
-    static build(json) {
+    build(json) {
         let div = document.createElement('div');
         div.setAttribute('class', 'col-md-12');
 
         let divPosts = document.createElement('div');
         for (let item of json.data) {
-            divPosts.appendChild(NewsItem.build(item));
+            divPosts.appendChild(this.createNewsItem().build(item));
         }
         div.appendChild(divPosts);
 
