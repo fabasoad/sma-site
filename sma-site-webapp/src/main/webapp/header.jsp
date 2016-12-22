@@ -1,5 +1,5 @@
-<link rel="stylesheet" href="/public/css/min/index.css" />
-<link rel="stylesheet" href="/public/css/min/header.css">
+<link rel="stylesheet" href="/public/css/min/index.css"/>
+<link rel="stylesheet" href="/public/css/min/header.css"/>
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         SystemJS.import('/public/js/dev/header.js');

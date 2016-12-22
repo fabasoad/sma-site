@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:jsp="http://www.w3.org/2001/XMLSchema">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
