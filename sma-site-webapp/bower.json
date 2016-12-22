@@ -17,6 +17,7 @@
     "ekko-lightbox": "4.0.2",
     "jquery": "^3.1.1",
     "system.js": "^0.19.41",
-    "bootstrap-wysiwyg": "*"
+    "bootstrap-wysiwyg": "*",
+    "bootbox.js": "bootbox#^4.4.0"
   }
 }

@@ -17,11 +17,11 @@
     </script>
 </head>
 <body>
-    <jsp:include page="/header.jsp">
-        <jsp:param name="title" value="Southern Maritime Agency" />
-    </jsp:include>
-    <jsp:include page="/carousel.jsp"/>
     <div class="container">
+        <jsp:include page="/header.jsp">
+            <jsp:param name="title" value="Southern Maritime Agency" />
+        </jsp:include>
+        <jsp:include page="/carousel.jsp"/>
         <table id="vacancies-table" class="table table-hover table-sm">
             <thead>
             <tr>
@@ -36,7 +36,7 @@
             </thead>
             <tbody></tbody>
         </table>
+        <jsp:include page="/footer.jsp"/>
     </div>
-    <jsp:include page="/footer.jsp"/>
 </body>
 </html>

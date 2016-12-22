@@ -2,6 +2,9 @@ import NewsItem from './news-item.js';
 
 export default class NewsBuilder {
 
+    createNewsAddPanel() {
+    }
+
     createNewsItem() {
         return new NewsItem();
     }
@@ -21,6 +24,11 @@ export default class NewsBuilder {
     build(json) {
         let div = document.createElement('div');
         div.setAttribute('class', 'col-md-12');
+
+        let addPanel = this.createNewsAddPanel();
+        if (addPanel) {
+            div.appendChild(addPanel.build());
+        }
 
         let divPosts = document.createElement('div');
         for (let item of json.data) {
