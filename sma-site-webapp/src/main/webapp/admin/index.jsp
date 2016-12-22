@@ -17,13 +17,13 @@
     </script>
 </head>
 <body>
-    <jsp:include page="/header.jsp">
-        <jsp:param name="title" value="Administration" />
-        <jsp:param name="locationPrefix" value="/admin" />
-    </jsp:include>
     <div class="container">
+        <jsp:include page="/header.jsp">
+            <jsp:param name="title" value="Administration" />
+            <jsp:param name="locationPrefix" value="/admin" />
+        </jsp:include>
         <jsp:include page="/wysiwyg.jsp"/>
+        <jsp:include page="/footer.jsp"/>
     </div>
-    <jsp:include page="/footer.jsp"/>
 </body>
 </html>

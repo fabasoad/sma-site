@@ -1,6 +1,10 @@
 import {restClient} from './../rest/news-rest-client.js';
 import NewsEditableBuilder from './../news/editable/news-editable-builder.js';
 
+let addCallback = event => {
+
+};
+
 let editCallback = (item, event) => {
 
 };
@@ -8,7 +12,7 @@ let editCallback = (item, event) => {
 let removeCallback = (item, event) => {
     bootbox.confirm({
         title: 'News removing confirmation',
-        message: "Do you really want to remove '" + item['title'] + "' news?",
+        message: "Do you really want to remove '" + item['title'] + "'?",
         buttons: {
             cancel: {
                 label: 'No',
@@ -29,5 +33,5 @@ let removeCallback = (item, event) => {
 
 restClient.getAll(data => {
     let div = document.getElementById('news-container');
-    div.appendChild(new NewsEditableBuilder(editCallback, removeCallback).build(data));
+    div.appendChild(new NewsEditableBuilder(addCallback, editCallback, removeCallback).build(data));
 });

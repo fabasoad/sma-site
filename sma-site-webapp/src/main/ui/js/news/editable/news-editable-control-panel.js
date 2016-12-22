@@ -5,7 +5,7 @@ export default class NewsEditableControlPanel {
         this.removeCallback = removeCallback;
     }
 
-    // <div class="col-sm-2">
+    // <div class="col-sm-2 pull-right">
     //   <button type="button" class="btn btn-default btn-sm">
     //     <span class="glyphicon glyphicon-pencil"></span>
     //   </button>
@@ -15,14 +15,14 @@ export default class NewsEditableControlPanel {
     // </div>
     build(item) {
         let div = document.createElement('div');
-        div.setAttribute('class', 'col-sm-2');
+        div.setAttribute('class', 'col-sm-2 pull-right');
 
         let editSpan = document.createElement('span');
         editSpan.setAttribute('class', 'glyphicon glyphicon-pencil');
 
         let editButton = document.createElement('button');
         editButton.setAttribute('type', 'button');
-        editButton.setAttribute('class', 'btn btn-default btn-sm pull-right');
+        editButton.setAttribute('class', 'btn btn-default btn-sm');
         editButton.appendChild(editSpan);
         editButton.addEventListener('click', event => this.editCallback(item, event));
         div.appendChild(editButton);
@@ -32,7 +32,7 @@ export default class NewsEditableControlPanel {
 
         let removeButton = document.createElement('button');
         removeButton.setAttribute('type', 'button');
-        removeButton.setAttribute('class', 'btn btn-default btn-sm pull-right');
+        removeButton.setAttribute('class', 'btn btn-default btn-sm');
         removeButton.appendChild(removeSpan);
         removeButton.addEventListener('click', event => this.removeCallback(item, event));
         div.appendChild(removeButton);

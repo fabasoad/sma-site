@@ -17,13 +17,13 @@
     </script>
 </head>
 <body>
-    <jsp:include page="/header.jsp">
-        <jsp:param name="title" value="Southern Maritime Agency" />
-    </jsp:include>
-    <jsp:include page="/carousel.jsp"/>
     <div class="container">
+        <jsp:include page="/header.jsp">
+            <jsp:param name="title" value="Southern Maritime Agency" />
+        </jsp:include>
+        <jsp:include page="/carousel.jsp"/>
         <div id="news-container" class="row"></div>
+        <jsp:include page="/footer.jsp"/>
     </div>
-    <jsp:include page="/footer.jsp"/>
 </body>
 </html>

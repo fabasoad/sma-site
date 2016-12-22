@@ -3,9 +3,7 @@
 </div>
 
 <footer class="footer p-t-1">
-    <div class="container">
-        <p class="h6">
-            Southern Maritime Agency
-        </p>
+    <div class="h6">
+        Southern Maritime Agency
     </div>
 </footer>

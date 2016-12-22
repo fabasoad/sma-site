@@ -19,12 +19,16 @@
     </script>
 </head>
 <body>
-    <jsp:include page="/header.jsp">
-        <jsp:param name="title" value="Administration" />
-        <jsp:param name="locationPrefix" value="/admin" />
-    </jsp:include>
-    <label class="control-label">Select Reference</label>
-    <input id="input-1a" type="file" name="reference" class="file-loading" data-show-preview="true" />
-    <jsp:include page="/footer.jsp"/>
+    <div class="container">
+        <jsp:include page="/header.jsp">
+            <jsp:param name="title" value="Administration" />
+            <jsp:param name="locationPrefix" value="/admin" />
+        </jsp:include>
+        <div>
+            <label class="control-label">Select Reference</label>
+            <input id="input-1a" type="file" name="reference" class="file-loading" data-show-preview="true" />
+        </div>
+        <jsp:include page="/footer.jsp"/>
+    </div>
 </body>
 </html>

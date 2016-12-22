@@ -5,7 +5,7 @@
         SystemJS.import('/public/js/dev/header.js');
     });
 </script>
-<div class="container navbar navbar-inverse navbar-fixed-top" role="navigation">
+<div class="navbar navbar-inverse" role="navigation">
     <div class="navbar-header">
         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
             <span class="icon-bar"></span>
