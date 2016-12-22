@@ -11,7 +11,7 @@ export default class NewsHeader {
         return new NewsCreationDate();
     }
 
-    createNewsEditButton() {
+    createNewsControlPanel() {
     }
 
     // <div class="panel-heading">
@@ -22,15 +22,15 @@ export default class NewsHeader {
     //         </div>
     //     </div>
     // </div>
-    build(title, creationDate) {
+    build(item) {
         let divRow = document.createElement('div');
         divRow.setAttribute('class', 'row');
-        divRow.appendChild(this.createNewsTitle().build(title));
-        divRow.appendChild(this.createNewsCreationDate().build(creationDate));
+        divRow.appendChild(this.createNewsTitle().build(item['title']));
+        divRow.appendChild(this.createNewsCreationDate().build(item['creation-date']));
 
-        let editButton = this.createNewsEditButton();
-        if (editButton) {
-            divRow.appendChild(editButton.build());
+        let controlPanel = this.createNewsControlPanel();
+        if (controlPanel) {
+            divRow.appendChild(controlPanel.build(item));
         }
 
         let divTextCenter = document.createElement('div');

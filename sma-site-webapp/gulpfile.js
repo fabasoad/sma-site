@@ -42,6 +42,7 @@ gulp.task('css-bower', () => {
 gulp.task('js-bower', () => {
     let streams = [];
     let locations = [
+        'bower_components/bootbox.js/bootbox.min.js',
         'bower_components/bootstrap/dist/js/bootstrap.min.js',
         'bower_components/bootstrap/js/carousel.js',
         'bower_components/bootstrap/js/modal.js',
