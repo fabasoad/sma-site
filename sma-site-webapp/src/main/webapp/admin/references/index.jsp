@@ -30,8 +30,9 @@
             <jsp:param name="locationPrefix" value="/admin" />
         </jsp:include>
         <div>
-            <label class="control-label">Select Reference</label>
-            <input id="input-1a" type="file" name="reference" class="file-loading" data-show-preview="true" />
+            <label class="control-label">Create Reference</label>
+            <input id="reference-upload" type="file" name="reference" class="file-loading" data-show-preview="false" />
+            <div id="referenceUploadErrorBlock" class="help-block"></div>
         </div>
         <div id="references-gallery"></div>
         <jsp:include page="/footer.jsp"/>

@@ -30,7 +30,7 @@
         </div>
     </div>
     <!--<label class="control-label">Select Application Form</label>-->
-    <input id="input-1a" type="file" name="application-form" class="file-loading" data-show-preview="false"/>
+    <input id="application-form-upload" type="file" name="application-form" class="file-loading" data-show-preview="false"/>
     <jsp:include page="/footer.jsp"/>
 </div>
 </body>
