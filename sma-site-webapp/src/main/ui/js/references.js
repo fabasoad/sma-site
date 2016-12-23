@@ -7,5 +7,5 @@ $(document).on('click', '[data-toggle="lightbox"]', function(event) {
 });
 
 restClient.getAll(data => {
-    document.getElementById('references-gallery').appendChild(GalleryBuilder.build(data));
+    document.getElementById('references-gallery').appendChild(new GalleryBuilder().build(data));
 });

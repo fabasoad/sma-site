@@ -8,10 +8,15 @@
     <title>Admin: References</title>
     <link rel="stylesheet" href="/public/css/bootstrap.min.css" />
     <link rel="stylesheet" href="/public/css/fileinput.min.css" />
+    <link rel="stylesheet" href="/public/css/min/gallery/editable/gallery-editable-control-panel.css" />
     <script src="/public/js/jquery.min.js"></script>
     <script src="/public/js/bootstrap.min.js"></script>
     <script src="/public/js/fileinput.min.js"></script>
+    <script src="/public/js/bootbox.min.js"></script>
+    <script src="/public/js/require.js"></script>
     <script src="/public/js/system.js"></script>
+    <script src="/public/js/modal.js"></script>
+    <script src="/public/js/ekko-lightbox.min.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             SystemJS.import('/public/js/min/admin/references.js');
@@ -28,6 +33,7 @@
             <label class="control-label">Select Reference</label>
             <input id="input-1a" type="file" name="reference" class="file-loading" data-show-preview="true" />
         </div>
+        <div id="references-gallery"></div>
         <jsp:include page="/footer.jsp"/>
     </div>
 </body>

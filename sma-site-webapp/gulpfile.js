@@ -26,6 +26,10 @@ gulp.task('watch', () => {
     gulp.watch('src/main/ui/js/**/*.js', ['build-js'])
 });
 
+gulp.task('build-test-data', () =>
+    gulp.src('src/main/ui/test-data/**/*.*').pipe(gulp.dest('src/main/webapp/public/data'))
+);
+
 gulp.task('css-bower', () => {
     let streams = [];
     let locations = [

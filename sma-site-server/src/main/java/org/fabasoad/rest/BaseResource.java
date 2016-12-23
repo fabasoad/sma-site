@@ -28,6 +28,12 @@ import static org.fabasoad.api.Logger.getLogger;
  */
 interface BaseResource<T extends BasePojo> {
 
+    default Path src() throws IOException {
+        String path = getUploadPath().toString();
+        String substring = path.substring(path.indexOf("public"));
+        return Paths.get(substring);
+    }
+
     default Path getUploadPath() throws IOException {
         if (getClass().isAnnotationPresent(javax.ws.rs.Path.class)) {
             String folder = getClass().getAnnotation(javax.ws.rs.Path.class).value();
@@ -82,6 +88,10 @@ interface BaseResource<T extends BasePojo> {
             getLogger().error(getClass(), String.format("Error while uploading '%s' file", fileName));
             throw e;
         }
+    }
+
+    default void deleteFile(int id) {
+
     }
 
     default Response create(JSONObject json) {

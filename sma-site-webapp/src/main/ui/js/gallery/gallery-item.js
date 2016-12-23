@@ -1,6 +1,6 @@
 export default class GalleryItem {
-    constructor(item) {
-        this.item = item;
+
+    createGalleryControlPanel() {
     }
 
     /*
@@ -10,15 +10,15 @@ export default class GalleryItem {
     *   </a>
     * </div>
     */
-    build() {
+    build(item) {
         let img = document.createElement('img');
-        img.setAttribute('src', this.item.src);
+        img.setAttribute('src', item.src);
         img.classList.add('thumbnail');
         img.classList.add('img-responsive');
 
         let a = document.createElement('a');
-        a.setAttribute('href', this.item.src);
-        a.setAttribute('data-title', this.item.title);
+        a.setAttribute('href', item.src);
+        a.setAttribute('data-title', item.title);
         a.setAttribute('data-toggle', 'lightbox');
         a.setAttribute('data-gallery', 'sma-gallery');
         a.appendChild(img);
@@ -28,6 +28,11 @@ export default class GalleryItem {
         div.classList.add('col-sm-6');
         div.classList.add('col-xs-12');
         div.appendChild(a);
+
+        let controlPanel = this.createGalleryControlPanel();
+        if (controlPanel) {
+            div.appendChild(controlPanel.build(item));
+        }
 
         return div;
     }

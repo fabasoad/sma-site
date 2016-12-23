@@ -1,11 +1,16 @@
 import GalleryItem from './gallery-item.js';
 
 export default class GalleryBuilder {
-    static build(json) {
+
+    createGalleryItem() {
+        return new GalleryItem();
+    }
+
+    build(json) {
         let div = document.createElement('div');
         div.classList.add('row');
         for (let item of json.data) {
-            div.appendChild(new GalleryItem(item).build());
+            div.appendChild(this.createGalleryItem().build(item));
         }
         return div;
     }

@@ -4,6 +4,7 @@ import org.fabasoad.db.pojo.PojoProperties;
 import org.fabasoad.db.pojo.ReferencePojo;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataParam;
+import org.json.simple.JSONObject;
 
 import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.Consumes;
@@ -65,15 +66,24 @@ public class ReferencesResource implements BaseResource<ReferencePojo> {
     public Response createReference(@FormDataParam("reference") InputStream fileInputStream,
                                     @FormDataParam("reference") FormDataContentDisposition fileMetaData,
                                     @FormDataParam("title") String title) {
+        JSONObject json;
         try {
+            json = buildReferenceJsonObject(title);
             upload(fileInputStream, fileMetaData.getFileName());
         } catch (IOException e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                     .entity(buildError(e.getMessage()).toJSONString())
                     .build();
         }
-        //create();
-        return Response.status(Response.Status.CREATED).build();
+        return create(json);
+    }
+
+    @SuppressWarnings("unchecked")
+    private JSONObject buildReferenceJsonObject(String title) throws IOException {
+        JSONObject result = new JSONObject();
+        result.put(PojoProperties.References.TITLE.DTO, title);
+        result.put(PojoProperties.References.FILE_NAME.DTO, src());
+        return result;
     }
 
     @DELETE
