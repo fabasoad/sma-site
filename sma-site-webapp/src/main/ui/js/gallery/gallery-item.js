@@ -1,23 +1,34 @@
 export default class GalleryItem {
-    constructor(id, title, src) {
-        this.id = id;
-        this.title = title;
-        this.src = src;
+    constructor(item) {
+        this.item = item;
     }
 
+    /*
+    * <div class="col-lg-4 col-sm-6 col-xs-12">
+    *   <a href="/public/img/references/ref_01.png">
+    *       <img src="/public/img/references/ref_01.png" class="thumbnail img-responsive">
+    *   </a>
+    * </div>
+    */
     build() {
         let img = document.createElement('img');
-        img.setAttribute('src', this.src);
-        img.setAttribute('class', 'img-fluid');
+        img.setAttribute('src', this.item.src);
+        img.classList.add('thumbnail');
+        img.classList.add('img-responsive');
 
         let a = document.createElement('a');
-        a.setAttribute('href', this.src);
-        a.setAttribute('data-title', this.title);
+        a.setAttribute('href', this.item.src);
+        a.setAttribute('data-title', this.item.title);
         a.setAttribute('data-toggle', 'lightbox');
         a.setAttribute('data-gallery', 'sma-gallery');
-        a.setAttribute('class', 'col-sm-4');
         a.appendChild(img);
 
-        return a;
+        let div = document.createElement('div');
+        div.classList.add('col-lg-4');
+        div.classList.add('col-sm-6');
+        div.classList.add('col-xs-12');
+        div.appendChild(a);
+
+        return div;
     }
 }

@@ -25,7 +25,7 @@
             <jsp:param name="title" value="Southern Maritime Agency" />
         </jsp:include>
         <jsp:include page="/carousel.jsp"/>
-        <div id="references-gallery" class="row"></div>
+        <div id="references-gallery"></div>
         <jsp:include page="/footer.jsp"/>
     </div>
 </body>
