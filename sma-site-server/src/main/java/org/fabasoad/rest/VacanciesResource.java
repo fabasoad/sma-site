@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Path("vacancies")
-public class VacanciesResource implements BaseResource<VacanciesPojo> {
+public class VacanciesResource extends BaseResource<VacanciesPojo> {
 
     @Override
     public Class<VacanciesPojo> getPojoClass() {

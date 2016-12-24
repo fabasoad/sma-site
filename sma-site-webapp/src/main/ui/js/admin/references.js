@@ -1,50 +1,30 @@
 import {restClient} from './../rest/references-rest-client.js';
 import GalleryEditableBuilder from './../gallery/editable/gallery-editable-builder.js';
 
-// document.getElementById("reference-upload").addEventListener('click', event => {
-//     bootbox.prompt("Title", result => {
-//         $(event.target).fileinput({
-//             uploadUrl: '/api/v1/references',
-//             uploadAsync: false,
-//             maxFileCount: 1,
-//             previewFileType: 'image',
-//             allowedFileTypes: ['image'],
-//             elErrorContainer: "#referenceUploadErrorBlock",
-//             uploadExtraData: { title: result }
-//         });
-//     });
-// });
-
+// Reference upload field
 $("#reference-upload").fileinput({
     uploadUrl: '/api/v1/references',
     uploadAsync: false,
     maxFileCount: 1,
     previewFileType: 'image',
     allowedFileTypes: ['image'],
-    elErrorContainer: "#referenceUploadErrorBlock",
-    layoutTemplates: {
-        main1: '{preview}\n' +
-            '<div class="kv-upload-progress hide"></div>\n' +
-            '<div class="input-group {class}">\n' +
-            '   {caption}\n' +
-            '   <div class="input-group-btn">\n' +
-            '       {remove}\n' +
-            '       {cancel}\n' +
-            '       {upload}\n' +
-            '       <button type="button" tabindex="500" title="Create" class="{css}">Create</button>\n' +
-            '       {browse}\n' +
-            '   </div>\n' +
-            '</div>'
-    }
+    elErrorContainer: "#referenceUploadErrorBlock"
 });
 
-// $("#reference-upload").on('filepreupload', (event, data) => {
-//     bootbox.prompt("Title", result => data.form.append('title', result));
-// });
+$("#reference-upload").on('filepreajax', (event, data) => {
+    $(event.target).fileinput.uploadExtraData = {
+        title: document.getElementById('reference-title').value
+    };
+});
 
-$(document).on('click', '[data-toggle="lightbox"]', function(event) {
+$("#reference-upload").on('filebatchuploadsuccess', (event, data) => {
+    refreshData();
+});
+
+// Gallery
+$(document).on('click', '[data-toggle="lightbox"]', event => {
     event.preventDefault();
-    $(this).ekkoLightbox();
+    $(event.target).ekkoLightbox();
 });
 
 let removeCallback = (item, event) => {
@@ -63,12 +43,32 @@ let removeCallback = (item, event) => {
         },
         callback: result => {
             if (result) {
-                restClient.delete(item['id'], message => console.log(message));
+                restClient.delete(item['id'], data => {
+                    let config = {
+                        message: data.message
+                    };
+                    if (data.type === 'error') {
+                        config.className = 'alert-error';
+                        config.title = 'Reference removing error';
+                    } else {
+                        config.callback = refreshData;
+                        config.title = 'Reference removed successfully';
+                    }
+                    bootbox.alert(config);
+                });
             }
         }
     });
 };
 
-restClient.getAll(data => {
-    document.getElementById('references-gallery').appendChild(new GalleryEditableBuilder(removeCallback).build(data));
+let refreshData = () => restClient.getAll(data => {
+    let referencesGallery = document.getElementById('references-gallery');
+    referencesGallery.classList.add('hide');
+    while (referencesGallery.firstChild) {
+        referencesGallery.removeChild(referencesGallery.firstChild);
+    }
+    referencesGallery.appendChild(new GalleryEditableBuilder(removeCallback).build(data));
+    referencesGallery.classList.remove('hide');
 });
+
+refreshData();

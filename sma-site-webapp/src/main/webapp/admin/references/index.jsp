@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="/public/css/bootstrap.min.css" />
     <link rel="stylesheet" href="/public/css/fileinput.min.css" />
     <link rel="stylesheet" href="/public/css/min/gallery/editable/gallery-editable-control-panel.css" />
+    <link rel="stylesheet" href="/public/css/min/admin/references.css" />
     <script src="/public/js/jquery.min.js"></script>
     <script src="/public/js/bootstrap.min.js"></script>
     <script src="/public/js/fileinput.min.js"></script>
@@ -29,10 +30,19 @@
             <jsp:param name="title" value="Administration" />
             <jsp:param name="locationPrefix" value="/admin" />
         </jsp:include>
-        <div>
-            <label class="control-label">Create Reference</label>
-            <input id="reference-upload" type="file" name="reference" class="file-loading" data-show-preview="false" />
-            <div id="referenceUploadErrorBlock" class="help-block"></div>
+        <div class="panel panel-default">
+            <div class="panel-heading">Create Reference</div>
+            <div class="panel-body">
+                <div class="form-group">
+                    <label for="reference-title">Title:</label>
+                    <input id="reference-title" type="text" class="form-control" placeholder="Enter Title"/>
+                </div>
+                <div class="form-group">
+                    <label for="reference-upload">File:</label>
+                    <input id="reference-upload" type="file" name="reference" class="file-loading" data-show-preview="false"/>
+                    <div id="referenceUploadErrorBlock" class="help-block"></div>
+                </div>
+            </div>
         </div>
         <div id="references-gallery"></div>
         <jsp:include page="/footer.jsp"/>

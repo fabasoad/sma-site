@@ -30,7 +30,7 @@ import static org.fabasoad.db.pojo.PojoProperties.ApplicationForms;
  * @date 11/22/2016.
  */
 @Path("application-forms")
-public class ApplicationFormsResource implements BaseResource<ApplicationFormPojo> {
+public class ApplicationFormsResource extends BaseResource<ApplicationFormPojo> {
 
     @Override
     public Class<ApplicationFormPojo> getPojoClass() {
@@ -69,8 +69,8 @@ public class ApplicationFormsResource implements BaseResource<ApplicationFormPoj
                                           @FormDataParam("application-form") FormDataContentDisposition fileMetaData) {
         String filePath;
         try {
-            upload(fileInputStream, fileMetaData.getFileName());
-            filePath = getUploadPath().resolve(fileMetaData.getFileName()).toString();
+            uploadFile(fileInputStream, fileMetaData.getFileName());
+            filePath = localPath().resolve(fileMetaData.getFileName()).toString();
         } catch (IOException e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                     .entity(buildError(e.getMessage()).toJSONString())

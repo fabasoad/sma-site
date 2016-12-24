@@ -6,9 +6,9 @@ export default function RestClientBuilder(url) {
             $.ajax({
                 type: 'GET',
                 url: __url,
-                success: data => {
+                complete: data => {
                     if (typeof callback === 'function') {
-                        callback(data);
+                        callback(JSON.parse(data.responseText));
                     }
                 }
             });
@@ -17,9 +17,9 @@ export default function RestClientBuilder(url) {
             $.ajax({
                 type: 'GET',
                 url: __url + '/' + id,
-                success: data => {
+                complete: data => {
                     if (typeof callback === 'function') {
-                        callback(data);
+                        callback(JSON.parse(data.responseText));
                     }
                 }
             });
@@ -30,9 +30,9 @@ export default function RestClientBuilder(url) {
                 url: __url,
                 dataType: 'json',
                 data: obj,
-                success: data => {
+                complete: data => {
                     if (typeof callback === 'function') {
-                        callback(data);
+                        callback(JSON.parse(data.responseText));
                     }
                 }
             });
@@ -43,9 +43,9 @@ export default function RestClientBuilder(url) {
                 url: __url + '/' + id,
                 dataType: 'json',
                 data: obj,
-                success: data => {
+                complete: data => {
                     if (typeof callback === 'function') {
-                        callback(data);
+                        callback(JSON.parse(data.responseText));
                     }
                 }
             });
@@ -54,15 +54,12 @@ export default function RestClientBuilder(url) {
             $.ajax({
                 type: 'DELETE',
                 url: __url + '/' + id,
-                success: data => {
+                complete: data => {
                     if (typeof callback === 'function') {
-                        callback(data);
+                        callback(JSON.parse(data.responseText));
                     }
                 }
             });
-        },
-        upload(callback) {
-
         }
     };
 

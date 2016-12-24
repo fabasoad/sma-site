@@ -19,7 +19,7 @@ import javax.ws.rs.core.Response;
  * Created by sasha.dev on 11.12.2016.
  */
 @Path("news")
-public class NewsResource implements BaseResource<NewsPojo> {
+public class NewsResource extends BaseResource<NewsPojo> {
 
     @Override
     public Class<NewsPojo> getPojoClass() {

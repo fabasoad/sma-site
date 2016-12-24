@@ -31,7 +31,7 @@ let __resources = {
     references: new RestClientBuilder('references')
         .add('getAll')
         .add('getById')
-        .add('upload')
+        .add('create')
         .add('delete')
         .build(),
     contacts: new RestClientBuilder('contacts')
@@ -41,7 +41,7 @@ let __resources = {
     'application-forms': new RestClientBuilder('application-forms')
         .add('getAll')
         .add('getById')
-        .add('upload')
+        .add('create')
         .add('delete')
         .build()
 };
