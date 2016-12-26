@@ -1,5 +1,19 @@
 import {restClient} from './../rest/references-rest-client.js';
 import GalleryEditableBuilder from './../gallery/editable/gallery-editable-builder.js';
+import Constants from './../core/constants.js';
+
+let showMessage = (data, operation) => {
+    let config = {
+        message: data.message,
+        title: Constants.APPLICATION_NAME
+    };
+    if (data.type === 'error') {
+        config.className = 'alert-error';
+    } else {
+        config.callback = refreshData;
+    }
+    bootbox.alert(config);
+};
 
 // Reference upload field
 $("#reference-upload").fileinput({
@@ -11,26 +25,39 @@ $("#reference-upload").fileinput({
     elErrorContainer: "#referenceUploadErrorBlock"
 });
 
-$("#reference-upload").on('filepreajax', (event, data) => {
-    $(event.target).fileinput.uploadExtraData = {
-        title: document.getElementById('reference-title').value
-    };
-});
-
 $("#reference-upload").on('filebatchuploadsuccess', (event, data) => {
-    refreshData();
+    let title = document.getElementById('reference-title').value;
+    if (title === '') {
+        showMessage({
+            type: 'success',
+            message: 'Reference created successfully'
+        }, 'created');
+    } else {
+        restClient.getAll(json1 => {
+            let maxId = 0;
+            for (let item of json1.data) {
+                if (item.id > maxId) {
+                    maxId = item.id;
+                }
+            }
+            restClient.update(maxId, {title: title}, json2 => {
+                showMessage(json2, 'created');
+            });
+        });
+    }
 });
 
 // Gallery
 $(document).on('click', '[data-toggle="lightbox"]', event => {
     event.preventDefault();
-    $(event.target).ekkoLightbox();
+    $(event.target.parentElement).ekkoLightbox();
 });
 
 let removeCallback = (item, event) => {
+    let title = item['title'] === 'null' || item['title'] == '' ? 'selected item' : "'" + item['title'] + "'";
     bootbox.confirm({
-        title: 'Reference removing confirmation',
-        message: "Do you really want to remove '" + item['title'] + "'?",
+        title: Constants.APPLICATION_NAME,
+        message: "Do you really want to remove " + title + "?",
         buttons: {
             cancel: {
                 label: 'No',
@@ -44,17 +71,7 @@ let removeCallback = (item, event) => {
         callback: result => {
             if (result) {
                 restClient.delete(item['id'], data => {
-                    let config = {
-                        message: data.message
-                    };
-                    if (data.type === 'error') {
-                        config.className = 'alert-error';
-                        config.title = 'Reference removing error';
-                    } else {
-                        config.callback = refreshData;
-                        config.title = 'Reference removed successfully';
-                    }
-                    bootbox.alert(config);
+                    showMessage(data, 'removed');
                 });
             }
         }

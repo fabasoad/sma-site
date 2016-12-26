@@ -3,7 +3,7 @@ import GalleryBuilder from './gallery/gallery-builder.js';
 
 $(document).on('click', '[data-toggle="lightbox"]', function(event) {
     event.preventDefault();
-    $(this).ekkoLightbox();
+    $(event.target.parentElement).ekkoLightbox();
 });
 
 restClient.getAll(data => {

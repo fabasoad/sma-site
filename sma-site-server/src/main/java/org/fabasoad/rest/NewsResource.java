@@ -50,6 +50,11 @@ public class NewsResource extends BaseResource<NewsPojo> {
         return Stream.of(PojoProperties.News.values()).collect(Collectors.toMap(v -> v.DB, v -> v.DTO));
     }
 
+    @Override
+    String getDisplayName() {
+        return "News";
+    }
+
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response getNews() {

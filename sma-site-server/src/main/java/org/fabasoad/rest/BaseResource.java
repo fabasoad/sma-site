@@ -46,6 +46,8 @@ abstract class BaseResource<T extends BasePojo> {
 
     abstract Map<String, String> getPojoProperties();
 
+    abstract String getDisplayName();
+
     Response getAll() {
         BaseDao<T> dao = DaoFactory.create(getPojoClass());
         JSONObject json = buildObjects(dao.getAll());
@@ -56,7 +58,7 @@ abstract class BaseResource<T extends BasePojo> {
         BaseDao<T> dao = DaoFactory.create(getPojoClass());
         BasePojo pojo = dao.get(id);
         if (pojo == null) {
-            final String message = "There is no entity with id = " + id;
+            final String message = String.format("There is no %s with id = %s", getDisplayName(), id);
             return Response.status(Response.Status.BAD_REQUEST)
                     .entity(buildError(message).toJSONString())
                     .build();
@@ -68,8 +70,8 @@ abstract class BaseResource<T extends BasePojo> {
     Response delete(int id) {
         BaseDao<T> dao = DaoFactory.create(getPojoClass());
         dao.delete(id);
-        getLogger().flow(getClass(), "Entity with id = " + id + " deleted successfully");
-        return Response.ok(buildSuccess("Selected item deleted successfully").toJSONString()).build();
+        getLogger().flow(getClass(), getDisplayName() + " with id = " + id + " deleted successfully");
+        return Response.ok(buildSuccess(getDisplayName() + " deleted successfully").toJSONString()).build();
     }
 
     void uploadFile(InputStream fileInputStream, String fileName) throws IOException {
@@ -85,6 +87,13 @@ abstract class BaseResource<T extends BasePojo> {
         } catch (IOException e) {
             getLogger().error(getClass(), String.format("Error while uploading '%s' file", fileName));
             throw e;
+        } finally {
+            if (fileInputStream != null) {
+                try {
+                    fileInputStream.close();
+                } catch (IOException ignored) {
+                }
+            }
         }
     }
 
@@ -95,8 +104,15 @@ abstract class BaseResource<T extends BasePojo> {
     Response create(JSONObject json) {
         BaseDao<T> dao = DaoFactory.create(getPojoClass());
         dao.create(buildPojo(json));
-        String message = "Entity created successfully";
+        String message = getDisplayName() + " created successfully";
         return Response.status(Response.Status.CREATED).entity(buildSuccess(message).toJSONString()).build();
+    }
+
+    Response update(JSONObject json) {
+        BaseDao<T> dao = DaoFactory.create(getPojoClass());
+        dao.update(buildPojo(json));
+        String message = getDisplayName() + " updated successfully";
+        return Response.ok(buildSuccess(message).toJSONString()).build();
     }
 
     @SuppressWarnings("unchecked")

@@ -2,7 +2,7 @@
 <link rel="stylesheet" href="/public/css/min/header.css"/>
 <script>
     document.addEventListener("DOMContentLoaded", function () {
-        SystemJS.import('/public/js/dev/header.js');
+        SystemJS.import('/public/js/min/header.js');
     });
 </script>
 <div class="navbar navbar-inverse" role="navigation">

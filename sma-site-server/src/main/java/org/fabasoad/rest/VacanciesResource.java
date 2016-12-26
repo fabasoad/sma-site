@@ -32,6 +32,11 @@ public class VacanciesResource extends BaseResource<VacanciesPojo> {
         return Stream.of(PojoProperties.Vacancies.values()).collect(Collectors.toMap(v -> v.DB, v -> v.DTO));
     }
 
+    @Override
+    String getDisplayName() {
+        return "Vacancy";
+    }
+
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response getVacancies() {

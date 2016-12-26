@@ -8,11 +8,11 @@ import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.json.simple.JSONObject;
 
-import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -20,6 +20,9 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.AccessDeniedException;
 import java.nio.file.Files;
 import java.util.Map;
@@ -51,6 +54,11 @@ public class ReferencesResource extends BaseResource<ReferencePojo> {
         return Stream.of(PojoProperties.References.values()).collect(Collectors.toMap(v -> v.DB, v -> v.DTO));
     }
 
+    @Override
+    String getDisplayName() {
+        return "Reference";
+    }
+
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response getReferences() {
@@ -65,16 +73,15 @@ public class ReferencesResource extends BaseResource<ReferencePojo> {
     }
 
     @POST
-    @RolesAllowed("admin")
+//    @RolesAllowed("admin")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.APPLICATION_JSON)
     public Response createReference(@FormDataParam("reference") InputStream fileInputStream,
-                                    @FormDataParam("reference") FormDataContentDisposition fileMetaData,
-                                    @FormDataParam("title") String title) {
+                                    @FormDataParam("reference") FormDataContentDisposition fileMetaData) {
         String fileName = generateNewFileName(fileMetaData.getFileName());
         JSONObject json;
         try {
-            json = buildReferenceJsonObject(title, fileName);
+            json = buildReferenceJsonObject(fileName);
             uploadFile(fileInputStream, fileName);
         } catch (IOException e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
@@ -84,10 +91,31 @@ public class ReferencesResource extends BaseResource<ReferencePojo> {
         return create(json);
     }
 
+    @PUT
+    @Path("{id}")
+//    @RolesAllowed("admin")
     @SuppressWarnings("unchecked")
-    private JSONObject buildReferenceJsonObject(String title, String fileName) throws IOException {
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response updateReference(@PathParam("id") int id, String input) {
+        String title;
+        try {
+            title = URLDecoder.decode(input.split("=")[1], StandardCharsets.UTF_8.displayName());
+        } catch (UnsupportedEncodingException e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity(buildError(e.getMessage()).toJSONString())
+                    .build();
+        }
+
+        JSONObject json = new JSONObject();
+        json.put(PojoProperties.References.ID.DTO, id);
+        json.put(PojoProperties.References.TITLE.DTO, title);
+        return update(json);
+    }
+
+    @SuppressWarnings("unchecked")
+    private JSONObject buildReferenceJsonObject(String fileName) throws IOException {
         JSONObject result = new JSONObject();
-        result.put(PojoProperties.References.TITLE.DTO, title);
         result.put(PojoProperties.References.FILE_NAME.DTO, fileName);
         return result;
     }
@@ -106,7 +134,7 @@ public class ReferencesResource extends BaseResource<ReferencePojo> {
 
     @DELETE
     @Path("{id}")
-    @RolesAllowed("admin")
+//    @RolesAllowed("admin")
     public Response deleteReference(@PathParam("id") int id) {
         try {
             deleteFile(id);

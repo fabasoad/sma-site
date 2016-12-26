@@ -47,6 +47,11 @@ public class ApplicationFormsResource extends BaseResource<ApplicationFormPojo> 
         return Stream.of(ApplicationForms.values()).collect(Collectors.toMap(v -> v.DB, v -> v.DTO));
     }
 
+    @Override
+    String getDisplayName() {
+        return "Application-Form";
+    }
+
     @GET
     @RolesAllowed("admin")
     @Produces(MediaType.APPLICATION_JSON)

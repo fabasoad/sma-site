@@ -28,6 +28,7 @@ export default function RestClientBuilder(url) {
             $.ajax({
                 type: 'POST',
                 url: __url,
+                contentType: "application/json",
                 dataType: 'json',
                 data: obj,
                 complete: data => {
@@ -41,6 +42,7 @@ export default function RestClientBuilder(url) {
             $.ajax({
                 type: 'PUT',
                 url: __url + '/' + id,
+                contentType: "application/json",
                 dataType: 'json',
                 data: obj,
                 complete: data => {

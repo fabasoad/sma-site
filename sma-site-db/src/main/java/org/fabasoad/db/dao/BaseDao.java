@@ -105,7 +105,11 @@ public abstract class BaseDao<T extends BasePojo> {
         if (columns.length > 0) {
             final String sql = Stream.of(columns)
                     .map(c -> String.format("%s = '%s'", c, obj.getProperty(c)))
-                    .collect(Collectors.joining(",", String.format("UPDATE %s SET ", getTableName()), ""));
+                    .collect(Collectors.joining(
+                            ",",
+                            String.format("UPDATE %s SET ", getTableName()),
+                            String.format(" WHERE %s = %s", getIdColumn(), obj.getProperty(getIdColumn()))
+                    ));
             adapter.run(sql);
         }
     }

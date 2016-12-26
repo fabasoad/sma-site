@@ -1,5 +1,6 @@
 import {restClient} from './../rest/news-rest-client.js';
 import NewsEditableBuilder from './../news/editable/news-editable-builder.js';
+import Constants from './../core/constants.js';
 
 let addCallback = event => {
 
@@ -11,7 +12,7 @@ let editCallback = (item, event) => {
 
 let removeCallback = (item, event) => {
     bootbox.confirm({
-        title: 'News removing confirmation',
+        title: Constants.APPLICATION_NAME,
         message: "Do you really want to remove '" + item['title'] + "'?",
         buttons: {
             cancel: {
