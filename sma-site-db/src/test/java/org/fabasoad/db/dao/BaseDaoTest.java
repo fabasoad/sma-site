@@ -50,10 +50,12 @@ abstract class BaseDaoTest<T extends BasePojo, E extends Enum<E>> {
         assertTrue(actual.isPresent());
 
         String dbValue = getDbValue(getEnumId());
-        assertNotNull(dao.get(actual.get().getProperty(dbValue)));
+        T obj = dao.get(actual.get().getProperty(dbValue));
+        assertNotNull(obj);
 
         String expectedUpdatedFieldValue = "some";
         expected.setProperty(getColumnForUpdate(), expectedUpdatedFieldValue);
+        expected.setProperty(dbValue, obj.getProperty(dbValue));
         dao.update(expected);
         assertEquals(expectedUpdatedFieldValue, dao.get(actual.get().getProperty(dbValue)).getProperty(getColumnForUpdate()));
 
