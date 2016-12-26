@@ -11,8 +11,12 @@ export default class VacanciesRow {
         th.innerHTML = index;
         tr.appendChild(th);
 
+        let a = document.createElement('a');
+        a.setAttribute('href', '?id=' + this.vacancy['id']);
+        a.innerHTML = this.vacancy['rank'];
+
         let rank = document.createElement('td');
-        rank.innerHTML = this.vacancy['rank'];
+        rank.appendChild(a);
         tr.appendChild(rank);
 
         let vesselType = document.createElement('td');
