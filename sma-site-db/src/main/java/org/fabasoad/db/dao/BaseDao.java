@@ -1,5 +1,6 @@
 package org.fabasoad.db.dao;
 
+import org.apache.commons.lang3.StringUtils;
 import org.fabasoad.db.DbAdapter;
 import org.fabasoad.db.pojo.BasePojo;
 
@@ -8,7 +9,9 @@ import java.lang.reflect.Type;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Objects;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -34,11 +37,8 @@ public abstract class BaseDao<T extends BasePojo> {
 
     abstract String[] getColumnsForUpdate();
 
-    private String getValuesForInsert(T obj) {
-        return Stream.of(getColumnsForInsert())
-                .map(obj::getProperty)
-                .map(v -> String.format("'%s'", v))
-                .collect(Collectors.joining(","));
+    private Object[] getValuesForInsert(T obj) {
+        return Stream.of(getColumnsForInsert()).map(obj::getProperty).toArray();
     }
 
     @SuppressWarnings("unchecked")
@@ -94,10 +94,17 @@ public abstract class BaseDao<T extends BasePojo> {
         return (T) result[0];
     }
 
-    public void create(T obj) {
-        final String sql = String.format("INSERT INTO %s (%s) VALUES (%s)",
-                getTableName(), String.join(",", getColumnsForInsert()), getValuesForInsert(obj));
-        adapter.run(sql);
+    public int create(T obj) {
+        final Object[] params = getValuesForInsert(obj);
+        final String sql = String.format(
+                "INSERT INTO %s (%s) VALUES (%s)",
+                getTableName(),
+                String.join(",", getColumnsForInsert()),
+                StringUtils.join(Collections.nCopies(params.length, "?"), ",")
+        );
+        final int[] id = new int[] { -1 };
+        adapter.runInsert(sql, params, arg -> id[0] = arg);
+        return id[0];
     }
 
     public void update(T obj) {

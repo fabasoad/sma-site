@@ -20,7 +20,7 @@
     <script src="/public/js/ekko-lightbox.min.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-            SystemJS.import('/public/js/min/admin/references.js');
+            SystemJS.import('/public/js/dev/admin/references.js');
         });
     </script>
 </head>

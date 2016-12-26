@@ -103,9 +103,15 @@ abstract class BaseResource<T extends BasePojo> {
 
     Response create(JSONObject json) {
         BaseDao<T> dao = DaoFactory.create(getPojoClass());
-        dao.create(buildPojo(json));
-        String message = getDisplayName() + " created successfully";
-        return Response.status(Response.Status.CREATED).entity(buildSuccess(message).toJSONString()).build();
+        int id = dao.create(buildPojo(json));
+        String message;
+        if (id == -1) {
+            message = getDisplayName() + " is not created";
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(message).build();
+        } else {
+            message = getDisplayName() + " created successfully";
+            return Response.status(Response.Status.CREATED).entity(buildSuccess(id, message).toJSONString()).build();
+        }
     }
 
     Response update(JSONObject json) {
@@ -156,6 +162,15 @@ abstract class BaseResource<T extends BasePojo> {
             Logger.getLogger().error(getClass(), e.getMessage());
         }
         return (T) pojo[0];
+    }
+
+    @SuppressWarnings("unchecked")
+    private JSONObject buildSuccess(int id, String message) {
+        final JSONObject json = new JSONObject();
+        json.put("type", "success");
+        json.put("message", message);
+        json.put("id", id);
+        return json;
     }
 
     @SuppressWarnings("unchecked")

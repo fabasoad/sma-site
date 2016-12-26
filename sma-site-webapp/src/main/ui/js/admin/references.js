@@ -2,7 +2,7 @@ import {restClient} from './../rest/references-rest-client.js';
 import GalleryEditableBuilder from './../gallery/editable/gallery-editable-builder.js';
 import Constants from './../core/constants.js';
 
-let showMessage = (data, operation) => {
+let showMessage = data => {
     let config = {
         message: data.message,
         title: Constants.APPLICATION_NAME
@@ -26,12 +26,13 @@ $("#reference-upload").fileinput({
 });
 
 $("#reference-upload").on('filebatchuploadsuccess', (event, data) => {
+    // data.response.id
     let title = document.getElementById('reference-title').value;
     if (title === '') {
         showMessage({
             type: 'success',
             message: 'Reference created successfully'
-        }, 'created');
+        });
     } else {
         restClient.getAll(json1 => {
             let maxId = 0;
@@ -41,7 +42,7 @@ $("#reference-upload").on('filebatchuploadsuccess', (event, data) => {
                 }
             }
             restClient.update(maxId, {title: title}, json2 => {
-                showMessage(json2, 'created');
+                showMessage(json2);
             });
         });
     }
@@ -71,7 +72,7 @@ let removeCallback = (item, event) => {
         callback: result => {
             if (result) {
                 restClient.delete(item['id'], data => {
-                    showMessage(data, 'removed');
+                    showMessage(data);
                 });
             }
         }
