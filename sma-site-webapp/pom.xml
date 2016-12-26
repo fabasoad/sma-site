@@ -41,7 +41,7 @@
                                 </goals>
                                 <phase>verify</phase>
                                 <configuration>
-                                    <nodeVersion>v7.1.0</nodeVersion>
+                                    <nodeVersion>v7.3.0</nodeVersion>
                                     <npmVersion>3.10.10</npmVersion>
                                 </configuration>
                             </execution>
