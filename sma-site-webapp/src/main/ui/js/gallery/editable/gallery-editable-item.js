@@ -3,12 +3,13 @@ import GalleryEditableControlPanel from './gallery-editable-control-panel.js';
 
 export default class GalleryEditableItem extends GalleryItem {
 
-    constructor(removeCallback) {
+    constructor(editCallback, removeCallback) {
         super();
+        this.editCallback = editCallback;
         this.removeCallback = removeCallback;
     }
 
     createGalleryControlPanel() {
-        return new GalleryEditableControlPanel(this.removeCallback);
+        return new GalleryEditableControlPanel(this.editCallback, this.removeCallback);
     }
 }

@@ -8,6 +8,7 @@ import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.json.simple.JSONObject;
 
+import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -31,6 +32,8 @@ import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import static org.fabasoad.api.Logger.getLogger;
 
 /**
  * @author efabizhevsky
@@ -73,7 +76,7 @@ public class ReferencesResource extends BaseResource<ReferencePojo> {
     }
 
     @POST
-//    @RolesAllowed("admin")
+    @RolesAllowed("admin")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.APPLICATION_JSON)
     public Response createReference(@FormDataParam("reference") InputStream fileInputStream,
@@ -93,7 +96,7 @@ public class ReferencesResource extends BaseResource<ReferencePojo> {
 
     @PUT
     @Path("{id}")
-//    @RolesAllowed("admin")
+    @RolesAllowed("admin")
     @SuppressWarnings("unchecked")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
@@ -134,18 +137,14 @@ public class ReferencesResource extends BaseResource<ReferencePojo> {
 
     @DELETE
     @Path("{id}")
-//    @RolesAllowed("admin")
+    @RolesAllowed("admin")
     public Response deleteReference(@PathParam("id") int id) {
         try {
             deleteFile(id);
         } catch (AccessDeniedException e) {
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                    .entity(buildError("Cannot delete file for selected reference").toJSONString())
-                    .build();
+            getLogger().error(getClass(), String.format("Access denied for %s file", e.getMessage()));
         } catch (IOException e) {
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                    .entity(buildError(e.getMessage()).toJSONString())
-                    .build();
+            getLogger().error(getClass(), e.getMessage());
         }
         return delete(id);
     }

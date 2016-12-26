@@ -3,12 +3,13 @@ import GalleryEditableItem from './gallery-editable-item.js';
 
 export default class GalleryEditableBuilder extends GalleryBuilder {
 
-    constructor(removeCallback) {
+    constructor(editCallback, removeCallback) {
         super();
+        this.editCallback = editCallback;
         this.removeCallback = removeCallback;
     }
 
     createGalleryItem() {
-        return new GalleryEditableItem(this.removeCallback);
+        return new GalleryEditableItem(this.editCallback, this.removeCallback);
     }
 }

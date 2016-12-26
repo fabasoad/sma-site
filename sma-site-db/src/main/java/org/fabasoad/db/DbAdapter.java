@@ -7,11 +7,14 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Types;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import static org.fabasoad.api.Logger.getLogger;
 
@@ -74,6 +77,35 @@ public abstract class DbAdapter {
         try (Connection conn = connect();
              Statement stmt = conn.createStatement()) {
             stmt.execute(sql);
+        } catch (SQLException e) {
+            getLogger().error(this.getClass(), e.getMessage());
+        } finally {
+            getLogger().flow(this.getClass(), "Database connection closed");
+        }
+    }
+
+    public void runInsert(String sql, Object[] params, Consumer<Integer> callback) {
+        try (Connection conn = connect();
+             PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            for (int i = 0; i < params.length; i++) {
+                if (params[i] == null) {
+                    stmt.setString(i + 1, "");
+                } else {
+                    stmt.setObject(i + 1, params[i]);
+                }
+            }
+            int rows = stmt.executeUpdate();
+            if (rows == 0) {
+                getLogger().error(this.getClass(), "0 rows have been inserted");
+            }
+
+            try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    callback.accept(generatedKeys.getInt(1));
+                } else {
+                    throw new SQLException("Inserting rows is failed. No ID obtained");
+                }
+            }
         } catch (SQLException e) {
             getLogger().error(this.getClass(), e.getMessage());
         } finally {

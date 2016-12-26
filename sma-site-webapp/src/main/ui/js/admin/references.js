@@ -2,7 +2,7 @@ import {restClient} from './../rest/references-rest-client.js';
 import GalleryEditableBuilder from './../gallery/editable/gallery-editable-builder.js';
 import Constants from './../core/constants.js';
 
-let showMessage = (data, operation) => {
+let showMessage = data => {
     let config = {
         message: data.message,
         title: Constants.APPLICATION_NAME
@@ -26,24 +26,20 @@ $("#reference-upload").fileinput({
 });
 
 $("#reference-upload").on('filebatchuploadsuccess', (event, data) => {
-    let title = document.getElementById('reference-title').value;
-    if (title === '') {
-        showMessage({
-            type: 'success',
-            message: 'Reference created successfully'
-        }, 'created');
+    if (data.response.type === 'error') {
+        showMessage(data.response);
     } else {
-        restClient.getAll(json1 => {
-            let maxId = 0;
-            for (let item of json1.data) {
-                if (item.id > maxId) {
-                    maxId = item.id;
-                }
-            }
-            restClient.update(maxId, {title: title}, json2 => {
-                showMessage(json2, 'created');
+        let title = document.getElementById('reference-title').value;
+        if (title === '') {
+            showMessage({
+                type: 'success',
+                message: 'Reference created successfully'
             });
-        });
+        } else {
+            restClient.update(data.response.id, {title: title}, json2 => {
+                showMessage(json2);
+            });
+        }
     }
 });
 
@@ -52,6 +48,17 @@ $(document).on('click', '[data-toggle="lightbox"]', event => {
     event.preventDefault();
     $(event.target.parentElement).ekkoLightbox();
 });
+
+let editCallback = (item, event) => {
+    bootbox.prompt(item['title'], title => {
+        if (title !== null) {
+            restClient.update(item['id'], {title: title}, json => {
+                showMessage(json);
+            });
+        }
+    });
+    $(".modal-dialog form[class='bootbox-form'] input").attr('placeholder', 'Enter new title');
+};
 
 let removeCallback = (item, event) => {
     let title = item['title'] === 'null' || item['title'] == '' ? 'selected item' : "'" + item['title'] + "'";
@@ -71,7 +78,7 @@ let removeCallback = (item, event) => {
         callback: result => {
             if (result) {
                 restClient.delete(item['id'], data => {
-                    showMessage(data, 'removed');
+                    showMessage(data);
                 });
             }
         }
@@ -84,7 +91,7 @@ let refreshData = () => restClient.getAll(data => {
     while (referencesGallery.firstChild) {
         referencesGallery.removeChild(referencesGallery.firstChild);
     }
-    referencesGallery.appendChild(new GalleryEditableBuilder(removeCallback).build(data));
+    referencesGallery.appendChild(new GalleryEditableBuilder(editCallback, removeCallback).build(data));
     referencesGallery.classList.remove('hide');
 });
 
