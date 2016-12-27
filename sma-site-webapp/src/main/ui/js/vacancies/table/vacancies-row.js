@@ -12,7 +12,7 @@ export default class VacanciesRow {
         tr.appendChild(th);
 
         let a = document.createElement('a');
-        a.setAttribute('href', '?id=' + this.vacancy['id']);
+        a.setAttribute('href', '#' + this.vacancy['id']);
         a.innerHTML = this.vacancy['rank'];
 
         let rank = document.createElement('td');

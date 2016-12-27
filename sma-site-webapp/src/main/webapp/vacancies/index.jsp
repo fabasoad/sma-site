@@ -24,15 +24,15 @@
         <jsp:include page="/carousel.jsp"/>
         <table id="vacancies-table" class="table table-hover table-sm hide">
             <thead>
-            <tr>
-                <th>#</th>
-                <th>Rank</th>
-                <th>Vessel Type</th>
-                <th>Joining Date</th>
-                <th>Contract Duration</th>
-                <th>Nationality</th>
-                <th>Wage</th>
-            </tr>
+                <tr>
+                    <th>#</th>
+                    <th>Rank</th>
+                    <th>Vessel Type</th>
+                    <th>Joining Date</th>
+                    <th>Contract Duration</th>
+                    <th>Nationality</th>
+                    <th>Wage</th>
+                </tr>
             </thead>
             <tbody></tbody>
         </table>
