@@ -3,6 +3,19 @@ export default class VacanciesRow {
         this.vacancy = vacancy;
     }
 
+    createEditColumn() {
+    }
+
+    createRemoveColumn() {
+    }
+
+    buildRank() {
+        let a = document.createElement('a');
+        a.setAttribute('href', '#' + this.vacancy['id']);
+        a.innerHTML = this.vacancy['rank'];
+        return a;
+    }
+
     build(index) {
         let tr = document.createElement('tr');
 
@@ -11,12 +24,8 @@ export default class VacanciesRow {
         th.innerHTML = index;
         tr.appendChild(th);
 
-        let a = document.createElement('a');
-        a.setAttribute('href', '#' + this.vacancy['id']);
-        a.innerHTML = this.vacancy['rank'];
-
         let rank = document.createElement('td');
-        rank.appendChild(a);
+        rank.appendChild(this.buildRank());
         tr.appendChild(rank);
 
         let vesselType = document.createElement('td');
@@ -38,6 +47,16 @@ export default class VacanciesRow {
         let wage = document.createElement('td');
         wage.innerHTML = this.vacancy['wage'];
         tr.appendChild(wage);
+
+        let editColumn = this.createEditColumn();
+        if (editColumn) {
+            tr.appendChild(editColumn)
+        }
+
+        let removeColumn = this.createRemoveColumn();
+        if (removeColumn) {
+            tr.appendChild(removeColumn)
+        }
 
         return tr;
     }

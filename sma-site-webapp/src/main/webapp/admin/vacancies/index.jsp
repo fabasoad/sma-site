@@ -9,10 +9,12 @@
     <link rel="stylesheet" href="/public/css/bootstrap.min.css" />
     <script src="/public/js/jquery.min.js"></script>
     <script src="/public/js/bootstrap.min.js"></script>
+    <script src="/public/js/bootbox.min.js"></script>
+    <script src="/public/js/require.js"></script>
     <script src="/public/js/system.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-            SystemJS.import('/public/js/min/admin/vacancies.js');
+            SystemJS.import('/public/js/dev/admin/vacancies.js');
         });
     </script>
 </head>
@@ -22,9 +24,21 @@
             <jsp:param name="title" value="Administration" />
             <jsp:param name="locationPrefix" value="/admin" />
         </jsp:include>
-        <div>
-            Vacancies
-        </div>
+        <table id="vacancies-table" class="table table-hover table-sm">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>Rank</th>
+                <th>Vessel Type</th>
+                <th>Joining Date</th>
+                <th>Contract Duration</th>
+                <th>Nationality</th>
+                <th>Wage</th>
+                <th></th>
+                <th></th>
+            </tr>
+            </thead>
+        </table>
         <jsp:include page="/footer.jsp"/>
     </div>
 </body>
