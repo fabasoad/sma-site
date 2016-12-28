@@ -11,6 +11,10 @@
     {
       "name": "Alexandr Chernyavskiy",
       "email": "designer.citi@gmail.com"
+    },
+    {
+      "name": "Andrey Kramchaninov",
+      "email": "andreikramchaninov@gmail.com"
     }
   ],
   "main": "src/main/webapp/index.jsp",
