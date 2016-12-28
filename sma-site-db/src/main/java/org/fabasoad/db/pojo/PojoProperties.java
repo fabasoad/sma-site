@@ -6,7 +6,7 @@ import java.util.stream.Stream;
 
 /**
  * @author Yevhen Fabizhevskyi
- * @date 26.11.2016.
+ * @date 28.12.2016.
  */
 public interface PojoProperties {
 
@@ -81,6 +81,24 @@ public interface PojoProperties {
         }
 
         public final static String TABLE_NAME = "SMA_VACANCIES";
+    }
+
+    enum Contacts {
+        PROP_NAME("SP_PROP_NAME", "prop-name"), PROP_VALUE("SP_PROP_VALUE", "prop-value");
+
+        public String DB;
+        public String DTO;
+
+        Contacts(String dbProperty, String dtoProperty) {
+            this.DB = dbProperty;
+            this.DTO = dtoProperty;
+        }
+
+         public static Optional<String> fromDto(String dtoProp) {
+            return Stream.of(values()).filter(v -> Objects.equals(v.DTO, dtoProp)).map(v -> v.DB).findAny();
+        }
+
+        public final static String TABLE_NAME = "SMA_PARAMS";
     }
 
     enum Users {
