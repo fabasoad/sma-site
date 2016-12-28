@@ -1,6 +1,24 @@
 export default class VacanciesRow {
-    constructor(vacancy) {
+
+    constructor(vacancy, showDetailsCallback) {
         this.vacancy = vacancy;
+        this.showDetailsCallback = showDetailsCallback;
+    }
+
+    createEditColumn() {
+    }
+
+    createRemoveColumn() {
+    }
+
+    buildRank() {
+        let button = document.createElement('button');
+        button.setAttribute('type', 'button');
+        button.classList.add('btn');
+        button.classList.add('btn-link');
+        button.innerHTML = this.vacancy['rank'];
+        button.addEventListener('click', event => this.showDetailsCallback(this.vacancy, event));
+        return button;
     }
 
     build(index) {
@@ -11,12 +29,8 @@ export default class VacanciesRow {
         th.innerHTML = index;
         tr.appendChild(th);
 
-        let a = document.createElement('a');
-        a.setAttribute('href', '?id=' + this.vacancy['id']);
-        a.innerHTML = this.vacancy['rank'];
-
         let rank = document.createElement('td');
-        rank.appendChild(a);
+        rank.appendChild(this.buildRank());
         tr.appendChild(rank);
 
         let vesselType = document.createElement('td');
@@ -38,6 +52,16 @@ export default class VacanciesRow {
         let wage = document.createElement('td');
         wage.innerHTML = this.vacancy['wage'];
         tr.appendChild(wage);
+
+        let editColumn = this.createEditColumn();
+        if (editColumn) {
+            tr.appendChild(editColumn)
+        }
+
+        let removeColumn = this.createRemoveColumn();
+        if (removeColumn) {
+            tr.appendChild(removeColumn)
+        }
 
         return tr;
     }

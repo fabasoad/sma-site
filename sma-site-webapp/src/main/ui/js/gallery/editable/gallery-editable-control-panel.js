@@ -1,3 +1,6 @@
+import DomEditButton from '../../dom/dom-edit-button.js';
+import DomRemoveButton from '../../dom/dom-remove-button.js';
+
 export default class GalleryEditableControlPanel {
 
     constructor(editCallback, removeCallback) {
@@ -16,33 +19,11 @@ export default class GalleryEditableControlPanel {
     * </div>
     */
     build(item) {
-        let editButton = document.createElement('button');
-        editButton.classList.add('btn');
-        editButton.classList.add('btn-default');
-        editButton.classList.add('btn-sm');
-        editButton.addEventListener('click', event => this.editCallback(item, event));
-
-        let editSpan = document.createElement('span');
-        editSpan.classList.add('glyphicon');
-        editSpan.classList.add('glyphicon-pencil');
-        editButton.appendChild(editSpan);
-
-        let removeButton = document.createElement('button');
-        removeButton.classList.add('btn');
-        removeButton.classList.add('btn-default');
-        removeButton.classList.add('btn-sm');
-        removeButton.addEventListener('click', event => this.removeCallback(item, event));
-
-        let removeSpan = document.createElement('span');
-        removeSpan.classList.add('glyphicon');
-        removeSpan.classList.add('glyphicon-remove');
-        removeButton.appendChild(removeSpan);
-
         let div = document.createElement('div');
         div.classList.add('btn-group');
         div.classList.add('gallery-editable-control-panel');
-        div.appendChild(editButton);
-        div.appendChild(removeButton);
+        div.appendChild(new DomEditButton(event => this.editCallback(item, event)));
+        div.appendChild(new DomRemoveButton(event => this.removeCallback(item, event)));
 
         return div;
     }

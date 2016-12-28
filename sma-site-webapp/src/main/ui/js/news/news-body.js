@@ -17,7 +17,7 @@ export default class NewsBody {
         let readMoreText = document.createTextNode('Read more');
 
         let a = document.createElement('a');
-        a.setAttribute('href', '/news/' + id);
+        a.setAttribute('href', '/news#' + id);
         a.appendChild(readMoreText);
 
         div.appendChild(a);

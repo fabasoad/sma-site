@@ -1,3 +1,5 @@
+import DomAddButton from '../../dom/dom-add-button.js';
+
 export default class NewsEditableAddPanel {
 
     constructor(addCallback) {
@@ -11,18 +13,9 @@ export default class NewsEditableAddPanel {
      * </div>
      */
     build() {
-        let span = document.createElement('span');
-        span.setAttribute('class', 'glyphicon glyphicon-plus');
-
-        let button = document.createElement('button');
-        button.setAttribute('type', 'button');
-        button.setAttribute('class', 'btn btn-default btn-sm');
-        button.addEventListener('click', this.addCallback);
-        button.appendChild(span);
-
         let div = document.createElement('div');
         div.setAttribute('class', 'btn-group');
-        div.appendChild(button);
+        div.appendChild(new DomAddButton(this.addCallback));
 
         return div;
     }

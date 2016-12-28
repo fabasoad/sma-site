@@ -50,11 +50,14 @@ $(document).on('click', '[data-toggle="lightbox"]', event => {
 });
 
 let editCallback = (item, event) => {
-    bootbox.prompt(item['title'], title => {
-        if (title !== null) {
-            restClient.update(item['id'], {title: title}, json => {
-                showMessage(json);
-            });
+    bootbox.prompt({
+        title: item['title'],
+        callback: title => {
+            if (title !== null) {
+                restClient.update(item['id'], {title: title}, json => {
+                    showMessage(json);
+                });
+            }
         }
     });
     $(".modal-dialog form[class='bootbox-form'] input").attr('placeholder', 'Enter new title');

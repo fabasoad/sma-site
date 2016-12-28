@@ -9,7 +9,6 @@
     <link rel="stylesheet" href="/public/css/bootstrap.min.css" />
     <link rel="stylesheet" href="/public/css/fileinput.min.css" />
     <link rel="stylesheet" href="/public/css/min/gallery/editable/gallery-editable-control-panel.css" />
-    <link rel="stylesheet" href="/public/css/min/admin/references.css" />
     <script src="/public/js/jquery.min.js"></script>
     <script src="/public/js/bootstrap.min.js"></script>
     <script src="/public/js/fileinput.min.js"></script>
@@ -20,7 +19,7 @@
     <script src="/public/js/ekko-lightbox.min.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-            SystemJS.import('/public/js/dev/admin/references.js');
+            SystemJS.import('/public/js/min/admin/references.js');
         });
     </script>
 </head>

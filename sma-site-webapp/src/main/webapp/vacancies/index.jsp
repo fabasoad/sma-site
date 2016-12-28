@@ -7,8 +7,11 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Vacancies</title>
     <link rel="stylesheet" href="/public/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="/public/css/min/vacancies.css" />
     <script src="/public/js/jquery.min.js"></script>
     <script src="/public/js/bootstrap.min.js"></script>
+    <script src="/public/js/bootbox.min.js"></script>
+    <script src="/public/js/require.js"></script>
     <script src="/public/js/system.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
@@ -22,19 +25,18 @@
             <jsp:param name="title" value="Southern Maritime Agency" />
         </jsp:include>
         <jsp:include page="/carousel.jsp"/>
-        <table id="vacancies-table" class="table table-hover table-sm hide">
+        <table id="vacancies-table" class="table table-hover table-sm">
             <thead>
-            <tr>
-                <th>#</th>
-                <th>Rank</th>
-                <th>Vessel Type</th>
-                <th>Joining Date</th>
-                <th>Contract Duration</th>
-                <th>Nationality</th>
-                <th>Wage</th>
-            </tr>
+                <tr>
+                    <th>#</th>
+                    <th>Rank</th>
+                    <th>Vessel Type</th>
+                    <th>Joining Date</th>
+                    <th>Contract Duration</th>
+                    <th>Nationality</th>
+                    <th>Wage</th>
+                </tr>
             </thead>
-            <tbody></tbody>
         </table>
         <jsp:include page="/footer.jsp"/>
     </div>
