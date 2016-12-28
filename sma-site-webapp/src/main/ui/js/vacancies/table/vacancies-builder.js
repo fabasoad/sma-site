@@ -2,8 +2,12 @@ import VacanciesRow from './vacancies-row.js';
 
 export default class VacanciesBuilder {
 
+    constructor(showDetailsCallback) {
+        this.showDetailsCallback = showDetailsCallback;
+    }
+
     createVacanciesRow(item) {
-        return new VacanciesRow(item);
+        return new VacanciesRow(item, this.showDetailsCallback);
     }
 
     build(json) {

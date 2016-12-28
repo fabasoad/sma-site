@@ -7,8 +7,11 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Vacancies</title>
     <link rel="stylesheet" href="/public/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="/public/css/min/vacancies.css" />
     <script src="/public/js/jquery.min.js"></script>
     <script src="/public/js/bootstrap.min.js"></script>
+    <script src="/public/js/bootbox.min.js"></script>
+    <script src="/public/js/require.js"></script>
     <script src="/public/js/system.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function () {

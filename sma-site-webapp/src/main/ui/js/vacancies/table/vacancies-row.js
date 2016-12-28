@@ -1,6 +1,8 @@
 export default class VacanciesRow {
-    constructor(vacancy) {
+
+    constructor(vacancy, showDetailsCallback) {
         this.vacancy = vacancy;
+        this.showDetailsCallback = showDetailsCallback;
     }
 
     createEditColumn() {
@@ -10,10 +12,13 @@ export default class VacanciesRow {
     }
 
     buildRank() {
-        let a = document.createElement('a');
-        a.setAttribute('href', '#' + this.vacancy['id']);
-        a.innerHTML = this.vacancy['rank'];
-        return a;
+        let button = document.createElement('button');
+        button.setAttribute('type', 'button');
+        button.classList.add('btn');
+        button.classList.add('btn-link');
+        button.innerHTML = this.vacancy['rank'];
+        button.addEventListener('click', event => this.showDetailsCallback(this.vacancy, event));
+        return button;
     }
 
     build(index) {
