@@ -11,10 +11,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.sql.Types;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 import static org.fabasoad.api.Logger.getLogger;
 
@@ -66,6 +64,34 @@ public abstract class DbAdapter {
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
             callback.accept(rs);
+        } catch (SQLException e) {
+            getLogger().error(this.getClass(), e.getMessage());
+        } finally {
+            getLogger().flow(this.getClass(), "Database connection closed");
+        }
+    }
+
+    public void run(String sql, Object[] params, Consumer<ResultSet> callback) {
+        try (Connection conn = connect();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            for (int i = 0; i < params.length; i++) {
+                stmt.setObject(i + 1, params[i]);
+            }
+            callback.accept(stmt.executeQuery());
+        } catch (SQLException e) {
+            getLogger().error(this.getClass(), e.getMessage());
+        } finally {
+            getLogger().flow(this.getClass(), "Database connection closed");
+        }
+    }
+
+    public void run(String sql, Object[] params) {
+        try (Connection conn = connect();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            for (int i = 0; i < params.length; i++) {
+                stmt.setObject(i + 1, params[i]);
+            }
+            stmt.execute();
         } catch (SQLException e) {
             getLogger().error(this.getClass(), e.getMessage());
         } finally {

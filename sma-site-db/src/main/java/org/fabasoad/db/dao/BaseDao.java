@@ -11,8 +11,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Objects;
-import java.util.function.Consumer;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import static org.fabasoad.api.Logger.getLogger;
@@ -82,9 +82,9 @@ public abstract class BaseDao<T extends BasePojo> {
     @SuppressWarnings("unchecked")
     public <C> T get(C id) {
         final String sql = String.format(
-                "SELECT %s FROM %s WHERE %s = %s", String.join(",", getColumns()), getTableName(), getIdColumn(), id);
+                "SELECT %s FROM %s WHERE %s = ?", String.join(",", getColumns()), getTableName(), getIdColumn());
         final Object[] result = new Object[1];
-        adapter.run(sql, rs -> {
+        adapter.run(sql, new Object[] { id }, rs -> {
             try {
                 result[0] = buildObject(rs);
             } catch (Exception e) {
@@ -110,19 +110,22 @@ public abstract class BaseDao<T extends BasePojo> {
     public void update(T obj) {
         String[] columns = getColumnsForUpdate();
         if (columns.length > 0) {
+            Object[] params = new Object[columns.length + 1];
+            IntStream.range(0, columns.length).forEach(i -> params[i] = obj.getProperty(columns[i]));
             final String sql = Stream.of(columns)
-                    .map(c -> String.format("%s = '%s'", c, obj.getProperty(c)))
+                    .map(c -> c + " = ?")
                     .collect(Collectors.joining(
                             ",",
                             String.format("UPDATE %s SET ", getTableName()),
-                            String.format(" WHERE %s = %s", getIdColumn(), obj.getProperty(getIdColumn()))
+                            String.format(" WHERE %s = ?", getIdColumn())
                     ));
-            adapter.run(sql);
+            params[params.length - 1] = obj.getProperty(getIdColumn());
+            adapter.run(sql, params);
         }
     }
 
     public <C> void delete(C id) {
-        final String sql = String.format("DELETE FROM %s WHERE %s = %s", getTableName(), getIdColumn(), id);
-        adapter.run(sql);
+        final String sql = String.format("DELETE FROM %s WHERE %s = ?", getTableName(), getIdColumn());
+        adapter.run(sql, new Object[] { id });
     }
 }
