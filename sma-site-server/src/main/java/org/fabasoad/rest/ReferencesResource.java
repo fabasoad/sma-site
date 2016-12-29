@@ -1,5 +1,6 @@
 package org.fabasoad.rest;
 
+import com.google.common.collect.ImmutableMap;
 import org.fabasoad.db.dao.DaoFactory;
 import org.fabasoad.db.pojo.BasePojo;
 import org.fabasoad.db.pojo.PojoProperties;
@@ -84,7 +85,7 @@ public class ReferencesResource extends BaseResource<ReferencePojo> {
         String fileName = generateNewFileName(fileMetaData.getFileName());
         JSONObject json;
         try {
-            json = buildReferenceJsonObject(fileName);
+            json = buildObject(ImmutableMap.of(PojoProperties.References.FILE_NAME.DTO, fileName));
             uploadFile(fileInputStream, fileName);
         } catch (IOException e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
@@ -114,13 +115,6 @@ public class ReferencesResource extends BaseResource<ReferencePojo> {
         json.put(PojoProperties.References.ID.DTO, id);
         json.put(PojoProperties.References.TITLE.DTO, title);
         return update(json);
-    }
-
-    @SuppressWarnings("unchecked")
-    private JSONObject buildReferenceJsonObject(String fileName) throws IOException {
-        JSONObject result = new JSONObject();
-        result.put(PojoProperties.References.FILE_NAME.DTO, fileName);
-        return result;
     }
 
     @Override

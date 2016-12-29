@@ -2,8 +2,11 @@ package org.fabasoad.rest;
 
 import com.google.common.collect.ImmutableMap;
 import org.fabasoad.db.pojo.ApplicationFormPojo;
+import org.fabasoad.db.pojo.BasePojo;
+import org.fabasoad.db.pojo.PojoProperties;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataParam;
+import org.json.simple.JSONObject;
 
 import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.Consumes;
@@ -18,6 +21,7 @@ import javax.ws.rs.core.Response;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -72,16 +76,23 @@ public class ApplicationFormsResource extends BaseResource<ApplicationFormPojo> 
     @Produces(MediaType.APPLICATION_JSON)
     public Response uploadApplicationForm(@FormDataParam("application-form") InputStream fileInputStream,
                                           @FormDataParam("application-form") FormDataContentDisposition fileMetaData) {
-        String filePath;
+        String fileName = generateNewFileName(fileMetaData.getFileName());
+        JSONObject json;
         try {
-            uploadFile(fileInputStream, fileMetaData.getFileName());
-            filePath = localPath().resolve(fileMetaData.getFileName()).toString();
+            json = buildObject(ImmutableMap.of(ApplicationForms.FILE_NAME.DTO, fileName));
+            uploadFile(fileInputStream, fileName);
         } catch (IOException e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                     .entity(buildError(e.getMessage()).toJSONString())
                     .build();
         }
-        return create(buildObject(ImmutableMap.of(ApplicationForms.FILE_NAME.DTO, filePath)));
+        return create(json);
+    }
+
+    @Override
+    Object getJSONObjectProperty(BasePojo pojo, String propertyName) {
+        return (Objects.equals(propertyName, PojoProperties.References.FILE_NAME.DB)
+                ? webPath() : "") + pojo.getProperty(propertyName);
     }
 
     @DELETE

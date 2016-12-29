@@ -39,7 +39,7 @@
                 <div class="form-group">
                     <label for="reference-upload">File:</label>
                     <input id="reference-upload" type="file" name="reference" class="file-loading" data-show-preview="false"/>
-                    <div id="referenceUploadErrorBlock" class="help-block"></div>
+                    <div id="reference-upload-error-block" class="help-block"></div>
                 </div>
             </div>
         </div>

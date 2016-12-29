@@ -10,7 +10,7 @@ $("#reference-upload").fileinput({
     maxFileCount: 1,
     previewFileType: 'image',
     allowedFileTypes: ['image'],
-    elErrorContainer: "#referenceUploadErrorBlock"
+    elErrorContainer: "#reference-upload-error-block"
 });
 
 $("#reference-upload").on('filebatchuploadsuccess', (event, data) => {
