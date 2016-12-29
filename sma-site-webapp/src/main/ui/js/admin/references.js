@@ -1,19 +1,7 @@
-import {restClient} from './../rest/references-rest-client.js';
-import GalleryEditableBuilder from './../gallery/editable/gallery-editable-builder.js';
-import Constants from './../core/constants.js';
-
-let showMessage = data => {
-    let config = {
-        message: data.message,
-        title: Constants.APPLICATION_NAME
-    };
-    if (data.type === 'error') {
-        config.className = 'alert-error';
-    } else {
-        config.callback = refreshData;
-    }
-    bootbox.alert(config);
-};
+import {restClient} from '../rest/references-rest-client.js';
+import GalleryEditableBuilder from '../gallery/editable/gallery-editable-builder.js';
+import Constants from '../core/constants.js';
+import BootboxAlert from '../core/bootbox-alert.js';
 
 // Reference upload field
 $("#reference-upload").fileinput({
@@ -27,17 +15,17 @@ $("#reference-upload").fileinput({
 
 $("#reference-upload").on('filebatchuploadsuccess', (event, data) => {
     if (data.response.type === 'error') {
-        showMessage(data.response);
+        BootboxAlert.show(data.response, refreshData);
     } else {
         let title = document.getElementById('reference-title').value;
         if (title === '') {
-            showMessage({
+            BootboxAlert.show({
                 type: 'success',
                 message: 'Reference created successfully'
-            });
+            }, refreshData);
         } else {
             restClient.update(data.response.id, {title: title}, json2 => {
-                showMessage(json2);
+                BootboxAlert.show(json2, refreshData);
             });
         }
     }
@@ -55,7 +43,7 @@ let editCallback = (item, event) => {
         callback: title => {
             if (title !== null) {
                 restClient.update(item['id'], {title: title}, json => {
-                    showMessage(json);
+                    BootboxAlert.show(json, refreshData);
                 });
             }
         }
@@ -81,7 +69,7 @@ let removeCallback = (item, event) => {
         callback: result => {
             if (result) {
                 restClient.delete(item['id'], data => {
-                    showMessage(data);
+                    BootboxAlert.show(data, refreshData);
                 });
             }
         }

@@ -9,7 +9,8 @@ export default function RestClientBuilder(url) {
             } catch (e) {
                 json = {
                     type: 'error',
-                    message: data.responseText
+                    message: data.responseText,
+                    status: data.status
                 };
             }
             callback(json);

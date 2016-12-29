@@ -7,6 +7,7 @@ import org.junit.Test;
 
 import static org.fabasoad.db.pojo.PojoProperties.Contacts.PROP_NAME;
 import static org.fabasoad.db.pojo.PojoProperties.Contacts.PROP_VALUE;
+import static org.fabasoad.db.pojo.PojoProperties.Contacts.BODY_KEY;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
@@ -26,23 +27,30 @@ public class ContactsDaoTest {
 
     @Test
     public void testSelect() {
-        ContactsPojo pojo = dao.get("SMA_CONTACTS_BODY");
+        ContactsPojo pojo = dao.get(BODY_KEY);
         assertNotNull(pojo);
-        assertEquals("SMA_CONTACTS_BODY", pojo.getProperty(PROP_NAME.DB));
+        assertEquals(BODY_KEY, pojo.getProperty(PROP_NAME.DB));
     }
 
     @Test
     public void testUpdate() {
-        Object oldValue = dao.get("SMA_CONTACTS_BODY").getProperty(PROP_VALUE.DB);
+        Object initialValue = dao.get(BODY_KEY).getProperty(PROP_VALUE.DB);
 
         ContactsPojo pojo = new ContactsPojo();
-        pojo.setProperty(PROP_NAME.DB, "SMA_CONTACTS_BODY");
+        pojo.setProperty(PROP_NAME.DB, BODY_KEY);
         pojo.setProperty(PROP_VALUE.DB, RandomStringUtils.randomAlphabetic(10));
 
         dao.update(pojo);
-        ContactsPojo actual = dao.get("SMA_CONTACTS_BODY");
+        ContactsPojo actual = dao.get(BODY_KEY);
         assertNotNull(actual);
         assertEquals(pojo.getProperty(PROP_VALUE.DB), actual.getProperty(PROP_VALUE.DB));
-        assertNotEquals(oldValue, actual.getProperty(PROP_VALUE.DB));
+        assertNotEquals(initialValue, actual.getProperty(PROP_VALUE.DB));
+
+        // return to initial state
+        pojo.setProperty(PROP_VALUE.DB, initialValue);
+        dao.update(pojo);
+        ContactsPojo initial = dao.get(BODY_KEY);
+        assertNotNull(initial);
+        assertEquals(pojo.getProperty(PROP_VALUE.DB), initial.getProperty(PROP_VALUE.DB));
     }
 }

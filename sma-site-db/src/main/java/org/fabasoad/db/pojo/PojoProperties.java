@@ -94,9 +94,11 @@ public interface PojoProperties {
             this.DTO = dtoProperty;
         }
 
-         public static Optional<String> fromDto(String dtoProp) {
+        public static Optional<String> fromDto(String dtoProp) {
             return Stream.of(values()).filter(v -> Objects.equals(v.DTO, dtoProp)).map(v -> v.DB).findAny();
         }
+
+        public static String BODY_KEY = "SMA_CONTACTS_BODY";
 
         public final static String TABLE_NAME = "SMA_PARAMS";
     }

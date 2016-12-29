@@ -66,6 +66,7 @@
         </div>
     </div>
 
-    <div id="editor" class="well col-md-9"></div>
+    <div id="editor" class="well"></div>
+    <button id="wysiwyg-save-button" type="button" class="btn btn-primary pull-right">Save</button>
 
 </div>
