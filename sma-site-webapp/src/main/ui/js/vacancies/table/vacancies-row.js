@@ -1,7 +1,7 @@
 export default class VacanciesRow {
 
-    constructor(vacancy, showDetailsCallback) {
-        this.vacancy = vacancy;
+    constructor(item, showDetailsCallback) {
+        this.item = item;
         this.showDetailsCallback = showDetailsCallback;
     }
 
@@ -16,8 +16,8 @@ export default class VacanciesRow {
         button.setAttribute('type', 'button');
         button.classList.add('btn');
         button.classList.add('btn-link');
-        button.innerHTML = this.vacancy['rank'];
-        button.addEventListener('click', event => this.showDetailsCallback(this.vacancy, event));
+        button.innerHTML = this.item['rank'];
+        button.addEventListener('click', event => this.showDetailsCallback(this.item, event));
         return button;
     }
 
@@ -34,23 +34,23 @@ export default class VacanciesRow {
         tr.appendChild(rank);
 
         let vesselType = document.createElement('td');
-        vesselType.innerHTML = this.vacancy['vessel-type'];
+        vesselType.innerHTML = this.item['vessel-type'];
         tr.appendChild(vesselType);
 
         let joiningDate = document.createElement('td');
-        joiningDate.innerHTML = this.vacancy['joining-date'];
+        joiningDate.innerHTML = this.item['joining-date'];
         tr.appendChild(joiningDate);
 
         let contractDuration = document.createElement('td');
-        contractDuration.innerHTML = this.vacancy['contract-duration'];
+        contractDuration.innerHTML = this.item['contract-duration'];
         tr.appendChild(contractDuration);
 
         let nationality = document.createElement('td');
-        nationality.innerHTML = this.vacancy['nationality'];
+        nationality.innerHTML = this.item['nationality'];
         tr.appendChild(nationality);
 
         let wage = document.createElement('td');
-        wage.innerHTML = this.vacancy['wage'];
+        wage.innerHTML = this.item['wage'];
         tr.appendChild(wage);
 
         let editColumn = this.createEditColumn();

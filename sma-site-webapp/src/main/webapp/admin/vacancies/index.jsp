@@ -27,17 +27,17 @@
         </jsp:include>
         <table id="vacancies-table" class="table table-hover table-sm">
             <thead>
-            <tr>
-                <th>#</th>
-                <th>Rank</th>
-                <th>Vessel Type</th>
-                <th>Joining Date</th>
-                <th>Contract Duration</th>
-                <th>Nationality</th>
-                <th>Wage</th>
-                <th></th>
-                <th></th>
-            </tr>
+                <tr>
+                    <th>#</th>
+                    <th>Rank</th>
+                    <th>Vessel Type</th>
+                    <th>Joining Date</th>
+                    <th>Contract Duration</th>
+                    <th>Nationality</th>
+                    <th>Wage</th>
+                    <th></th>
+                    <th></th>
+                </tr>
             </thead>
         </table>
         <jsp:include page="/footer.jsp"/>

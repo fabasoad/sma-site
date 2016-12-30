@@ -10,9 +10,10 @@
     <script src="/public/js/jquery.min.js"></script>
     <script src="/public/js/bootstrap.min.js"></script>
     <script src="/public/js/system.js"></script>
+    <script src="/public/js/bootbox.min.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-            SystemJS.import('/public/js/min/admin/application-forms.js');
+            SystemJS.import('/public/js/dev/admin/application-forms.js');
         });
     </script>
 </head>
@@ -22,9 +23,16 @@
             <jsp:param name="title" value="Administration" />
             <jsp:param name="locationPrefix" value="/admin" />
         </jsp:include>
-        <div>
-            Application Forms
-        </div>
+        <table id="application-forms-table" class="table table-hover table-sm">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Name</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+        </table>
         <jsp:include page="/footer.jsp"/>
     </div>
 </body>

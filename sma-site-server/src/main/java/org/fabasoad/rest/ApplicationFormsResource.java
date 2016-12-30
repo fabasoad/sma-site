@@ -57,7 +57,7 @@ public class ApplicationFormsResource extends BaseResource<ApplicationFormPojo> 
     }
 
     @GET
-    @RolesAllowed("admin")
+//    @RolesAllowed("admin")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getApplicationForms() {
         return getAll();
@@ -91,7 +91,7 @@ public class ApplicationFormsResource extends BaseResource<ApplicationFormPojo> 
 
     @Override
     Object getJSONObjectProperty(BasePojo pojo, String propertyName) {
-        return (Objects.equals(propertyName, PojoProperties.References.FILE_NAME.DB)
+        return (Objects.equals(propertyName, PojoProperties.ApplicationForms.FILE_NAME.DB)
                 ? webPath() : "") + pojo.getProperty(propertyName);
     }
 

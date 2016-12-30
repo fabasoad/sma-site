@@ -1,4 +1,4 @@
-import DomAddButton from '../../dom/dom-add-button.js';
+import DomAddButton from '../../dom/buttons/dom-add-button.js';
 
 export default class NewsEditableAddPanel {
 
