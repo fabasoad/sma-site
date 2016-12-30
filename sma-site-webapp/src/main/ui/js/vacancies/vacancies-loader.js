@@ -6,7 +6,7 @@ export default class VacanciesLoader {
         let table = document.getElementById('vacancies-table');
         table.classList.add('hide');
         restClient.getAll(data => {
-            let element = document.getElementsByTagName("tbody");
+            let element = table.getElementsByTagName("tbody");
             for (let i = element.length - 1; i >= 0; i--) {
                 element[i].parentNode.removeChild(element[i]);
             }

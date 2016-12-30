@@ -53,7 +53,7 @@ public class ApplicationFormsResource extends BaseResource<ApplicationFormPojo> 
 
     @Override
     String getDisplayName() {
-        return "Application-Form";
+        return "Application form";
     }
 
     @GET
@@ -97,7 +97,7 @@ public class ApplicationFormsResource extends BaseResource<ApplicationFormPojo> 
 
     @DELETE
     @Path("{id}")
-    @RolesAllowed("admin")
+//    @RolesAllowed("admin")
     public Response deleteApplicationForm(@PathParam("id") int id) {
         return delete(id);
     }
