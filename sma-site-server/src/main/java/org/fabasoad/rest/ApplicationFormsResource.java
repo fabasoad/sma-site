@@ -13,6 +13,7 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -20,6 +21,10 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.AccessDeniedException;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -27,6 +32,8 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static java.util.Objects.isNull;
+import static org.fabasoad.api.Logger.getLogger;
 import static org.fabasoad.db.pojo.PojoProperties.ApplicationForms;
 
 /**
@@ -57,7 +64,7 @@ public class ApplicationFormsResource extends BaseResource<ApplicationFormPojo> 
     }
 
     @GET
-//    @RolesAllowed("admin")
+    @RolesAllowed("admin")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getApplicationForms() {
         return getAll();
@@ -89,16 +96,51 @@ public class ApplicationFormsResource extends BaseResource<ApplicationFormPojo> 
         return create(json);
     }
 
+    @PUT
+    @Path("{id}")
+    @SuppressWarnings("unchecked")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response updateApplicationForm(@PathParam("id") int id, String input) {
+        String senderName;
+        try {
+            senderName = URLDecoder.decode(input.split("=")[1], StandardCharsets.UTF_8.displayName());
+        } catch (UnsupportedEncodingException e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity(buildError(e.getMessage()).toJSONString())
+                    .build();
+        }
+
+        JSONObject json = new JSONObject();
+        json.put(ApplicationForms.ID.DTO, id);
+        json.put(ApplicationForms.SENDER_NAME.DTO, senderName);
+        return update(json);
+    }
+
     @Override
     Object getJSONObjectProperty(BasePojo pojo, String propertyName) {
-        return (Objects.equals(propertyName, PojoProperties.ApplicationForms.FILE_NAME.DB)
-                ? webPath() : "") + pojo.getProperty(propertyName);
+        if (Objects.equals(propertyName, ApplicationForms.FILE_NAME.DB)) {
+            return webPath() + pojo.getProperty(propertyName);
+        } else if (Objects.equals(propertyName, ApplicationForms.SENDER_NAME.DB)
+                && (isNull(pojo.getProperty(propertyName))
+                    || Objects.equals(pojo.getProperty(propertyName), "null"))) {
+            return "Unknown";
+        } else {
+            return pojo.getProperty(propertyName);
+        }
     }
 
     @DELETE
     @Path("{id}")
-//    @RolesAllowed("admin")
+    @RolesAllowed("admin")
     public Response deleteApplicationForm(@PathParam("id") int id) {
+        try {
+            deleteFile(id, ApplicationForms.FILE_NAME.DB);
+        } catch (AccessDeniedException e) {
+            getLogger().error(getClass(), String.format("Access denied for %s file", e.getMessage()));
+        } catch (IOException e) {
+            getLogger().error(getClass(), e.getMessage());
+        }
         return delete(id);
     }
 }

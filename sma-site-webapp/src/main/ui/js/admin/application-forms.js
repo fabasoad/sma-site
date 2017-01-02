@@ -6,7 +6,7 @@ import BootboxAlert from '../core/bootbox-alert.js';
 let removeCallback = (item, event) => {
     bootbox.confirm({
         title: Constants.APPLICATION_NAME,
-        message: 'Do you really want to remove application form by "' + item['name'] + '"?',
+        message: 'Do you really want to remove application form by "' + item['sender-name'] + '"?',
         buttons: {
             cancel: {
                 label: 'No',
@@ -30,15 +30,15 @@ let removeCallback = (item, event) => {
 let refreshData = () => {
     let table = document.getElementById('application-forms-table');
     table.classList.add('hide');
-    restClient.getAll(data => {
-        if (data.type === 'error') {
-            BootboxAlert.show(data);
+    restClient.getAll(json => {
+        if (json.type === 'error') {
+            BootboxAlert.show(json);
         } else {
             let element = table.getElementsByTagName("tbody");
             for (let i = element.length - 1; i >= 0; i--) {
                 element[i].parentNode.removeChild(element[i]);
             }
-            table.appendChild(ApplicationFormsBuilder.build(data, removeCallback));
+            table.appendChild(ApplicationFormsBuilder.build(json, removeCallback));
             table.classList.remove('hide');
         }
     });

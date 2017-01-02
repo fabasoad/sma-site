@@ -35,11 +35,18 @@
             <div class="account-wall">
                 <img class="img-responsive center-block"
                      src="/public/img/logo/logo_96x96.png"
-                     alt="Southern Maritime Agency">
+                     alt="Southern Maritime Agency"/>
                 <form class="form-signin">
-                    <input id="application-form-upload" type="file" name="application-form"
-                           class="file-loading" data-show-preview="false"/>
-                    <div id="application-form-upload-error-block" class="help-block"></div>
+                    <div class="form-group">
+                        <label for="application-form-sender-name">Name:</label>
+                        <input id="application-form-sender-name" type="text" class="form-control" placeholder="Enter your name"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="application-form-upload">File:</label>
+                        <input id="application-form-upload" type="file" name="application-form"
+                               class="file-loading" data-show-preview="false"/>
+                        <div id="application-form-upload-error-block" class="help-block"></div>
+                    </div>
                 </form>
             </div>
         </div>

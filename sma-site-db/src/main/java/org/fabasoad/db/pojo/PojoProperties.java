@@ -11,7 +11,7 @@ import java.util.stream.Stream;
 public interface PojoProperties {
 
     enum ApplicationForms {
-        ID("SAF_ID", "id"), FILE_NAME("SAF_FILE_NAME", "file-name");
+        ID("SAF_ID", "id"), SENDER_NAME("SAF_SENDER_NAME", "sender-name"), FILE_NAME("SAF_FILE_NAME", "file-name");
 
         public String DB;
         public String DTO;

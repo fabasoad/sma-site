@@ -43,6 +43,7 @@ let __resources = {
         .add('getAll')
         .add('getById')
         .add('create')
+        .add('update')
         .add('delete')
         .build()
 };

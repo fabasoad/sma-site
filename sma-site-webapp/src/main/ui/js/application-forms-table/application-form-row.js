@@ -17,10 +17,10 @@ export default class ApplicationFormRow {
         th.innerHTML = index;
         tr.appendChild(th);
 
-        let name = document.createElement('td');
-        name.classList.add('col-md-9');
-        name.innerHTML = this.item['name'];
-        tr.appendChild(name);
+        let senderNameColumn = document.createElement('td');
+        senderNameColumn.classList.add('col-md-9');
+        senderNameColumn.innerHTML = this.item['sender-name'];
+        tr.appendChild(senderNameColumn);
 
         let downloadColumn = document.createElement('td');
         downloadColumn.classList.add('col-md-1');

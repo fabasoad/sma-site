@@ -13,7 +13,7 @@
     <script src="/public/js/bootbox.min.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-            SystemJS.import('/public/js/dev/admin/application-forms.js');
+            SystemJS.import('/public/js/min/admin/application-forms.js');
         });
     </script>
 </head>

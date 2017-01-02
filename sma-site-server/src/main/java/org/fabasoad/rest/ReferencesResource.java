@@ -123,18 +123,12 @@ public class ReferencesResource extends BaseResource<ReferencePojo> {
                 ? webPath() : "") + pojo.getProperty(propertyName);
     }
 
-    private void deleteFile(int id) throws IOException {
-        String fileName = (String) DaoFactory.create(getPojoClass())
-                .get(id).getProperty(PojoProperties.References.FILE_NAME.DB);
-        Files.delete(localPath().resolve(fileName));
-    }
-
     @DELETE
     @Path("{id}")
     @RolesAllowed("admin")
     public Response deleteReference(@PathParam("id") int id) {
         try {
-            deleteFile(id);
+            deleteFile(id, PojoProperties.References.FILE_NAME.DB);
         } catch (AccessDeniedException e) {
             getLogger().error(getClass(), String.format("Access denied for %s file", e.getMessage()));
         } catch (IOException e) {

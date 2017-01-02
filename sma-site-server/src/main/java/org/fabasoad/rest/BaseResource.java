@@ -4,6 +4,7 @@ import org.fabasoad.api.Logger;
 import org.fabasoad.db.dao.BaseDao;
 import org.fabasoad.db.dao.DaoFactory;
 import org.fabasoad.db.pojo.BasePojo;
+import org.fabasoad.db.pojo.PojoProperties;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -13,6 +14,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Collection;
@@ -134,6 +136,11 @@ abstract class BaseResource<T extends BasePojo> {
 
     Object getJSONObjectProperty(BasePojo pojo, String propertyName) {
         return pojo.getProperty(propertyName);
+    }
+
+    void deleteFile(int id, String propertyName) throws IOException {
+        String fileName = (String) DaoFactory.create(getPojoClass()).get(id).getProperty(propertyName);
+        Files.delete(localPath().resolve(fileName));
     }
 
     @SuppressWarnings("unchecked")

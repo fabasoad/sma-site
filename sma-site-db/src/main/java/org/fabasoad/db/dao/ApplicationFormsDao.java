@@ -27,11 +27,11 @@ class ApplicationFormsDao extends BaseDao<ApplicationFormPojo> {
 
     @Override
     String[] getColumns() {
-        return new String[] { ApplicationForms.ID.DB, ApplicationForms.FILE_NAME.DB };
+        return new String[] { ApplicationForms.ID.DB, ApplicationForms.SENDER_NAME.DB, ApplicationForms.FILE_NAME.DB };
     }
 
     @Override
     String[] getColumnsForUpdate() {
-        return new String[] { ApplicationForms.FILE_NAME.DB };
+        return new String[] { ApplicationForms.SENDER_NAME.DB };
     }
 }
