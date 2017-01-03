@@ -19,6 +19,7 @@
     "jquery": "^3.1.1",
     "system.js": "^0.19.41",
     "bootstrap-wysiwyg": "*",
-    "bootbox.js": "bootbox#^4.4.0"
+    "bootbox.js": "bootbox#^4.4.0",
+    "eonasdan-bootstrap-datetimepicker": "^4.17.44"
   }
 }
