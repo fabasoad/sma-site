@@ -1,5 +1,6 @@
 package org.fabasoad.rest;
 
+import org.apache.commons.lang3.StringUtils;
 import org.fabasoad.db.pojo.PojoProperties;
 import org.fabasoad.db.pojo.VacanciesPojo;
 import org.json.simple.JSONObject;
@@ -8,14 +9,23 @@ import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Path("vacancies")
 public class VacanciesResource extends BaseResource<VacanciesPojo> {
+
+    private final Pattern PARSE_INPUT_PATTERN = Pattern.compile("([^\\&=]*)");
 
     @Override
     public Class<VacanciesPojo> getPojoClass() {
@@ -55,21 +65,25 @@ public class VacanciesResource extends BaseResource<VacanciesPojo> {
     @RolesAllowed("admin")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response createVacancy(@FormParam("rank") String rank,
-                                  @FormParam("vessel-type") String vesselType,
-                                  @FormParam("joining-date") String joiningDate,
-                                  @FormParam("contract-duration") String contractDuration,
-                                  @FormParam("nationality") String nationality,
-                                  @FormParam("wage") String wage,
-                                  @FormParam("description") String description) {
-        JSONObject jsonVacancy = new JSONObject();
-        jsonVacancy.put("rank", rank);
-        jsonVacancy.put("vessel-type", vesselType);
-        jsonVacancy.put("joining-date", joiningDate);
-        jsonVacancy.put("contract-duration", contractDuration);
-        jsonVacancy.put("nationality", nationality);
-        jsonVacancy.put("wage", wage);
-        jsonVacancy.put("description", description);
+    public Response createVacancy(String input) {
+        final Matcher matcher = PARSE_INPUT_PATTERN.matcher(input);
+        final JSONObject jsonVacancy = new JSONObject();
+        final List<String> values = new LinkedList<>();
+        while (matcher.find()) {
+            String value = matcher.group(0);
+            if (StringUtils.isNotEmpty(value)) {
+                values.add(value);
+            }
+        }
+        try {
+            for (int i = 0; i < values.size(); i += 2) {
+                jsonVacancy.put(values.get(i), URLDecoder.decode(values.get(i + 1), StandardCharsets.UTF_8.displayName()));
+            }
+        } catch (UnsupportedEncodingException e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity(buildError(e.getMessage()).toJSONString())
+                    .build();
+        }
         return create(jsonVacancy);
     }
 

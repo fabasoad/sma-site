@@ -15,7 +15,7 @@
     <script src="/public/js/system.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-            SystemJS.import('/public/js/dev/admin/vacancies.js');
+            SystemJS.import('/public/js/min/admin/vacancies.js');
         });
     </script>
 </head>
@@ -25,6 +25,15 @@
             <jsp:param name="title" value="Administration" />
             <jsp:param name="locationPrefix" value="/admin" />
         </jsp:include>
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div class="btn-group">
+                    <button id="vacancy-add-button" type="button" class="btn btn-default btn-sm">
+                        <span class="glyphicon glyphicon-plus"></span>
+                    </button>
+                </div>
+            </div>
+        </div>
         <table id="vacancies-table" class="table table-hover table-sm">
             <thead>
                 <tr>
