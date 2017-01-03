@@ -1,5 +1,6 @@
 package org.fabasoad.db.dao;
 
+import org.fabasoad.db.exceptions.ValidationException;
 import org.fabasoad.db.pojo.BasePojo;
 import org.junit.Test;
 
@@ -31,7 +32,7 @@ abstract class BaseDaoTest<T extends BasePojo, E extends Enum<E>> {
     abstract String getColumnForUpdate();
 
     @Test
-    public void testCRUD() {
+    public void testCRUD() throws ValidationException {
         T expected = createPojo();
 
         @SuppressWarnings("unchecked")

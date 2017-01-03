@@ -19,6 +19,7 @@
     <properties>
         <apache.commons-lang3.version>3.5</apache.commons-lang3.version>
         <apache.commons-io.version>2.5</apache.commons-io.version>
+        <apache.commons-validator.version>1.5.1</apache.commons-validator.version>
         <fabasoad.commons-lang.version>0.2</fabasoad.commons-lang.version>
     </properties>
 
@@ -55,6 +56,11 @@
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-lang3</artifactId>
                 <version>${apache.commons-lang3.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>commons-validator</groupId>
+                <artifactId>commons-validator</artifactId>
+                <version>${apache.commons-validator.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.github.fabasoad</groupId>

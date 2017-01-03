@@ -1,6 +1,8 @@
 package org.fabasoad.db.dao;
 
 import org.fabasoad.db.DbAdapter;
+import org.fabasoad.db.exceptions.ValidationException;
+import org.fabasoad.db.pojo.PojoProperties;
 import org.fabasoad.db.pojo.UserPojo;
 
 import static org.fabasoad.db.pojo.PojoProperties.SecuritySchemas;
@@ -16,6 +18,15 @@ class UsersDao extends BaseDao<UserPojo> {
 
     UsersDao(DbAdapter adapter) {
         super(adapter);
+    }
+
+    @Override
+    void validate(String dbColumnName, Object value) throws ValidationException {
+        Users enumObject = Users.fromDb(dbColumnName)
+                .orElseThrow(() -> new ValidationException(String.format("Unknown column with name '%s'", dbColumnName)));
+        if (!enumObject.isValid((String) value)) {
+            throw new ValidationException(String.format("Field '%s' is not valid", enumObject.DTO));
+        }
     }
 
     @Override

@@ -7,15 +7,18 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Admin: Vacancies</title>
     <link rel="stylesheet" href="/public/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="/public/css/bootstrap-datetimepicker.min.css" />
     <link rel="stylesheet" href="/public/css/min/admin/vacancies.css" />
     <script src="/public/js/jquery.min.js"></script>
+    <script src="/public/js/moment.min.js"></script>
     <script src="/public/js/bootstrap.min.js"></script>
+    <script src="/public/js/bootstrap-datetimepicker.min.js"></script>
     <script src="/public/js/bootbox.min.js"></script>
     <script src="/public/js/require.js"></script>
     <script src="/public/js/system.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-            SystemJS.import('/public/js/min/admin/vacancies.js');
+            SystemJS.import('/public/js/dev/admin/vacancies.js');
         });
     </script>
 </head>

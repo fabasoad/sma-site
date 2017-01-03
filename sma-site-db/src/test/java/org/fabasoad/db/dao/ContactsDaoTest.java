@@ -2,6 +2,7 @@ package org.fabasoad.db.dao;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.fabasoad.db.pojo.ContactsPojo;
+import org.fabasoad.db.pojo.PojoProperties;
 import org.junit.BeforeClass;
 import org.junit.Test;
 

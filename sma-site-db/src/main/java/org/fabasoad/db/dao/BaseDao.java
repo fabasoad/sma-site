@@ -2,6 +2,7 @@ package org.fabasoad.db.dao;
 
 import org.apache.commons.lang3.StringUtils;
 import org.fabasoad.db.DbAdapter;
+import org.fabasoad.db.exceptions.ValidationException;
 import org.fabasoad.db.pojo.BasePojo;
 
 import java.lang.reflect.ParameterizedType;
@@ -37,8 +38,16 @@ public abstract class BaseDao<T extends BasePojo> {
 
     abstract String[] getColumnsForUpdate();
 
-    private Object[] getValuesForInsert(T obj) {
-        return Stream.of(getColumnsForInsert()).map(obj::getProperty).toArray();
+    abstract void validate(String dbColumnName, Object value) throws ValidationException;
+
+    private Object[] getValuesForInsert(T obj) throws ValidationException {
+        String[] columns = getColumnsForInsert();
+        Object[] properties = new Object[columns.length];
+        for (int i = 0; i < columns.length; i++) {
+            validate(columns[i], obj.getProperty(columns[i]));
+            properties[i] = obj.getProperty(columns[i]);
+        }
+        return properties;
     }
 
     @SuppressWarnings("unchecked")
@@ -94,7 +103,7 @@ public abstract class BaseDao<T extends BasePojo> {
         return (T) result[0];
     }
 
-    public int create(T obj) {
+    public int create(T obj) throws ValidationException {
         final Object[] params = getValuesForInsert(obj);
         final String sql = String.format(
                 "INSERT INTO %s (%s) VALUES (%s)",

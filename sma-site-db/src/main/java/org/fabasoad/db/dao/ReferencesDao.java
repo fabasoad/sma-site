@@ -1,8 +1,10 @@
 package org.fabasoad.db.dao;
 
 import org.fabasoad.db.DbAdapter;
+import org.fabasoad.db.exceptions.ValidationException;
 import org.fabasoad.db.pojo.ReferencePojo;
 
+import static org.fabasoad.db.pojo.PojoProperties.References;
 import static org.fabasoad.db.pojo.PojoProperties.References.ID;
 import static org.fabasoad.db.pojo.PojoProperties.References.TITLE;
 import static org.fabasoad.db.pojo.PojoProperties.References.FILE_NAME;
@@ -16,6 +18,15 @@ class ReferencesDao extends BaseDao<ReferencePojo> {
 
     ReferencesDao(DbAdapter adapter) {
         super(adapter);
+    }
+
+    @Override
+    void validate(String dbColumnName, Object value) throws ValidationException {
+        References enumObject = References.fromDb(dbColumnName)
+                .orElseThrow(() -> new ValidationException(String.format("Unknown column with name '%s'", dbColumnName)));
+        if (!enumObject.isValid((String) value)) {
+            throw new ValidationException(String.format("Field '%s' is not valid", enumObject.DTO));
+        }
     }
 
     @Override

@@ -35,7 +35,8 @@ gulp.task('css-bower', () => {
     let locations = [
         'bower_components/bootstrap/dist/css/bootstrap.min.css',
         'bower_components/bootstrap-fileinput/css/fileinput.min.css',
-        'bower_components/ekko-lightbox/dist/ekko-lightbox.min.css'
+        'bower_components/ekko-lightbox/dist/ekko-lightbox.min.css',
+        'bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css'
     ];
     for (let location of locations) {
         streams.push(gulp.src(location).pipe(gulp.dest('src/main/webapp/public/css')));
@@ -54,7 +55,9 @@ gulp.task('js-bower', () => {
         'bower_components/bootstrap-wysiwyg/bootstrap-wysiwyg.js',
         'bower_components/bootstrap-wysiwyg/external/jquery.hotkeys.js',
         'bower_components/ekko-lightbox/dist/ekko-lightbox.min.js',
+        'bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js',
         'bower_components/jquery/dist/jquery.min.js',
+        'bower_components/moment/min/moment.min.js',
         'bower_components/require.js/require.js',
         'bower_components/system.js/dist/system.js'
     ];

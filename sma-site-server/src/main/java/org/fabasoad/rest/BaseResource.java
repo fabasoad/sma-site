@@ -3,8 +3,8 @@ package org.fabasoad.rest;
 import org.fabasoad.api.Logger;
 import org.fabasoad.db.dao.BaseDao;
 import org.fabasoad.db.dao.DaoFactory;
+import org.fabasoad.db.exceptions.ValidationException;
 import org.fabasoad.db.pojo.BasePojo;
-import org.fabasoad.db.pojo.PojoProperties;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -37,7 +37,7 @@ abstract class BaseResource<T extends BasePojo> {
         return "/public/data/" + folder + "/";
     }
 
-    Path localPath() {
+    private Path localPath() {
         String folder = getClass().getAnnotation(javax.ws.rs.Path.class).value();
         return Paths.get(System.getProperty("user.dir"), "sma-site-webapp", "src", "main", "webapp", "public", "data", folder);
     }
@@ -105,7 +105,12 @@ abstract class BaseResource<T extends BasePojo> {
 
     Response create(JSONObject json) {
         BaseDao<T> dao = DaoFactory.create(getPojoClass());
-        int id = dao.create(buildPojo(json));
+        int id;
+        try {
+            id = dao.create(buildPojo(json));
+        } catch (ValidationException e) {
+            return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
+        }
         String message;
         if (id == -1) {
             message = getDisplayName() + " is not created";

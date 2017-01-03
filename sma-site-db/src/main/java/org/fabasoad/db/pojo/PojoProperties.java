@@ -1,5 +1,9 @@
 package org.fabasoad.db.pojo;
 
+import org.apache.commons.lang3.StringUtils;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Stream;
@@ -11,7 +15,14 @@ import java.util.stream.Stream;
 public interface PojoProperties {
 
     enum ApplicationForms {
-        ID("SAF_ID", "id"), SENDER_NAME("SAF_SENDER_NAME", "sender-name"), FILE_NAME("SAF_FILE_NAME", "file-name");
+        ID("SAF_ID", "id"),
+        SENDER_NAME("SAF_SENDER_NAME", "sender-name"),
+        FILE_NAME("SAF_FILE_NAME", "file-name") {
+            @Override
+            public boolean isValid(String value) {
+                return StringUtils.isNotEmpty(value);
+            }
+        };
 
         public String DB;
         public String DTO;
@@ -25,11 +36,26 @@ public interface PojoProperties {
             return Stream.of(values()).filter(v -> Objects.equals(v.DTO, dtoProp)).map(v -> v.DB).findAny();
         }
 
+        public static Optional<ApplicationForms> fromDb(String dbProp) {
+            return Stream.of(values()).filter(v -> Objects.equals(v.DB, dbProp)).findAny();
+        }
+
+        public boolean isValid(String value) {
+            return true;
+        }
+
         public final static String TABLE_NAME = "SMA_APPLICATION_FORMS";
     }
 
     enum References {
-        ID("SR_ID", "id"), TITLE("SR_TITLE", "title"), FILE_NAME("SR_FILE_NAME", "src");
+        ID("SR_ID", "id"),
+        TITLE("SR_TITLE", "title"),
+        FILE_NAME("SR_FILE_NAME", "src") {
+            @Override
+            public boolean isValid(String value) {
+                return StringUtils.isNotEmpty(value);
+            }
+        };
 
         public String DB;
         public String DTO;
@@ -43,10 +69,31 @@ public interface PojoProperties {
             return Stream.of(values()).filter(v -> Objects.equals(v.DTO, dtoProp)).map(v -> v.DB).findAny();
         }
 
+        public static Optional<References> fromDb(String dbProp) {
+            return Stream.of(values()).filter(v -> Objects.equals(v.DB, dbProp)).findAny();
+        }
+
+        public boolean isValid(String value) {
+            return true;
+        }
+
         public final static String TABLE_NAME = "SMA_REFERENCES";
     }
+
     enum News {
-        ID("SN_ID", "id" ) , TITLE("SN_TITLE", "title"), BODY("SN_BODY", "body"), CREATION_DATE("SN_CREATION_DATE", "creation-date");
+        ID("SN_ID", "id"),
+        TITLE("SN_TITLE", "title") {
+            @Override
+            public boolean isValid(String value) {
+                return StringUtils.isNotEmpty(value);
+            }
+        }, BODY("SN_BODY", "body") {
+            @Override
+            public boolean isValid(String value) {
+                return StringUtils.isNotEmpty(value);
+            }
+        },
+        CREATION_DATE("SN_CREATION_DATE", "creation-date");
 
         public String DB;
         public String DTO;
@@ -60,13 +107,69 @@ public interface PojoProperties {
             return Stream.of(values()).filter(v -> Objects.equals(v.DTO, dtoProp)).map(v -> v.DB).findAny();
         }
 
+        public static Optional<News> fromDb(String dbProp) {
+            return Stream.of(values()).filter(v -> Objects.equals(v.DB, dbProp)).findAny();
+        }
+
+        public boolean isValid(String value) {
+            return true;
+        }
+
         public final static String TABLE_NAME = "SMA_NEWS";
     }
 
     enum Vacancies {
-        ID("SV_ID", "id"), RANK("SV_RANK", "rank"), VESSEL_TYPE("SV_VESSEL_TYPE", "vessel-type"), JOINING_DATE("SV_JOINING_DATE", "joining-date"),
-        CONTRACT_DURATION("SV_CONTRACT_DURATION", "contract-duration"), NATIONALITY("SV_NATIONALITY", "nationality"), WAGE("SV_WAGE", "wage"),
-        DESCRIPTION("SV_DESCRIPTION", "description");
+        ID("SV_ID", "id"),
+        RANK("SV_RANK", "rank") {
+            @Override
+            public boolean isValid(String value) {
+                return StringUtils.isNotEmpty(value);
+            }
+        },
+        VESSEL_TYPE("SV_VESSEL_TYPE", "vessel-type"),
+        JOINING_DATE("SV_JOINING_DATE", "joining-date") {
+            @Override
+            public boolean isValid(String value) {
+                if (StringUtils.isEmpty(value)) {
+                    return false;
+                }
+
+                SimpleDateFormat sdf = new SimpleDateFormat("YYYY-MM-dd");
+                sdf.setLenient(false);
+
+                try {
+                    sdf.parse(value);
+                } catch (ParseException e) {
+                    return false;
+                }
+
+                return true;
+            }
+        },
+        CONTRACT_DURATION("SV_CONTRACT_DURATION", "contract-duration") {
+            @Override
+            public boolean isValid(String value) {
+                return StringUtils.isNotEmpty(value);
+            }
+        },
+        NATIONALITY("SV_NATIONALITY", "nationality") {
+            @Override
+            public boolean isValid(String value) {
+                return StringUtils.isNotEmpty(value);
+            }
+        },
+        WAGE("SV_WAGE", "wage") {
+            @Override
+            public boolean isValid(String value) {
+                return StringUtils.isNotEmpty(value);
+            }
+        },
+        DESCRIPTION("SV_DESCRIPTION", "description") {
+            @Override
+            public boolean isValid(String value) {
+                return StringUtils.isNotEmpty(value);
+            }
+        };
 
         public String DB;
         public String DTO;
@@ -80,11 +183,25 @@ public interface PojoProperties {
             return Stream.of(values()).filter(v -> Objects.equals(v.DTO, dtoProp)).map(v -> v.DB).findAny();
         }
 
+        public static Optional<Vacancies> fromDb(String dbProp) {
+            return Stream.of(values()).filter(v -> Objects.equals(v.DB, dbProp)).findAny();
+        }
+
+        public boolean isValid(String value) {
+            return true;
+        }
+
         public final static String TABLE_NAME = "SMA_VACANCIES";
     }
 
     enum Contacts {
-        PROP_NAME("SP_PROP_NAME", "prop-name"), PROP_VALUE("SP_PROP_VALUE", "prop-value");
+        PROP_NAME("SP_PROP_NAME", "prop-name"),
+        PROP_VALUE("SP_PROP_VALUE", "prop-value") {
+            @Override
+            public boolean isValid(String value) {
+                return StringUtils.isNotEmpty(value);
+            }
+        };
 
         public String DB;
         public String DTO;
@@ -98,13 +215,23 @@ public interface PojoProperties {
             return Stream.of(values()).filter(v -> Objects.equals(v.DTO, dtoProp)).map(v -> v.DB).findAny();
         }
 
-        public static String BODY_KEY = "SMA_CONTACTS_BODY";
+        public static Optional<Contacts> fromDb(String dbProp) {
+            return Stream.of(values()).filter(v -> Objects.equals(v.DB, dbProp)).findAny();
+        }
 
+        public boolean isValid(String value) {
+            return true;
+        }
+
+        public final static String BODY_KEY = "SMA_CONTACTS_BODY";
         public final static String TABLE_NAME = "SMA_PARAMS";
     }
 
     enum Users {
-        ID("SU_ID", "id"), EMAIL("SU_EMAIL", "email"), PASSWORD("SU_PASSWORD", "password"), SECURITY_SCHEMA_ID("SU_SECURITY_SCHEMA_ID", "security-schema-id");
+        ID("SU_ID", "id"),
+        EMAIL("SU_EMAIL", "email"),
+        PASSWORD("SU_PASSWORD", "password"),
+        SECURITY_SCHEMA_ID("SU_SECURITY_SCHEMA_ID", "security-schema-id");
 
         public String DB;
         public String DTO;
@@ -116,6 +243,14 @@ public interface PojoProperties {
 
         public static Optional<String> fromDto(String dtoProp) {
             return Stream.of(values()).filter(v -> Objects.equals(v.DTO, dtoProp)).map(v -> v.DB).findAny();
+        }
+
+        public static Optional<Users> fromDb(String dbProp) {
+            return Stream.of(values()).filter(v -> Objects.equals(v.DB, dbProp)).findAny();
+        }
+
+        public boolean isValid(String value) {
+            return true;
         }
 
         public final static String TABLE_NAME = "SMA_USERS";
@@ -136,6 +271,14 @@ public interface PojoProperties {
             return Stream.of(values()).filter(v -> Objects.equals(v.DTO, dtoProp)).map(v -> v.DB).findAny();
         }
 
+        public static Optional<SecuritySchemas> fromDb(String dbProp) {
+            return Stream.of(values()).filter(v -> Objects.equals(v.DB, dbProp)).findAny();
+        }
+
+        public boolean isValid(String value) {
+            return true;
+        }
+
         public final static String TABLE_NAME = "SMA_SECURITY_SCHEMAS";
     }
 
@@ -154,6 +297,14 @@ public interface PojoProperties {
             return Stream.of(values()).filter(v -> Objects.equals(v.DTO, dtoProp)).map(v -> v.DB).findAny();
         }
 
+        public static Optional<UserRoles> fromDb(String dbProp) {
+            return Stream.of(values()).filter(v -> Objects.equals(v.DB, dbProp)).findAny();
+        }
+
+        public boolean isValid(String value) {
+            return true;
+        }
+
         public final static String TABLE_NAME = "SMA_USER_ROLES";
     }
 
@@ -170,6 +321,14 @@ public interface PojoProperties {
 
         public static Optional<String> fromDto(String dtoProp) {
             return Stream.of(values()).filter(v -> Objects.equals(v.DTO, dtoProp)).map(v -> v.DB).findAny();
+        }
+
+        public static Optional<UsersRolesRelations> fromDb(String dbProp) {
+            return Stream.of(values()).filter(v -> Objects.equals(v.DB, dbProp)).findAny();
+        }
+
+        public boolean isValid(String value) {
+            return true;
         }
 
         public final static String TABLE_NAME = "SMA_USERS_ROLES_RELATIONS";

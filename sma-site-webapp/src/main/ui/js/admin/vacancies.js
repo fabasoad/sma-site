@@ -7,27 +7,24 @@ import VacancyDialogBox from '../vacancies/vacancy-dialog-box.js';
 
 document.getElementById('vacancy-add-button').addEventListener('click', event => {
     VacancyDialogBox.show({}, {
-            label: 'Create',
-            callback: (obj, event) => {
-                restClient.create(obj, json => {
-                    BootboxAlert.show(json, refreshData);
-                });
-            }
+        label: 'Create',
+        callback: (obj, event) => {
+            restClient.create(obj, json => {
+                BootboxAlert.show(json, refreshData);
+            });
         }
-    );
+    });
 });
 
 let editCallback = (item, event) => {
-    VacancyDialogBox.show(
-        item, {
-            label: 'Save',
-            callback: (obj, event) => {
-                restClient.update(item['id'], obj, json => {
-                    BootboxAlert.show(json, refreshData);
-                });
-            }
+    VacancyDialogBox.show(item, {
+        label: 'Save',
+        callback: (obj, event) => {
+            restClient.update(item['id'], obj, json => {
+                BootboxAlert.show(json, refreshData);
+            });
         }
-    );
+    });
 };
 
 let removeCallback = (item, event) => {

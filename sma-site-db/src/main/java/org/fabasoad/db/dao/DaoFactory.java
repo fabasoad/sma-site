@@ -13,7 +13,7 @@ import org.fabasoad.db.pojo.*;
 public class DaoFactory extends ParametersAware {
 
     @SuppressWarnings("unchecked")
-    public static <T extends BasePojo> BaseDao<T> create(Class<T> pojoClazz) {
+    public static <T extends BasePojo, E extends Enum<E>> BaseDao<T> create(Class<T> pojoClazz) {
         readParameters();
 
         DbAdapter adapter = DbAdapterFactory.create(SqlType.SQLITE, properties.getProperty(DEPLOY_PATH_PARAM_NAME));

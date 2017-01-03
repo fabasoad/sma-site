@@ -1,8 +1,10 @@
 package org.fabasoad.db.dao;
 
 import org.fabasoad.db.DbAdapter;
+import org.fabasoad.db.exceptions.ValidationException;
 import org.fabasoad.db.pojo.ContactsPojo;
 
+import static org.fabasoad.db.pojo.PojoProperties.Contacts;
 import static org.fabasoad.db.pojo.PojoProperties.Contacts.PROP_NAME;
 import static org.fabasoad.db.pojo.PojoProperties.Contacts.PROP_VALUE;
 import static org.fabasoad.db.pojo.PojoProperties.Contacts.TABLE_NAME;
@@ -10,6 +12,15 @@ import static org.fabasoad.db.pojo.PojoProperties.Contacts.TABLE_NAME;
 class ContactsDao extends BaseDao<ContactsPojo> {
 
     ContactsDao(DbAdapter adapter) { super(adapter); }
+
+    @Override
+    void validate(String dbColumnName, Object value) throws ValidationException {
+        Contacts enumObject = Contacts.fromDb(dbColumnName)
+                .orElseThrow(() -> new ValidationException(String.format("Unknown column with name '%s'", dbColumnName)));
+        if (!enumObject.isValid((String) value)) {
+            throw new ValidationException(String.format("Field '%s' is not valid", enumObject.DTO));
+        }
+    }
 
     @Override
     String getTableName() {
