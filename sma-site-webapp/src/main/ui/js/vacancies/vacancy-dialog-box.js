@@ -53,8 +53,7 @@ export default class VacancyDialogBox {
                     <input id="vacancy-contract-duration" type="text" class="form-control" placeholder="` + (item['contract-duration'] || '') + `"/>
                 </div>
                 <div class="col-sm-1"></div>
-                <div class="col-sm-6 form
-            <div class="form-group">-group vacancy-form-group">
+                <div class="col-sm-6 form-group vacancy-form-group">
                     <label for="vacancy-wage">Wage:</label>
                     <input id="vacancy-wage" type="text" class="form-control" placeholder="` + (item['wage'] || '') + `"/>
                 </div>                   
