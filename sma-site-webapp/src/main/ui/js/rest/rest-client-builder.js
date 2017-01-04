@@ -33,6 +33,17 @@ export default function RestClientBuilder(url) {
             });
         },
         create(obj, callback) {
+            try {
+                this.validate(obj);
+            } catch (e) {
+                if (typeof callback === 'function') {
+                    callback({
+                        type: 'validation-error',
+                        message: e.message
+                    });
+                }
+                return;
+            }
             $.ajax({
                 type: 'POST',
                 url: __url,
@@ -61,7 +72,9 @@ export default function RestClientBuilder(url) {
         }
     };
 
-    let result = {};
+    let result = {
+        validate: obj => {}
+    };
 
     return {
         add(method) {

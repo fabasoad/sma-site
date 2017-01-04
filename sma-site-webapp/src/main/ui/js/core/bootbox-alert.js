@@ -4,7 +4,7 @@ export default class BootboxAlert {
 
     static show(data, callback) {
         let config = {
-            message: data.message || 'Error occurs during contacts saving. Status code: ' + data.status,
+            message: data.message || 'Error occurs during contacts saving.' + (data.status ? ' Status code: ' + data.status : ''),
             title: Constants.APPLICATION_NAME
         };
         if (data.type === 'error') {
