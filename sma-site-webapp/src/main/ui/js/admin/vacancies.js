@@ -5,11 +5,22 @@ import Constants from '../core/constants.js';
 import BootboxAlert from '../core/bootbox-alert.js';
 import VacancyDialogBox from '../vacancies/vacancy-dialog-box.js';
 
-document.getElementById('vacancy-add-button').addEventListener('click', event => {
+document.getElementById('vacancy-confirm-button').addEventListener('click', event => {
     VacancyDialogBox.show({}, {
         label: 'Create',
         callback: (obj, event) => {
             let result = true;
+
+            let clearErrors = () => {
+                $('div[id^="vacancy-error-"]').html('');
+                let labeledGroups = document.getElementsByClassName('vacancy-labeled-group');
+                for (let i = 0; i < labeledGroups.length; i++) {
+                    labeledGroups.item(i).classList.remove('alert-error');
+                }
+            };
+
+            clearErrors();
+
             restClient.create(obj, json => {
                 if (json.type === 'validation-error') {
                     let findParent =
@@ -17,7 +28,9 @@ document.getElementById('vacancy-add-button').addEventListener('click', event =>
 
                     result = false;
                     for (let error of json.errors) {
-                        findParent(document.getElementById('vacancy-' + error.id).parentNode).classList.add('alert-error');
+                        let errorDiv = document.getElementById('vacancy-error-' + error.id);
+                        errorDiv.innerHTML = error.message;
+                        findParent(errorDiv.parentNode).classList.add('alert-error');
                     }
                 } else {
                     BootboxAlert.show(json, refreshData);

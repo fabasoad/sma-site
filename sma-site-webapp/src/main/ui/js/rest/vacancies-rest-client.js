@@ -18,19 +18,19 @@ restClient.validate = obj => {
             id: 'joining-date',
             message: notEmptyMessage('joining-date')
         });
-    }
-    let joiningDate = moment(obj['joining-date'], ['YYYY-MM-DD']);
-    if (!joiningDate.isValid()) {
-        errors.push({
-            id: 'joining-date',
-            message: label('joining-date') + ' is invalid. Valid format is "YYYY-MM-DD"'
-        });
-    }
-    if (joiningDate < moment()) {
-        errors.push({
-            id: 'joining-date',
-            message: label('joining-date') + " cannot be less than today's date"
-        });
+    } else {
+        let joiningDate = moment(obj['joining-date'], ['YYYY-MM-DD']);
+        if (!joiningDate.isValid()) {
+            errors.push({
+                id: 'joining-date',
+                message: label('joining-date') + ' is invalid. Valid format is "YYYY-MM-DD"'
+            });
+        } else if (joiningDate < moment()) {
+            errors.push({
+                id: 'joining-date',
+                message: label('joining-date') + " cannot be less than today's date"
+            });
+        }
     }
     if (!obj['contract-duration'] || obj['contract-duration'] === '') {
         errors.push({

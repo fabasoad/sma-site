@@ -7,31 +7,31 @@ let showDetailsCallback = (item, event) => {
         title: Constants.APPLICATION_NAME,
         message: `
             <div class="container vacancy-details">
-                <div class="raw">
+                <div class="row">
                     <div class="col-sm-4"><strong>Rank:</strong></div>
                     <div class="col-sm-8">` + item['rank'] + `</div>
                 </div>
-                <div class="raw">
+                <div class="row">
                     <div class="col-sm-4"><strong>Vessel Type:</strong></div>
                     <div class="col-sm-8">` + item['vessel-type'] + `</div>
                 </div>
-                <div class="raw">
+                <div class="row">
                     <div class="col-sm-4"><strong>Joining Date:</strong></div>
                     <div class="col-sm-8">` + item['joining-date'] + `</div>
                 </div>
-                <div class="raw">
+                <div class="row">
                     <div class="col-sm-4"><strong>Nationality:</strong></div>
                     <div class="col-sm-8">` + item['nationality'] + `</div>
                 </div>
-                <div class="raw">
+                <div class="row">
                     <div class="col-sm-4"><strong>Contract Duration:</strong></div>
                     <div class="col-sm-8">` + item['contract-duration'] + `</div>
                 </div>
-                <div class="raw">
+                <div class="row">
                     <div class="col-sm-4"><strong>Wage:</strong></div>
                     <div class="col-sm-8">` + item['wage'] + `</div>
                 </div>
-                <div class="raw">
+                <div class="row">
                     <div class="col-sm-4"><strong>Description:</strong></div>
                     <div class="col-sm-8">` + item['description'] + `</div>
                 </div>

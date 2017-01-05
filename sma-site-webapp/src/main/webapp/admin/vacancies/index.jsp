@@ -31,7 +31,7 @@
         <div class="panel panel-default">
             <div class="panel-body">
                 <div class="btn-group">
-                    <button id="vacancy-add-button" type="button" class="btn btn-default btn-sm">
+                    <button id="vacancy-confirm-button" type="button" class="btn btn-default btn-sm">
                         <span class="glyphicon glyphicon-plus"></span>
                     </button>
                 </div>
