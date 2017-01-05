@@ -2,25 +2,62 @@ import {REST_CLIENT_RESOURCE, RestClientFactory} from './rest-client-factory.js'
 
 let restClient = RestClientFactory.get(REST_CLIENT_RESOURCE.VACANCIES);
 restClient.validate = obj => {
-    let message = field => '"' + field + '" field is not valid';
+    let label = id => $("label[for='vacancy-" + id + "']").text();
+    let notEmptyMessage = id => label(id) + ' cannot be empty';
+
+    let errors = [];
 
     if (!obj['rank'] || obj['rank'] === '') {
-        throw new Error(message('rank'));
+        errors.push({
+            id: 'rank',
+            message: notEmptyMessage('rank')
+        });
     }
-    if (!obj['joining-date'] || obj['joining-date'] === '' || !moment(obj['joining-date'], ['YYYY-MM-DD']).isValid()) {
-        throw new Error(message('joining-date'));
+    if (!obj['joining-date'] || obj['joining-date'] === '') {
+        errors.push({
+            id: 'joining-date',
+            message: notEmptyMessage('joining-date')
+        });
+    }
+    let joiningDate = moment(obj['joining-date'], ['YYYY-MM-DD']);
+    if (!joiningDate.isValid()) {
+        errors.push({
+            id: 'joining-date',
+            message: label('joining-date') + ' is invalid. Valid format is "YYYY-MM-DD"'
+        });
+    }
+    if (joiningDate < moment()) {
+        errors.push({
+            id: 'joining-date',
+            message: label('joining-date') + " cannot be less than today's date"
+        });
     }
     if (!obj['contract-duration'] || obj['contract-duration'] === '') {
-        throw new Error(message('contract-duration'));
+        errors.push({
+            id: 'contract-duration',
+            message: notEmptyMessage('contract-duration')
+        });
     }
     if (!obj['nationality'] || obj['nationality'] === '') {
-        throw new Error(message('nationality'));
+        errors.push({
+            id: 'nationality',
+            message: notEmptyMessage('nationality')
+        });
     }
     if (!obj['wage'] || obj['wage'] === '') {
-        throw new Error(message('wage'));
+        errors.push({
+            id: 'wage',
+            message: notEmptyMessage('wage')
+        });
     }
     if (!obj['description'] || obj['description'] === '') {
-        throw new Error(message('description'));
+        errors.push({
+            id: 'description',
+            message: notEmptyMessage('description')
+        });
+    }
+    if (errors.length > 0) {
+        throw errors;
     }
 };
 export {restClient};

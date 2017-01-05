@@ -39,7 +39,7 @@ export default function RestClientBuilder(url) {
                 if (typeof callback === 'function') {
                     callback({
                         type: 'validation-error',
-                        message: e.message
+                        errors: e
                     });
                 }
                 return;

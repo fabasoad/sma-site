@@ -9,9 +9,21 @@ document.getElementById('vacancy-add-button').addEventListener('click', event =>
     VacancyDialogBox.show({}, {
         label: 'Create',
         callback: (obj, event) => {
+            let result = true;
             restClient.create(obj, json => {
-                BootboxAlert.show(json, refreshData);
+                if (json.type === 'validation-error') {
+                    let findParent =
+                        el => el.classList.contains('vacancy-labeled-group') ? el : findParent(el.parentNode);
+
+                    result = false;
+                    for (let error of json.errors) {
+                        findParent(document.getElementById('vacancy-' + error.id).parentNode).classList.add('alert-error');
+                    }
+                } else {
+                    BootboxAlert.show(json, refreshData);
+                }
             });
+            return result;
         }
     });
 });
