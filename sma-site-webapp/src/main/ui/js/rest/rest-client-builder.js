@@ -54,6 +54,17 @@ export default function RestClientBuilder(url) {
             });
         },
         update(id, obj, callback) {
+            try {
+                this.validate(obj);
+            } catch (e) {
+                if (typeof callback === 'function') {
+                    callback({
+                        type: 'validation-error',
+                        errors: e
+                    });
+                }
+                return;
+            }
             $.ajax({
                 type: 'PUT',
                 url: __url + '/' + id,

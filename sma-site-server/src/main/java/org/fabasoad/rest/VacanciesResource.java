@@ -4,6 +4,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.fabasoad.db.pojo.PojoProperties;
 import org.fabasoad.db.pojo.VacanciesPojo;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.*;
@@ -66,23 +68,28 @@ public class VacanciesResource extends BaseResource<VacanciesPojo> {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response createVacancy(String input) {
-        final Matcher matcher = PARSE_INPUT_PATTERN.matcher(input);
-        final JSONObject jsonVacancy = new JSONObject();
-        final List<String> values = new LinkedList<>();
-        while (matcher.find()) {
-            String value = matcher.group(0);
-            if (StringUtils.isNotEmpty(value)) {
-                values.add(value);
-            }
-        }
+        JSONObject jsonVacancy;
         try {
-            for (int i = 0; i < values.size(); i += 2) {
-                jsonVacancy.put(values.get(i), URLDecoder.decode(values.get(i + 1), StandardCharsets.UTF_8.displayName()));
+            jsonVacancy = (JSONObject) new JSONParser().parse(input);
+        } catch (ParseException ignored) {
+            final Matcher matcher = PARSE_INPUT_PATTERN.matcher(input);
+            jsonVacancy = new JSONObject();
+            final List<String> values = new LinkedList<>();
+            while (matcher.find()) {
+                String value = matcher.group(0);
+                if (StringUtils.isNotEmpty(value)) {
+                    values.add(value);
+                }
             }
-        } catch (UnsupportedEncodingException e) {
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                    .entity(buildError(e.getMessage()).toJSONString())
-                    .build();
+            try {
+                for (int i = 0; i < values.size(); i += 2) {
+                    jsonVacancy.put(values.get(i), URLDecoder.decode(values.get(i + 1), StandardCharsets.UTF_8.displayName()));
+                }
+            } catch (UnsupportedEncodingException e) {
+                return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                        .entity(buildError(e.getMessage()).toJSONString())
+                        .build();
+            }
         }
         return create(jsonVacancy);
     }

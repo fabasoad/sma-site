@@ -18,11 +18,9 @@ class NewsDao extends BaseDao<NewsPojo> {
 
     @Override
     void validate(String dbColumnName, Object value) throws ValidationException {
-        News enumObject = News.fromDb(dbColumnName)
-                .orElseThrow(() -> new ValidationException(String.format("Unknown column with name '%s'", dbColumnName)));
-        if (!enumObject.isValid((String) value)) {
-            throw new ValidationException(String.format("Field '%s' is not valid", enumObject.DTO));
-        }
+        News.fromDb(dbColumnName)
+                .orElseThrow(() -> new ValidationException(String.format("Unknown column with name '%s'", dbColumnName)))
+                .validate((String) value);
     }
 
     @Override

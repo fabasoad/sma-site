@@ -19,11 +19,9 @@ class ApplicationFormsDao extends BaseDao<ApplicationFormPojo> {
 
     @Override
     void validate(String dbColumnName, Object value) throws ValidationException {
-        ApplicationForms enumObject = ApplicationForms.fromDb(dbColumnName)
-                .orElseThrow(() -> new ValidationException(String.format("Unknown column with name '%s'", dbColumnName)));
-        if (!enumObject.isValid((String) value)) {
-            throw new ValidationException(String.format("Field '%s' is not valid", enumObject.DTO));
-        }
+        ApplicationForms.fromDb(dbColumnName)
+                .orElseThrow(() -> new ValidationException(String.format("Unknown column with name '%s'", dbColumnName)))
+                .validate((String) value);
     }
 
     @Override

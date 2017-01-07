@@ -21,11 +21,9 @@ class VacanciesDao extends BaseDao<VacanciesPojo> {
 
     @Override
     void validate(String dbColumnName, Object value) throws ValidationException {
-        Vacancies enumObject = Vacancies.fromDb(dbColumnName)
-                .orElseThrow(() -> new ValidationException(String.format("Unknown column with name '%s'", dbColumnName)));
-        if (!enumObject.isValid((String) value)) {
-            throw new ValidationException(String.format("Field '%s' is not valid", enumObject.DTO));
-        }
+        Vacancies.fromDb(dbColumnName)
+                .orElseThrow(() -> new ValidationException(String.format("Unknown column with name '%s'", dbColumnName)))
+                .validate((String) value);
     }
 
     @Override

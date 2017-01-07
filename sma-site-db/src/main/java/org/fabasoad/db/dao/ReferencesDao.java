@@ -22,11 +22,9 @@ class ReferencesDao extends BaseDao<ReferencePojo> {
 
     @Override
     void validate(String dbColumnName, Object value) throws ValidationException {
-        References enumObject = References.fromDb(dbColumnName)
-                .orElseThrow(() -> new ValidationException(String.format("Unknown column with name '%s'", dbColumnName)));
-        if (!enumObject.isValid((String) value)) {
-            throw new ValidationException(String.format("Field '%s' is not valid", enumObject.DTO));
-        }
+        References.fromDb(dbColumnName)
+                .orElseThrow(() -> new ValidationException(String.format("Unknown column with name '%s'", dbColumnName)))
+                .validate((String) value);
     }
 
     @Override

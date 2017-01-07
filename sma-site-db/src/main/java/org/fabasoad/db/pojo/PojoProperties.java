@@ -1,9 +1,13 @@
 package org.fabasoad.db.pojo;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.DateUtils;
+import org.fabasoad.db.exceptions.ValidationException;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Stream;
@@ -19,8 +23,10 @@ public interface PojoProperties {
         SENDER_NAME("SAF_SENDER_NAME", "sender-name"),
         FILE_NAME("SAF_FILE_NAME", "file-name") {
             @Override
-            public boolean isValid(String value) {
-                return StringUtils.isNotEmpty(value);
+            public void validate(String value) throws ValidationException {
+                if (StringUtils.isEmpty(value)) {
+                    throw new ValidationException(String.format("'%s' field cannot be empty", this.DTO));
+                }
             }
         };
 
@@ -40,8 +46,7 @@ public interface PojoProperties {
             return Stream.of(values()).filter(v -> Objects.equals(v.DB, dbProp)).findAny();
         }
 
-        public boolean isValid(String value) {
-            return true;
+        public void validate(String value) throws ValidationException {
         }
 
         public final static String TABLE_NAME = "SMA_APPLICATION_FORMS";
@@ -52,8 +57,10 @@ public interface PojoProperties {
         TITLE("SR_TITLE", "title"),
         FILE_NAME("SR_FILE_NAME", "src") {
             @Override
-            public boolean isValid(String value) {
-                return StringUtils.isNotEmpty(value);
+            public void validate(String value) throws ValidationException {
+                if (StringUtils.isEmpty(value)) {
+                    throw new ValidationException(String.format("'%s' field cannot be empty", this.DTO));
+                }
             }
         };
 
@@ -73,8 +80,7 @@ public interface PojoProperties {
             return Stream.of(values()).filter(v -> Objects.equals(v.DB, dbProp)).findAny();
         }
 
-        public boolean isValid(String value) {
-            return true;
+        public void validate(String value) throws ValidationException {
         }
 
         public final static String TABLE_NAME = "SMA_REFERENCES";
@@ -84,13 +90,17 @@ public interface PojoProperties {
         ID("SN_ID", "id"),
         TITLE("SN_TITLE", "title") {
             @Override
-            public boolean isValid(String value) {
-                return StringUtils.isNotEmpty(value);
+            public void validate(String value) throws ValidationException {
+                if (StringUtils.isEmpty(value)) {
+                    throw new ValidationException(String.format("'%s' field cannot be empty", this.DTO));
+                }
             }
         }, BODY("SN_BODY", "body") {
             @Override
-            public boolean isValid(String value) {
-                return StringUtils.isNotEmpty(value);
+            public void validate(String value) throws ValidationException {
+                if (StringUtils.isEmpty(value)) {
+                    throw new ValidationException(String.format("'%s' field cannot be empty", this.DTO));
+                }
             }
         },
         CREATION_DATE("SN_CREATION_DATE", "creation-date");
@@ -111,8 +121,7 @@ public interface PojoProperties {
             return Stream.of(values()).filter(v -> Objects.equals(v.DB, dbProp)).findAny();
         }
 
-        public boolean isValid(String value) {
-            return true;
+        public void validate(String value) throws ValidationException {
         }
 
         public final static String TABLE_NAME = "SMA_NEWS";
@@ -122,52 +131,65 @@ public interface PojoProperties {
         ID("SV_ID", "id"),
         RANK("SV_RANK", "rank") {
             @Override
-            public boolean isValid(String value) {
-                return StringUtils.isNotEmpty(value);
+            public void validate(String value) throws ValidationException {
+                if (StringUtils.isEmpty(value)) {
+                    throw new ValidationException(String.format("'%s' field cannot be empty", this.DTO));
+                }
             }
         },
         VESSEL_TYPE("SV_VESSEL_TYPE", "vessel-type"),
         JOINING_DATE("SV_JOINING_DATE", "joining-date") {
             @Override
-            public boolean isValid(String value) {
+            public void validate(String value) throws ValidationException {
                 if (StringUtils.isEmpty(value)) {
-                    return false;
+                    throw new ValidationException(String.format("'%s' field cannot be empty", this.DTO));
                 }
 
-                SimpleDateFormat sdf = new SimpleDateFormat("YYYY-MM-dd");
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
                 sdf.setLenient(false);
 
+                Date date;
                 try {
-                    sdf.parse(value);
+                    date = sdf.parse(value);
                 } catch (ParseException e) {
-                    return false;
+                    throw new ValidationException(String.format("'%s' field is invalid. Valid format is \"YYYY-MM-DD\"", this.DTO));
                 }
 
-                return true;
+                if (DateUtils.truncatedCompareTo(date, new Date(), Calendar.DAY_OF_MONTH) < 0) {
+                    throw new ValidationException(String.format("'%s' field cannot be less than today's date", this.DTO));
+                }
             }
         },
         CONTRACT_DURATION("SV_CONTRACT_DURATION", "contract-duration") {
             @Override
-            public boolean isValid(String value) {
-                return StringUtils.isNotEmpty(value);
+            public void validate(String value) throws ValidationException {
+                if (StringUtils.isEmpty(value)) {
+                    throw new ValidationException(String.format("'%s' field cannot be empty", this.DTO));
+                }
             }
         },
         NATIONALITY("SV_NATIONALITY", "nationality") {
             @Override
-            public boolean isValid(String value) {
-                return StringUtils.isNotEmpty(value);
+            public void validate(String value) throws ValidationException {
+                if (StringUtils.isEmpty(value)) {
+                    throw new ValidationException(String.format("'%s' field cannot be empty", this.DTO));
+                }
             }
         },
         WAGE("SV_WAGE", "wage") {
             @Override
-            public boolean isValid(String value) {
-                return StringUtils.isNotEmpty(value);
+            public void validate(String value) throws ValidationException {
+                if (StringUtils.isEmpty(value)) {
+                    throw new ValidationException(String.format("'%s' field cannot be empty", this.DTO));
+                }
             }
         },
         DESCRIPTION("SV_DESCRIPTION", "description") {
             @Override
-            public boolean isValid(String value) {
-                return StringUtils.isNotEmpty(value);
+            public void validate(String value) throws ValidationException {
+                if (StringUtils.isEmpty(value)) {
+                    throw new ValidationException(String.format("'%s' field cannot be empty", this.DTO));
+                }
             }
         };
 
@@ -187,8 +209,7 @@ public interface PojoProperties {
             return Stream.of(values()).filter(v -> Objects.equals(v.DB, dbProp)).findAny();
         }
 
-        public boolean isValid(String value) {
-            return true;
+        public void validate(String value) throws ValidationException {
         }
 
         public final static String TABLE_NAME = "SMA_VACANCIES";
@@ -198,8 +219,10 @@ public interface PojoProperties {
         PROP_NAME("SP_PROP_NAME", "prop-name"),
         PROP_VALUE("SP_PROP_VALUE", "prop-value") {
             @Override
-            public boolean isValid(String value) {
-                return StringUtils.isNotEmpty(value);
+            public void validate(String value) throws ValidationException {
+                if (StringUtils.isEmpty(value)) {
+                    throw new ValidationException(String.format("'%s' field cannot be empty", this.DTO));
+                }
             }
         };
 
@@ -219,8 +242,7 @@ public interface PojoProperties {
             return Stream.of(values()).filter(v -> Objects.equals(v.DB, dbProp)).findAny();
         }
 
-        public boolean isValid(String value) {
-            return true;
+        public void validate(String value) throws ValidationException {
         }
 
         public final static String BODY_KEY = "SMA_CONTACTS_BODY";
@@ -249,8 +271,7 @@ public interface PojoProperties {
             return Stream.of(values()).filter(v -> Objects.equals(v.DB, dbProp)).findAny();
         }
 
-        public boolean isValid(String value) {
-            return true;
+        public void validate(String value) throws ValidationException {
         }
 
         public final static String TABLE_NAME = "SMA_USERS";
@@ -275,8 +296,7 @@ public interface PojoProperties {
             return Stream.of(values()).filter(v -> Objects.equals(v.DB, dbProp)).findAny();
         }
 
-        public boolean isValid(String value) {
-            return true;
+        public void validate(String value) throws ValidationException {
         }
 
         public final static String TABLE_NAME = "SMA_SECURITY_SCHEMAS";
@@ -301,8 +321,7 @@ public interface PojoProperties {
             return Stream.of(values()).filter(v -> Objects.equals(v.DB, dbProp)).findAny();
         }
 
-        public boolean isValid(String value) {
-            return true;
+        public void validate(String value) throws ValidationException {
         }
 
         public final static String TABLE_NAME = "SMA_USER_ROLES";
@@ -327,8 +346,7 @@ public interface PojoProperties {
             return Stream.of(values()).filter(v -> Objects.equals(v.DB, dbProp)).findAny();
         }
 
-        public boolean isValid(String value) {
-            return true;
+        public void validate(String value) throws ValidationException {
         }
 
         public final static String TABLE_NAME = "SMA_USERS_ROLES_RELATIONS";
