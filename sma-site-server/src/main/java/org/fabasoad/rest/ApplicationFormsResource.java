@@ -7,6 +7,8 @@ import org.fabasoad.db.pojo.PojoProperties;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.Consumes;
@@ -102,18 +104,22 @@ public class ApplicationFormsResource extends BaseResource<ApplicationFormPojo> 
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response updateApplicationForm(@PathParam("id") int id, String input) {
-        String senderName;
+        JSONObject json;
         try {
-            senderName = URLDecoder.decode(input.split("=")[1], StandardCharsets.UTF_8.displayName());
-        } catch (UnsupportedEncodingException e) {
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                    .entity(buildError(e.getMessage()).toJSONString())
-                    .build();
+            json = (JSONObject) new JSONParser().parse(input);
+        } catch (ParseException ignored) {
+            String senderName;
+            try {
+                senderName = URLDecoder.decode(input.split("=")[1], StandardCharsets.UTF_8.displayName());
+            } catch (UnsupportedEncodingException e) {
+                return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                        .entity(buildError(e.getMessage()).toJSONString())
+                        .build();
+            }
+            json = new JSONObject();
+            json.put(ApplicationForms.SENDER_NAME.DTO, senderName);
         }
-
-        JSONObject json = new JSONObject();
         json.put(ApplicationForms.ID.DTO, id);
-        json.put(ApplicationForms.SENDER_NAME.DTO, senderName);
         return update(json);
     }
 

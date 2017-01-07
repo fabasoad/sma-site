@@ -8,6 +8,8 @@ import org.fabasoad.db.pojo.ReferencePojo;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.Consumes;
@@ -102,18 +104,23 @@ public class ReferencesResource extends BaseResource<ReferencePojo> {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response updateReference(@PathParam("id") int id, String input) {
-        String title;
+        JSONObject json;
         try {
-            title = URLDecoder.decode(input.split("=")[1], StandardCharsets.UTF_8.displayName());
-        } catch (UnsupportedEncodingException e) {
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                    .entity(buildError(e.getMessage()).toJSONString())
-                    .build();
-        }
+            json = (JSONObject) new JSONParser().parse(input);
+        } catch (ParseException ignored) {
+            String title;
+            try {
+                title = URLDecoder.decode(input.split("=")[1], StandardCharsets.UTF_8.displayName());
+            } catch (UnsupportedEncodingException e) {
+                return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                        .entity(buildError(e.getMessage()).toJSONString())
+                        .build();
+            }
 
-        JSONObject json = new JSONObject();
+            json = new JSONObject();
+            json.put(PojoProperties.References.TITLE.DTO, title);
+        }
         json.put(PojoProperties.References.ID.DTO, id);
-        json.put(PojoProperties.References.TITLE.DTO, title);
         return update(json);
     }
 
