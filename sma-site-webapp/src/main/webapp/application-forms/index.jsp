@@ -23,7 +23,7 @@
     </script>
 </head>
 <body>
-<div class="container sma-container">
+<div class="container">
     <jsp:include page="/header.jsp">
         <jsp:param name="title" value="Southern Maritime Agency"/>
     </jsp:include>
