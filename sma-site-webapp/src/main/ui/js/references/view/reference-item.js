@@ -1,6 +1,6 @@
-export default class GalleryItem {
+export default class ReferenceItem {
 
-    createGalleryControlPanel() {
+    createReferencesControlPanel() {
     }
 
     /*
@@ -29,7 +29,7 @@ export default class GalleryItem {
         div.classList.add('col-xs-12');
         div.appendChild(a);
 
-        let controlPanel = this.createGalleryControlPanel();
+        let controlPanel = this.createReferencesControlPanel();
         if (controlPanel) {
             div.appendChild(controlPanel.build(item));
         }

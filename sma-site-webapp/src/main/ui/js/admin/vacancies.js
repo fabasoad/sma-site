@@ -6,7 +6,7 @@ import BootboxAlert from '../core/bootbox-alert.js';
 import VacancyDialogBox from '../vacancies/vacancy-dialog-box.js';
 
 document.getElementById('vacancy-confirm-button').addEventListener('click', event => {
-    VacancyDialogBox.show({}, {
+    new VacancyDialogBox({}).show({
         label: 'Create',
         callback: (obj, event) => {
             let result = true;
@@ -42,7 +42,7 @@ document.getElementById('vacancy-confirm-button').addEventListener('click', even
 });
 
 let editCallback = (item, event) => {
-    VacancyDialogBox.show(item, {
+    new VacancyDialogBox(item).show({
         label: 'Save',
         callback: (obj, event) => {
             restClient.update(item['id'], obj, json => {

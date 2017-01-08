@@ -8,13 +8,14 @@
     <title>Admin: News</title>
     <link rel="shortcut icon" href="/public/img/logo/logo-48x48.png">
     <link rel="stylesheet" href="/public/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="/public/css/min/admin/news.css" />
     <script src="/public/js/jquery.min.js"></script>
     <script src="/public/js/bootstrap.min.js"></script>
     <script src="/public/js/system.js"></script>
     <script src="/public/js/bootbox.min.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-            SystemJS.import('/public/js/min/admin/news.js');
+            SystemJS.import('/public/js/dev/admin/news.js');
         });
     </script>
 </head>
@@ -27,7 +28,7 @@
         <div class="panel panel-default">
             <div class="panel-body">
                 <div class="btn-group">
-                    <button id="news-add-button" type="button" class="btn btn-default btn-sm">
+                    <button id="news-confirm-button" type="button" class="btn btn-default btn-sm">
                         <span class="glyphicon glyphicon-plus"></span>
                     </button>
                 </div>

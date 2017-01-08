@@ -1,17 +1,9 @@
-<!-- http://www.bootply.com/87859 -->
-<style rel="stylesheet">
-    #editor {
-        overflow: scroll;
-        max-height: 300px
-    }
-</style>
+<link rel="stylesheet" href="/public/css/min/admin/wysiwyg.css" />
 <script src="/public/js/jquery.hotkeys.js"></script>
 <script src="/public/js/bootstrap-wysiwyg.js"></script>
 <script>
     document.addEventListener("DOMContentLoaded", function () {
-        let editor = $('#editor');
-        editor.wysiwyg();
-        editor.cleanHtml();
+        SystemJS.import('/public/js/min/core/wysiwyg.js');
     });
 </script>
 <div>

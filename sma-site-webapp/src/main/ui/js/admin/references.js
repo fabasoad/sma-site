@@ -1,5 +1,6 @@
 import {restClient} from '../rest/references-rest-client.js';
-import GalleryEditableBuilder from '../gallery/editable/gallery-editable-builder.js';
+import ReferencesEditableBuilder from '../references/view/editable/references-editable-builder.js';
+import ReferencesLoader from '../references/references-loader.js';
 import Constants from '../core/constants.js';
 import BootboxAlert from '../core/bootbox-alert.js';
 
@@ -76,14 +77,6 @@ let removeCallback = (item, event) => {
     });
 };
 
-let refreshData = () => restClient.getAll(data => {
-    let referencesGallery = document.getElementById('references-gallery');
-    referencesGallery.classList.add('hide');
-    while (referencesGallery.firstChild) {
-        referencesGallery.removeChild(referencesGallery.firstChild);
-    }
-    referencesGallery.appendChild(new GalleryEditableBuilder(editCallback, removeCallback).build(data));
-    referencesGallery.classList.remove('hide');
-});
+let refreshData = () => ReferencesLoader.load(new ReferencesEditableBuilder(editCallback, removeCallback));
 
 refreshData();

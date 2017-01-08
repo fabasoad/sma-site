@@ -1,30 +1,10 @@
-import Constants from '../core/constants.js';
+import BaseDialogBox from '../core/base-dialog-box.js';
 
-let handleCallback = (callback, item, event) => {
-    let result = true;
-    if (typeof callback === 'function') {
-        let getVacancyValue =
-            property => document.getElementById('vacancy-' + property).value || item[property];
+export default class VacancyDialogBox extends BaseDialogBox {
 
-        let properties = [
-            'rank', 'vessel-type', 'joining-date', 'contract-duration', 'nationality', 'wage', 'description'
-        ];
-        let obj = {};
-        for (let property of properties) {
-            obj[property] = getVacancyValue(property);
-        }
-
-        result = callback(obj, event);
-    }
-    return result;
-};
-
-export default class VacancyDialogBox {
-
-    static show(item, confirmButton) {
-        bootbox.dialog({
-            title: Constants.APPLICATION_NAME,
-            onEscape: true,
+    constructor(item) {
+        super({
+            id: 'vacancy',
             message: `
                 <div class="form-group vacancy-labeled-group">
                     <label for="vacancy-rank">Rank</label>
@@ -80,19 +60,12 @@ export default class VacancyDialogBox {
                     });
                 </script>
             `,
-            buttons: {
-                cancel: {
-                    label: 'Cancel',
-                    className: 'btn-default'
-                },
-                confirm: {
-                    label: confirmButton.label,
-                    className: 'btn-success',
-                    callback: event => {
-                        return handleCallback(confirmButton.callback, item, event);
-                    }
-                }
-            }
+            properties: ['rank', 'vessel-type', 'joining-date', 'contract-duration', 'nationality', 'wage', 'description']
         });
+        this.item = item;
+    }
+
+    getProperty(key) {
+        return this.item[key] || '';
     }
 }

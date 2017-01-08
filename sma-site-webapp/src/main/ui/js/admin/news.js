@@ -1,12 +1,18 @@
-import {restClient} from './../rest/news-rest-client.js';
-import NewsEditableBuilder from './../news/editable/news-editable-builder.js';
-import Constants from './../core/constants.js';
+import {restClient} from '../rest/news-rest-client.js';
+import NewsEditableBuilder from '../news/view/editable/news-editable-builder.js';
+import NewsLoader from '../news/news-loader.js';
+import Constants from '../core/constants.js';
 import BootboxAlert from '../core/bootbox-alert.js';
+import NewsDialogBox from '../news/news-dialog-box.js';
 
-document.getElementById('news-add-button').addEventListener('click', event => {
-    BootboxAlert.show({
-        type: 'success',
-        message: 'Hello'
+document.getElementById('news-confirm-button').addEventListener('click', event => {
+    new NewsDialogBox({}).show({
+        label: 'Create',
+        callback: (obj, event) => {
+            restClient.create(obj, json => {
+                BootboxAlert.show(json, refreshData);
+            });
+        }
     });
 });
 
@@ -30,13 +36,14 @@ let removeCallback = (item, event) => {
         },
         callback: result => {
             if (result) {
-                restClient.delete(item['id'], message => console.log(message));
+                restClient.delete(item['id'], data => {
+                    BootboxAlert.show(data, refreshData);
+                });
             }
         }
     });
 };
 
-restClient.getAll(data => {
-    let div = document.getElementById('news-container');
-    div.appendChild(new NewsEditableBuilder(editCallback, removeCallback).build(data));
-});
+let refreshData = () => NewsLoader.load(new NewsEditableBuilder(editCallback, removeCallback));
+
+refreshData();

@@ -1,7 +1,7 @@
-import DomEditButton from '../../dom/buttons/dom-edit-button.js';
-import DomRemoveButton from '../../dom/buttons/dom-remove-button.js';
+import DomEditButton from '../../../dom/buttons/dom-edit-button.js';
+import DomRemoveButton from '../../../dom/buttons/dom-remove-button.js';
 
-export default class GalleryEditableControlPanel {
+export default class ReferencesEditableControlPanel {
 
     constructor(editCallback, removeCallback) {
         this.editCallback = editCallback;
