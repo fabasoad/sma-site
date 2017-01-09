@@ -18,13 +18,13 @@ export default class NewsBuilder {
         </div>
     </div>
      */
-    build(json) {
+    build(json, minimized) {
         let div = document.createElement('div');
         div.setAttribute('class', 'col-md-12');
 
         let divPosts = document.createElement('div');
         for (let item of json.data) {
-            divPosts.appendChild(this.createNewsItem().build(item));
+            divPosts.appendChild(this.createNewsItem().build(item, minimized));
         }
         div.appendChild(divPosts);
 

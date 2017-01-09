@@ -7,11 +7,11 @@ export default class NewsItem {
         return new NewsHeader();
     }
 
-    build(item) {
+    build(item, minimized) {
         let div = document.createElement('div');
         div.setAttribute('class', 'panel');
         div.appendChild(this.createNewsHeader().build(item));
-        div.appendChild(new NewsBody(item['id'], item['body']));
+        div.appendChild(new NewsBody(item['id'], item['body'], minimized));
         return div;
     }
 }

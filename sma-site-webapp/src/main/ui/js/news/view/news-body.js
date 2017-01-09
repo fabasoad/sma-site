@@ -7,18 +7,20 @@ export default class NewsBody {
     //     quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
     //     consequat. Duis aute irure dolor in... <a href="/news/2">Read more</a>
     // </div>
-    constructor(id, body) {
+    constructor(id, body, minimized = true) {
         let div = document.createElement('div');
         div.setAttribute('class', 'panel-body');
-        div.innerHTML = (body.length > MAX_TEXT_LENGTH ? body.substr(0, MAX_TEXT_LENGTH) + '...' : body) + ' ';
+        div.innerHTML = (minimized && body.length > MAX_TEXT_LENGTH ? body.substr(0, MAX_TEXT_LENGTH) + '...' : body) + ' ';
 
-        let readMoreText = document.createTextNode('Read more');
+        if (minimized) {
+            let readMoreText = document.createTextNode('Read more');
 
-        let a = document.createElement('a');
-        a.setAttribute('href', '/news#' + id);
-        a.appendChild(readMoreText);
+            let a = document.createElement('a');
+            a.setAttribute('href', '/news#' + id);
+            a.appendChild(readMoreText);
 
-        div.appendChild(a);
+            div.appendChild(a);
+        }
 
         return div;
     }
