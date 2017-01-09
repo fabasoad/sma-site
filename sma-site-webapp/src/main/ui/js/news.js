@@ -1,7 +1,8 @@
-import {restClient} from './rest/news-rest-client.js';
 import NewsBuilder from './news/view/news-builder.js';
+import NewsLoader from './news/news-loader.js';
 
-restClient.getAll(data => {
-    let div = document.getElementById('news-container');
-    div.appendChild(new NewsBuilder().build(data));
-});
+let loadData = () => NewsLoader.load(new NewsBuilder());
+
+window.addEventListener('hashchange', loadData);
+
+loadData();

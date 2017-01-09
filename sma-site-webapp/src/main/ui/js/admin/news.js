@@ -53,4 +53,6 @@ let removeCallback = (item, event) => {
 
 let refreshData = () => NewsLoader.load(new NewsEditableBuilder(editCallback, removeCallback));
 
+window.addEventListener('hashchange', refreshData);
+
 refreshData();
