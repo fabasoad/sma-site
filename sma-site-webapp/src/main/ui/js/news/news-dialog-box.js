@@ -12,7 +12,7 @@ export default class NewsDialogBox extends BaseDialogBox {
                     <input id="news-title" type="text" class="form-control" placeholder="` + (item['title'] || '') + `"/>
                 </div>
                 <div class="form-group news-labeled-group">
-                    <label>Body</label>
+                    <label for="news-body">Body</label>
                     <div id="news-error-body" class="alert-danger"></div>
                     <div>
                         <div class="btn-toolbar" data-role="editor-toolbar" data-target="#editor">

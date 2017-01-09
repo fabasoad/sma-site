@@ -9,9 +9,34 @@ document.getElementById('news-confirm-button').addEventListener('click', event =
     new NewsDialogBox({}).show({
         label: 'Create',
         callback: (obj, event) => {
+            let result = true;
+
+            let clearErrors = () => {
+                $('div[id^="news-error-"]').html('');
+                let labeledGroups = document.getElementsByClassName('news-labeled-group');
+                for (let i = 0; i < labeledGroups.length; i++) {
+                    labeledGroups.item(i).classList.remove('alert-error');
+                }
+            };
+
+            clearErrors();
+
             restClient.create(obj, json => {
-                BootboxAlert.show(json, refreshData);
+                if (json.type === 'validation-error') {
+                    let findParent =
+                        el => el.classList.contains('news-labeled-group') ? el : findParent(el.parentNode);
+
+                    result = false;
+                    for (let error of json.errors) {
+                        let errorDiv = document.getElementById('news-error-' + error.id);
+                        errorDiv.innerHTML = error.message;
+                        findParent(errorDiv.parentNode).classList.add('alert-error');
+                    }
+                } else {
+                    BootboxAlert.show(json, refreshData);
+                }
             });
+            return result;
         }
     });
 });
