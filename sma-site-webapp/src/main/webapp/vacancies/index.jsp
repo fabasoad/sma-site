@@ -26,19 +26,21 @@
             <jsp:param name="title" value="Southern Maritime Agency" />
         </jsp:include>
         <jsp:include page="/carousel.jsp"/>
-        <table id="vacancies-table" class="table table-hover table-sm hide">
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Rank</th>
-                    <th>Vessel Type</th>
-                    <th>Joining Date</th>
-                    <th>Contract Duration</th>
-                    <th>Nationality</th>
-                    <th>Wage</th>
-                </tr>
-            </thead>
-        </table>
+        <div id="vacancies-table-div">
+            <table id="vacancies-table" class="table table-hover table-sm hide">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Rank</th>
+                        <th>Vessel Type</th>
+                        <th>Joining Date</th>
+                        <th>Contract Duration</th>
+                        <th>Nationality</th>
+                        <th>Wage</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
         <jsp:include page="/footer.jsp"/>
     </div>
 </body>
