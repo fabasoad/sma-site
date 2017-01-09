@@ -65,7 +65,7 @@ export default class NewsDialogBox extends BaseDialogBox {
                             </div>
                         </div>
                     
-                        <div id="editor" class="well news-wysiwyg"></div>
+                        <div id="editor" class="well news-wysiwyg">` + (item['body'] || '') + `</div>
                     
                     </div>
                 </div>            

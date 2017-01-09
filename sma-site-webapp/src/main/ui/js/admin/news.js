@@ -17,7 +17,14 @@ document.getElementById('news-confirm-button').addEventListener('click', event =
 });
 
 let editCallback = (item, event) => {
-
+    new NewsDialogBox(item).show({
+        label: 'Save',
+        callback: (obj, event) => {
+            restClient.update(item['id'], obj, json => {
+                BootboxAlert.show(json, refreshData);
+            });
+        }
+    });
 };
 
 let removeCallback = (item, event) => {

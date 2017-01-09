@@ -11,7 +11,7 @@ export default class NewsItem {
         let div = document.createElement('div');
         div.setAttribute('class', 'panel');
         div.appendChild(this.createNewsHeader().build(item));
-        div.appendChild(new NewsBody().build(item['id'], item['body']));
+        div.appendChild(new NewsBody(item['id'], item['body']));
         return div;
     }
 }
