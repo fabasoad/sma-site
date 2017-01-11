@@ -69,7 +69,7 @@ public class NewsResource extends BaseResource<NewsPojo> {
     }
 	
     @POST
-    @RolesAllowed("admin")
+    @RolesAllowed(Roles.ADMIN)
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @SuppressWarnings("unchecked")
@@ -85,7 +85,7 @@ public class NewsResource extends BaseResource<NewsPojo> {
     }
 
     @PUT
-    @RolesAllowed("admin")
+    @RolesAllowed(Roles.ADMIN)
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @SuppressWarnings("unchecked")
@@ -103,7 +103,7 @@ public class NewsResource extends BaseResource<NewsPojo> {
 
 	@DELETE
     @Path("{id}")
-    @RolesAllowed("admin")
+    @RolesAllowed(Roles.ADMIN)
     public Response deleteNews(@PathParam("id") int id) {
         return delete(id);
     }

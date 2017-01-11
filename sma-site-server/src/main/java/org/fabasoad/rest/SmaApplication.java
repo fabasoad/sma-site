@@ -1,5 +1,6 @@
 package org.fabasoad.rest;
 
+import org.fabasoad.rest.provider.AdministrationFilter;
 import org.fabasoad.rest.provider.AuthenticationFilter;
 import org.glassfish.jersey.filter.LoggingFilter;
 import org.glassfish.jersey.server.ResourceConfig;
@@ -14,5 +15,6 @@ public class SmaApplication extends ResourceConfig {
         packages("org.fabasoad.rest");
         register(LoggingFilter.class);
         register(AuthenticationFilter.class);
+        register(AdministrationFilter.class);
     }
 }

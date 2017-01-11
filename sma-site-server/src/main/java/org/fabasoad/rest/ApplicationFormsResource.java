@@ -66,7 +66,7 @@ public class ApplicationFormsResource extends BaseResource<ApplicationFormPojo> 
     }
 
     @GET
-    @RolesAllowed("admin")
+    @RolesAllowed(Roles.ADMIN)
     @Produces(MediaType.APPLICATION_JSON)
     public Response getApplicationForms() {
         return getAll();
@@ -74,7 +74,7 @@ public class ApplicationFormsResource extends BaseResource<ApplicationFormPojo> 
 
     @GET
     @Path("{id}")
-    @RolesAllowed("admin")
+    @RolesAllowed(Roles.ADMIN)
     @Produces(MediaType.APPLICATION_JSON)
     public Response getApplicationForm(@PathParam("id") int id) {
         return get(id);
@@ -138,7 +138,7 @@ public class ApplicationFormsResource extends BaseResource<ApplicationFormPojo> 
 
     @DELETE
     @Path("{id}")
-    @RolesAllowed("admin")
+    @RolesAllowed(Roles.ADMIN)
     public Response deleteApplicationForm(@PathParam("id") int id) {
         try {
             deleteFile(id, ApplicationForms.FILE_NAME.DB);

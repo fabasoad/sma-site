@@ -34,7 +34,6 @@ import static org.fabasoad.db.pojo.PojoProperties.UserRoles.NAME;
 public class AuthenticationFilter implements ContainerRequestFilter {
 
     private static final String AUTHORIZATION_PROPERTY = "Authorization";
-    private static final String AUTHENTICATION_SCHEME = "Basic";
 
     @Context
     private ResourceInfo resourceInfo;
@@ -66,43 +65,13 @@ public class AuthenticationFilter implements ContainerRequestFilter {
 
             //Get encoded username and password
             String encodedValue = authorization.get(0);
-            if (!encodedValue.startsWith(AUTHENTICATION_SCHEME)) {
-                abort(requestContext, Response.Status.UNAUTHORIZED);
-                return;
-            }
-            final String encodedUserPassword = encodedValue.replaceFirst(AUTHENTICATION_SCHEME + " ", "");
 
-            //Decode username and password
-            String usernameAndPassword = new String(Base64.decode(encodedUserPassword.getBytes()));
-
-            //Split username and password tokens
-            final StringTokenizer tokenizer = new StringTokenizer(usernameAndPassword, ":");
-            final String email = tokenizer.nextToken();
-            final String password = tokenizer.nextToken();
-
-            String message = String.format("User '%s' trying to accessed '%s' resource",
-                    email, resourceInfo.getResourceClass().getAnnotation(Path.class).value());
-            Logger.getLogger().flow(getClass(), message);
-
-            //Verify user access
-            RolesAllowed rolesAnnotation = method.getAnnotation(RolesAllowed.class);
-
-            //Is user valid?
-            if (!isUserAllowed(email, password, rolesAnnotation.value())) {
-                abort(requestContext, Response.Status.FORBIDDEN);
+            try {
+                AuthenticationUtils.validateUser(encodedValue, method.getAnnotation(RolesAllowed.class).value());
+            } catch (AuthenticationException e) {
+                abort(requestContext, e.getStatus());
             }
         }
-    }
-
-    private boolean isUserAllowed(final String email, final String password, final String[] roles) {
-        final Predicate<UserPojo> matches = u -> Objects.equals(email, u.getProperty(EMAIL.DB))
-                && Objects.equals(encode(email, password), u.getProperty(PASSWORD.DB));
-
-        return DaoFactory.create(UserPojo.class).getAll().stream()
-                .filter(matches)
-                .map(u -> u.getProperty(NAME.DB))
-                .map(String::valueOf)
-                .anyMatch(Arrays.asList(roles)::contains);
     }
 
     private static void abort(ContainerRequestContext requestContext, Response.Status status) {
@@ -120,9 +89,5 @@ public class AuthenticationFilter implements ContainerRequestFilter {
         }
         Logger.getLogger().warning(AuthenticationFilter.class, message);
         requestContext.abortWith(Response.status(status).entity(message).build());
-    }
-
-    private static String encode(String email, String password) {
-        return new String(Base64.encode(String.format("%s:%s", email, password).getBytes()));
     }
 }

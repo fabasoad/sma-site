@@ -79,7 +79,7 @@ public class ReferencesResource extends BaseResource<ReferencePojo> {
     }
 
     @POST
-    @RolesAllowed("admin")
+    @RolesAllowed(Roles.ADMIN)
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.APPLICATION_JSON)
     public Response createReference(@FormDataParam("reference") InputStream fileInputStream,
@@ -99,7 +99,7 @@ public class ReferencesResource extends BaseResource<ReferencePojo> {
 
     @PUT
     @Path("{id}")
-    @RolesAllowed("admin")
+    @RolesAllowed(Roles.ADMIN)
     @SuppressWarnings("unchecked")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
@@ -132,7 +132,7 @@ public class ReferencesResource extends BaseResource<ReferencePojo> {
 
     @DELETE
     @Path("{id}")
-    @RolesAllowed("admin")
+    @RolesAllowed(Roles.ADMIN)
     public Response deleteReference(@PathParam("id") int id) {
         try {
             deleteFile(id, PojoProperties.References.FILE_NAME.DB);

@@ -64,7 +64,7 @@ public class VacanciesResource extends BaseResource<VacanciesPojo> {
 
     @SuppressWarnings("unchecked")
     @POST
-    @RolesAllowed("admin")
+    @RolesAllowed(Roles.ADMIN)
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response createVacancy(String input) {
@@ -96,7 +96,7 @@ public class VacanciesResource extends BaseResource<VacanciesPojo> {
 
     @DELETE
     @Path("{id}")
-    @RolesAllowed("admin")
+    @RolesAllowed(Roles.ADMIN)
     public Response deleteVacancy(@PathParam("id") int id) {
         return delete(id);
     }

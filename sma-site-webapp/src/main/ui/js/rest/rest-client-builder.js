@@ -1,35 +1,21 @@
+import RestUtils from './rest-utils.js';
+
 export default function RestClientBuilder(url) {
     let __url = '/api/v1/' + url;
-
-    let handleResponse = (data, callback) => {
-        if (typeof callback === 'function') {
-            let json;
-            try {
-                json = JSON.parse(data.responseText);
-            } catch (e) {
-                json = {
-                    type: 'error',
-                    message: data.responseText,
-                    status: data.status
-                };
-            }
-            callback(json);
-        }
-    };
 
     let methods = {
         getAll(callback) {
             $.ajax({
                 type: 'GET',
                 url: __url,
-                complete: data => handleResponse(data, callback)
+                complete: data => RestUtils.handleResponse(data, callback)
             });
         },
         getById(id, callback) {
             $.ajax({
                 type: 'GET',
                 url: __url + '/' + id,
-                complete: data => handleResponse(data, callback)
+                complete: data => RestUtils.handleResponse(data, callback)
             });
         },
         create(obj, callback) {
@@ -50,7 +36,7 @@ export default function RestClientBuilder(url) {
                 contentType: "application/json",
                 dataType: 'json',
                 data: obj,
-                complete: data => handleResponse(data, callback)
+                complete: data => RestUtils.handleResponse(data, callback)
             });
         },
         update(id, obj, callback) {
@@ -71,14 +57,14 @@ export default function RestClientBuilder(url) {
                 contentType: "application/json",
                 dataType: 'json',
                 data: obj,
-                complete: data => handleResponse(data, callback)
+                complete: data => RestUtils.handleResponse(data, callback)
             });
         },
         delete(id, callback) {
             $.ajax({
                 type: 'DELETE',
                 url: __url + '/' + id,
-                complete: data => handleResponse(data, callback)
+                complete: data => RestUtils.handleResponse(data, callback)
             });
         }
     };
