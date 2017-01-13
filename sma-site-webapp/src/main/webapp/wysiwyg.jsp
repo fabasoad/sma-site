@@ -6,7 +6,7 @@
         SystemJS.import('/public/js/min/core/wysiwyg.js');
     });
 </script>
-<div>
+<div class="wysiwyg-container">
     <div class="btn-toolbar" data-role="editor-toolbar" data-target="#editor">
         <div class="btn-group">
             <a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" title="" data-original-title="Font"><i class="glyphicon glyphicon-font"></i><b class="caret"></b></a>

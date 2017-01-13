@@ -1,6 +1,18 @@
+@import "../variables";
+
+@header-height: @sma-header-min-height + @sma-header-margin-bottom;
+@footer-height: @sma-footer-min-height + @sma-footer-margin-top;
+@editor-footer-diff: 80px;
+
+@wysiwyg-container-diff: @header-height + @footer-height + @editor-footer-diff;
+
 #editor {
   overflow: scroll;
-  max-height: 300px
+  height: 100%;
+}
+
+.wysiwyg-container {
+  height: calc(~"100vh - " @wysiwyg-container-diff);
 }
 
 .news-wysiwyg {
