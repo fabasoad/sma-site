@@ -24,6 +24,7 @@
         </jsp:include>
         <jsp:include page="/carousel.jsp"/>
         <div id="news-container" class="row hide"></div>
+        <jsp:include page="/404.jsp"/>
         <jsp:include page="/footer.jsp"/>
     </div>
 </body>

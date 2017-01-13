@@ -15,7 +15,7 @@
     <script src="/public/js/bootbox.min.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-            SystemJS.import('/public/js/dev/login.js');
+            SystemJS.import('/public/js/min/login.js');
         });
     </script>
 </head>
@@ -29,12 +29,9 @@
                      src="/public/img/logo/logo-96x96.png"
                      alt="Southern Maritime Agency">
                 <div class="form-signin">
-                    <input type="text" class="form-control" placeholder="Email" required autofocus>
-                    <input type="password" class="form-control" placeholder="Password" required>
+                    <input type="text" class="form-control" placeholder="Email" autofocus/>
+                    <input type="password" class="form-control" placeholder="Password"/>
                     <button id="login-button" class="btn btn-lg btn-primary btn-block" type="button">Sign in</button>
-                    <label class="checkbox pull-left">
-                        <input type="checkbox" value="remember-me">Remember me
-                    </label>
                 </div>
             </div>
         </div>

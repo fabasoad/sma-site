@@ -61,7 +61,7 @@ abstract class BaseResource<T extends BasePojo> {
         BasePojo pojo = dao.get(id);
         if (pojo == null) {
             final String message = String.format("There is no %s with id = %s", getDisplayName(), id);
-            return Response.status(Response.Status.BAD_REQUEST)
+            return Response.status(Response.Status.NOT_FOUND)
                     .entity(buildError(message).toJSONString())
                     .build();
         }

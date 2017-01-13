@@ -5,6 +5,7 @@ export default class RestUtils {
             let json;
             try {
                 json = JSON.parse(data.responseText);
+                json.status = data.status;
             } catch (e) {
                 json = {
                     type: 'error',
