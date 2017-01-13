@@ -1,16 +1,11 @@
 package org.fabasoad.rest.provider;
 
-import org.apache.commons.lang3.tuple.Pair;
-import org.fabasoad.api.Logger;
 import org.fabasoad.db.dao.DaoFactory;
 import org.fabasoad.db.pojo.UserPojo;
 import org.glassfish.jersey.internal.util.Base64;
 
-import javax.annotation.security.RolesAllowed;
-import javax.ws.rs.Path;
 import javax.ws.rs.core.Response;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.StringTokenizer;
@@ -26,23 +21,18 @@ import static org.fabasoad.db.pojo.PojoProperties.Users.PASSWORD;
  */
 public class AuthenticationUtils {
 
-    public static final String AUTHENTICATION_SCHEME = "Basic";
+    public static final String SMA_SESSION_COOKIE_NAME = "SMA_SESSION";
 
     static void validateUser(final String encodedValue, final String[] roles) throws AuthenticationException {
-        if (!encodedValue.startsWith(AUTHENTICATION_SCHEME)) {
-            throw new AuthenticationException(Response.Status.UNAUTHORIZED);
-        }
-        final String encodedUserPassword = encodedValue.replaceFirst(AUTHENTICATION_SCHEME + " ", "");
-
         //Decode username and password
-        String usernameAndPassword = new String(Base64.decode(encodedUserPassword.getBytes()));
+        String emailAndPassword = new String(Base64.decode(encodedValue.getBytes()));
 
         //Split username and password tokens
-        final StringTokenizer tokenizer = new StringTokenizer(usernameAndPassword, ":");
+        final StringTokenizer tokenizer = new StringTokenizer(emailAndPassword, ":");
         final String email = tokenizer.nextToken();
         final String password = tokenizer.nextToken();
 
-        //Verify user access
+        // Verify user access
         if (!isUserAllowedInternal(email, password, roles)) {
             throw new AuthenticationException(Response.Status.FORBIDDEN);
         }
@@ -58,12 +48,8 @@ public class AuthenticationUtils {
 
     public static Optional<UserPojo> getUser(final String email, final String password) {
         final Predicate<UserPojo> matches = u -> Objects.equals(email, u.getProperty(EMAIL.DB))
-                && Objects.equals(encode(password), u.getProperty(PASSWORD.DB));
+                && Objects.equals(password, u.getProperty(PASSWORD.DB));
 
         return DaoFactory.create(UserPojo.class).getAll().stream().filter(matches).findAny();
-    }
-
-    private static String encode(String password) {
-        return new String(Base64.encode(password.getBytes()));
     }
 }

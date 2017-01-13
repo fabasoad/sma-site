@@ -15,13 +15,13 @@ import java.util.Arrays;
 import java.util.Objects;
 import java.util.Optional;
 
+import static org.fabasoad.rest.provider.AuthenticationUtils.SMA_SESSION_COOKIE_NAME;
+
 /**
  * @author efabizhevsky
  * @date 1/11/2017.
  */
 public class AdministrationFilter implements javax.servlet.Filter {
-
-    public static final String SMA_SESSION_COOKIE_NAME = "SMA_SESSION";
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {

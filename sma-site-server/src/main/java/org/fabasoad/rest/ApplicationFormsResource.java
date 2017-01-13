@@ -3,7 +3,6 @@ package org.fabasoad.rest;
 import com.google.common.collect.ImmutableMap;
 import org.fabasoad.db.pojo.ApplicationFormPojo;
 import org.fabasoad.db.pojo.BasePojo;
-import org.fabasoad.db.pojo.PojoProperties;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.json.simple.JSONObject;
