@@ -9,6 +9,7 @@
     <link rel="shortcut icon" href="/public/img/logo/logo-48x48.png">
     <link rel="stylesheet" href="/public/css/bootstrap.min.css" />
     <link rel="stylesheet" href="/public/css/fileinput.min.css" />
+    <link rel="stylesheet" href="/public/css/ekko-lightbox.min.css" />
     <link rel="stylesheet" href="/public/css/min/gallery/editable/gallery-editable-control-panel.css" />
     <script src="/public/js/jquery.min.js"></script>
     <script src="/public/js/bootstrap.min.js"></script>

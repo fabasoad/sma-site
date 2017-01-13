@@ -3,7 +3,6 @@ package org.fabasoad.auth;
 import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
 import org.fabasoad.crypto.CryptoUtils;
 import org.fabasoad.db.pojo.UserPojo;
-import org.fabasoad.rest.provider.AdministrationFilter;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
