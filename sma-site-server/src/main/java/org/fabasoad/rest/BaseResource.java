@@ -56,7 +56,7 @@ abstract class BaseResource<T extends BasePojo> {
         return Response.ok(json.toJSONString()).build();
     }
 
-    Response get(int id) {
+    <C> Response get(C id) {
         BaseDao<T> dao = DaoFactory.create(getPojoClass());
         BasePojo pojo = dao.get(id);
         if (pojo == null) {
