@@ -249,6 +249,40 @@ public interface PojoProperties {
         public final static String TABLE_NAME = "SMA_PARAMS";
     }
 
+    enum Main {
+        PROP_NAME("SP_PROP_NAME", "prop-name"),
+        PROP_VALUE("SP_PROP_VALUE", "prop-value") {
+            @Override
+            public void validate(String value) throws ValidationException {
+                if (StringUtils.isEmpty(value)) {
+                    throw new ValidationException(String.format("'%s' field cannot be empty", this.DTO));
+                }
+            }
+        };
+
+        public String DB;
+        public String DTO;
+
+        Main(String dbProperty, String dtoProperty) {
+            this.DB = dbProperty;
+            this.DTO = dtoProperty;
+        }
+
+        public static Optional<String> fromDto(String dtoProp) {
+            return Stream.of(values()).filter(v -> Objects.equals(v.DTO, dtoProp)).map(v -> v.DB).findAny();
+        }
+
+        public static Optional<Main> fromDb(String dbProp) {
+            return Stream.of(values()).filter(v -> Objects.equals(v.DB, dbProp)).findAny();
+        }
+
+        public void validate(String value) throws ValidationException {
+        }
+
+        public final static String BODY_KEY = "SMA_MAIN_BODY";
+        public final static String TABLE_NAME = "SMA_PARAMS";
+    }
+
     enum Users {
         ID("SU_ID", "id"),
         EMAIL("SU_EMAIL", "email"),
