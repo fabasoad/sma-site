@@ -149,7 +149,7 @@ abstract class BaseResource<T extends BasePojo> {
     }
 
     @SuppressWarnings("unchecked")
-    private JSONObject buildObject(BasePojo pojo) {
+    JSONObject buildObject(BasePojo pojo) {
         final JSONObject result = new JSONObject();
         for (Map.Entry<String, String> entry : getPojoProperties().entrySet()) {
             result.put(entry.getValue(), getJSONObjectProperty(pojo, entry.getKey()));
@@ -165,15 +165,20 @@ abstract class BaseResource<T extends BasePojo> {
     }
 
     @SuppressWarnings("unchecked")
+    void fillPojo(final T pojo, JSONObject json) {
+        json.forEach((k,v) -> fromDto().apply(String.valueOf(k)).ifPresent(p -> pojo.setProperty(p, v)));
+    }
+
+    @SuppressWarnings("unchecked")
     private T buildPojo(JSONObject json) {
-        Object[] pojo = new Object[1];
+        Object pojo = new Object();
         try {
-            pojo[0] = getPojoClass().newInstance();
-            json.forEach((k,v) -> fromDto().apply(String.valueOf(k)).ifPresent(p -> ((T) pojo[0]).setProperty(p, v)));
+            pojo = getPojoClass().newInstance();
+            fillPojo((T) pojo, json);
         } catch (InstantiationException | IllegalAccessException e) {
             Logger.getLogger().error(getClass(), e.getMessage());
         }
-        return (T) pojo[0];
+        return (T) pojo;
     }
 
     @SuppressWarnings("unchecked")

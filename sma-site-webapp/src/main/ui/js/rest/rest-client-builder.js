@@ -53,7 +53,7 @@ export default function RestClientBuilder(url) {
             }
             $.ajax({
                 type: 'PUT',
-                url: __url + '/' + id,
+                url: __url + '/' + (id || ''),
                 contentType: "application/json",
                 dataType: 'json',
                 data: obj,
