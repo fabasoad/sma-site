@@ -2,6 +2,7 @@ package org.fabasoad.auth;
 
 import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
 import org.fabasoad.crypto.CryptoUtils;
+import org.fabasoad.db.pojo.PojoProperties;
 import org.fabasoad.db.pojo.UserPojo;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -61,9 +62,9 @@ public class AuthenticateResource {
                 String[] pair = element.split("=");
                 if (pair.length == 2) {
                     try {
-                        if (Objects.equals("email", pair[0])) {
+                        if (Objects.equals(PojoProperties.Users.EMAIL.DTO, pair[0])) {
                             email = URLDecoder.decode(pair[1], StandardCharsets.UTF_8.displayName());
-                        } else if (Objects.equals("password", pair[0])) {
+                        } else if (Objects.equals(PojoProperties.Users.PASSWORD.DTO, pair[0])) {
                             password = URLDecoder.decode(pair[1], StandardCharsets.UTF_8.displayName());
                         }
                     } catch (UnsupportedEncodingException e) {

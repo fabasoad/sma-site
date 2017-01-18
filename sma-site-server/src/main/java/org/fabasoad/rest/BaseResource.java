@@ -14,11 +14,15 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Collection;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
 
@@ -101,6 +105,22 @@ abstract class BaseResource<T extends BasePojo> {
 
     static String generateNewFileName(String oldFileName) {
         return String.format("%s.%s", randomAlphabetic(10), getExtension(oldFileName));
+    }
+
+    @SuppressWarnings("unchecked")
+    JSONObject parseInput(String input, Collection<String> keys) throws UnsupportedEncodingException {
+        JSONObject json = new JSONObject();
+        for (String element : input.split("&")) {
+            String[] pair = element.split("=");
+            if (pair.length == 2) {
+                for (String key : keys) {
+                    if (Objects.equals(key, pair[0])) {
+                        json.put(key, URLDecoder.decode(pair[1], StandardCharsets.UTF_8.displayName()));
+                    }
+                }
+            }
+        }
+        return json;
     }
 
     Response create(JSONObject json) {

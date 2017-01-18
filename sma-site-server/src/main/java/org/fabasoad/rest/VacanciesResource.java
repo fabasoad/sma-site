@@ -14,6 +14,7 @@ import javax.ws.rs.core.Response;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -92,6 +93,30 @@ public class VacanciesResource extends BaseResource<VacanciesPojo> {
             }
         }
         return create(jsonVacancy);
+    }
+
+    @PUT
+    @Path("{id}")
+    @RolesAllowed(Roles.ADMIN)
+    @SuppressWarnings("unchecked")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response updateVacancy(@PathParam("id") int id, String input) {
+        JSONObject json;
+        try {
+            json = (JSONObject) new JSONParser().parse(input);
+        } catch (ParseException ignored) {
+            try {
+                json = parseInput(input, Arrays.stream(
+                        PojoProperties.Vacancies.values()).map(v -> v.DTO).collect(Collectors.toList()));
+            } catch (UnsupportedEncodingException e) {
+                return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                        .entity(buildError(e.getMessage()).toJSONString())
+                        .build();
+            }
+        }
+        json.put(PojoProperties.Vacancies.ID.DTO, id);
+        return update(json);
     }
 
     @DELETE
