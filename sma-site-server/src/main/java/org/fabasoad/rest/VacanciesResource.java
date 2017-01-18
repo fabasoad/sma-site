@@ -1,34 +1,27 @@
 package org.fabasoad.rest;
 
-import org.apache.commons.lang3.StringUtils;
 import org.fabasoad.db.pojo.PojoProperties;
 import org.fabasoad.db.pojo.VacanciesPojo;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 
 import javax.annotation.security.RolesAllowed;
-import javax.ws.rs.*;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Path("vacancies")
 public class VacanciesResource extends BaseResource<VacanciesPojo> {
-
-    private final Pattern PARSE_INPUT_PATTERN = Pattern.compile("([^\\&=]*)");
 
     @Override
     public Class<VacanciesPojo> getPojoClass() {
@@ -63,36 +56,12 @@ public class VacanciesResource extends BaseResource<VacanciesPojo> {
         return get(id);
     }
 
-    @SuppressWarnings("unchecked")
     @POST
     @RolesAllowed(Roles.ADMIN)
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response createVacancy(String input) {
-        JSONObject jsonVacancy;
-        try {
-            jsonVacancy = (JSONObject) new JSONParser().parse(input);
-        } catch (ParseException ignored) {
-            final Matcher matcher = PARSE_INPUT_PATTERN.matcher(input);
-            jsonVacancy = new JSONObject();
-            final List<String> values = new LinkedList<>();
-            while (matcher.find()) {
-                String value = matcher.group(0);
-                if (StringUtils.isNotEmpty(value)) {
-                    values.add(value);
-                }
-            }
-            try {
-                for (int i = 0; i < values.size(); i += 2) {
-                    jsonVacancy.put(values.get(i), URLDecoder.decode(values.get(i + 1), StandardCharsets.UTF_8.displayName()));
-                }
-            } catch (UnsupportedEncodingException e) {
-                return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                        .entity(buildError(e.getMessage()).toJSONString())
-                        .build();
-            }
-        }
-        return create(jsonVacancy);
+        return runAction(input, this::create);
     }
 
     @PUT
@@ -101,22 +70,11 @@ public class VacanciesResource extends BaseResource<VacanciesPojo> {
     @SuppressWarnings("unchecked")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateVacancy(@PathParam("id") int id, String input) {
-        JSONObject json;
-        try {
-            json = (JSONObject) new JSONParser().parse(input);
-        } catch (ParseException ignored) {
-            try {
-                json = parseInput(input, Arrays.stream(
-                        PojoProperties.Vacancies.values()).map(v -> v.DTO).collect(Collectors.toList()));
-            } catch (UnsupportedEncodingException e) {
-                return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                        .entity(buildError(e.getMessage()).toJSONString())
-                        .build();
-            }
-        }
-        json.put(PojoProperties.Vacancies.ID.DTO, id);
-        return update(json);
+    public Response updateVacancy(@PathParam("id") final int id, String input) {
+        return runAction(input, json -> {
+            json.put(PojoProperties.Vacancies.ID.DTO, id);
+            return update(json);
+        });
     }
 
     @DELETE

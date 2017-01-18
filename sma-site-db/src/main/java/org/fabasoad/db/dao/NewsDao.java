@@ -3,7 +3,9 @@ package org.fabasoad.db.dao;
 import org.fabasoad.db.DbAdapter;
 import org.fabasoad.db.exceptions.ValidationException;
 import org.fabasoad.db.pojo.NewsPojo;
-import org.fabasoad.db.pojo.PojoProperties;
+
+import java.util.Arrays;
+import java.util.stream.Stream;
 
 import static org.fabasoad.db.pojo.PojoProperties.News;
 import static org.fabasoad.db.pojo.PojoProperties.News.ID;
@@ -36,6 +38,12 @@ class NewsDao extends BaseDao<NewsPojo> {
     @Override
     String[] getColumns() {
         return new String[] { ID.DB, TITLE.DB, BODY.DB, CREATION_DATE.DB };
+    }
+
+    String[] getColumnsForInsert() {
+        return Stream.of(getColumns())
+                .filter(c -> !Arrays.asList(getIdColumn(), CREATION_DATE.DB).contains(c))
+                .toArray(String[]::new);
     }
 
     @Override

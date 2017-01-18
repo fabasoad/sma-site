@@ -7,6 +7,8 @@ import org.fabasoad.db.exceptions.ValidationException;
 import org.fabasoad.db.pojo.BasePojo;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 import javax.ws.rs.core.Response;
 import java.io.File;
@@ -107,8 +109,24 @@ abstract class BaseResource<T extends BasePojo> {
         return String.format("%s.%s", randomAlphabetic(10), getExtension(oldFileName));
     }
 
+    Response runAction(String input, Function<JSONObject, Response> action) {
+        JSONObject json;
+        try {
+            json = (JSONObject) new JSONParser().parse(input);
+        } catch (ParseException ignored) {
+            try {
+                json = parseInput(input, getPojoProperties().values());
+            } catch (UnsupportedEncodingException e) {
+                return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                        .entity(buildError(e.getMessage()).toJSONString())
+                        .build();
+            }
+        }
+        return action.apply(json);
+    }
+
     @SuppressWarnings("unchecked")
-    JSONObject parseInput(String input, Collection<String> keys) throws UnsupportedEncodingException {
+    private JSONObject parseInput(String input, Collection<String> keys) throws UnsupportedEncodingException {
         JSONObject json = new JSONObject();
         for (String element : input.split("&")) {
             String[] pair = element.split("=");

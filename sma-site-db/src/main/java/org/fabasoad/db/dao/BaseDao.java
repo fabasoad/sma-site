@@ -32,7 +32,7 @@ public abstract class BaseDao<T extends BasePojo> {
 
     abstract String[] getColumns();
 
-    private String[] getColumnsForInsert() {
+    String[] getColumnsForInsert() {
         return Stream.of(getColumns()).filter(c -> !Objects.equals(c, getIdColumn())).toArray(String[]::new);
     }
 

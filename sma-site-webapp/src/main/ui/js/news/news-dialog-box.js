@@ -9,7 +9,7 @@ export default class NewsDialogBox extends BaseDialogBox {
                 <div class="form-group news-labeled-group">
                     <label for="news-title">Title</label>
                     <div id="news-error-title" class="alert-danger"></div>
-                    <input id="news-title" type="text" class="form-control" placeholder="` + (item['title'] || '') + `"/>
+                    <input id="news-title" type="text" class="form-control" value="` + (item['title'] || '') + `" placeholder="` + (item['title'] || '') + `"/>
                 </div>
                 <div class="form-group news-labeled-group">
                     <label for="news-body">Body</label>
