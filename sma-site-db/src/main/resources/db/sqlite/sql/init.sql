@@ -50,9 +50,9 @@ CREATE TABLE IF NOT EXISTS SMA_USERS (
 );
 
 INSERT OR IGNORE INTO SMA_USERS (SU_EMAIL, SU_PASSWORD)
-  VALUES ('bulas.business@gmail.com', '$2a$12$WpOHGp.k3EiqPG/fwvFmt.8Ojwz2ub5Kc1TviD6ILPXq7n2mhyfvO');
+  VALUES ('bulas.business@gmail.com', '$2a$12$n7qQPvkwjpJLWNgISDf4YevMaq7lDge4iaoZTRmDTJcwzU09wsHPi');
 INSERT OR IGNORE INTO SMA_USERS (SU_EMAIL, SU_PASSWORD)
-  VALUES ('fabasoad@gmail.com', '$2a$12$WpOHGp.k3EiqPG/fwvFmt.8Ojwz2ub5Kc1TviD6ILPXq7n2mhyfvO');
+  VALUES ('fabasoad@gmail.com', '$2a$12$n7qQPvkwjpJLWNgISDf4YevMaq7lDge4iaoZTRmDTJcwzU09wsHPi');
 
 CREATE TABLE IF NOT EXISTS SMA_USERS_ROLES_RELATIONS (
   SURR_USER_ID INTEGER,

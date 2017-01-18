@@ -1,7 +1,7 @@
 package org.fabasoad.rest;
 
 import org.fabasoad.db.pojo.BasePojo;
-import org.fabasoad.db.pojo.ContactsPojo;
+import org.fabasoad.db.pojo.MainPojo;
 import org.fabasoad.db.pojo.PojoProperties;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -24,46 +24,46 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-@Path("contacts")
-public class ContactsResource extends BaseResource<ContactsPojo> {
+@Path("main")
+public class MainResource extends BaseResource<MainPojo> {
     @Override
-    public Class<ContactsPojo> getPojoClass() {
-        return ContactsPojo.class;
+    public Class<MainPojo> getPojoClass() {
+        return MainPojo.class;
     }
 
     @Override
     public Function<String, Optional<String>> fromDto() {
-        return PojoProperties.Contacts::fromDto;
+        return PojoProperties.Main::fromDto;
     }
 
     @Override
     public Map<String, String> getPojoProperties() {
-        return Stream.of(PojoProperties.Contacts.values()).collect(Collectors.toMap(v -> v.DB, v -> v.DTO));
+        return Stream.of(PojoProperties.Main.values()).collect(Collectors.toMap(v -> v.DB, v -> v.DTO));
     }
 
     @Override
     String getDisplayName() {
-        return "Contacts";
+        return "Main";
     }
 
     @Override
     @SuppressWarnings("unchecked")
     JSONObject buildObject(BasePojo pojo) {
         JSONObject json = new JSONObject();
-        json.put(PojoProperties.Contacts.PROP_VALUE.DTO, pojo.getProperty(PojoProperties.Contacts.PROP_VALUE.DB));
+        json.put(PojoProperties.Main.PROP_VALUE.DTO, pojo.getProperty(PojoProperties.Main.PROP_VALUE.DB));
         return json;
     }
 
     @Override
-    void fillPojo(ContactsPojo pojo, JSONObject json) {
-        pojo.setProperty(PojoProperties.Contacts.PROP_NAME.DB, PojoProperties.Contacts.BODY_KEY);
-        pojo.setProperty(PojoProperties.Contacts.PROP_VALUE.DB, json.get(PojoProperties.Contacts.PROP_VALUE.DTO));
+    void fillPojo(MainPojo pojo, JSONObject json) {
+        pojo.setProperty(PojoProperties.Main.PROP_NAME.DB, PojoProperties.Main.BODY_KEY);
+        pojo.setProperty(PojoProperties.Main.PROP_VALUE.DB, json.get(PojoProperties.Main.PROP_VALUE.DTO));
     }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getContacts() {
-        return get(PojoProperties.Contacts.BODY_KEY);
+    public Response getMain() {
+        return get(PojoProperties.Main.BODY_KEY);
     }
 
     @PUT
@@ -71,7 +71,7 @@ public class ContactsResource extends BaseResource<ContactsPojo> {
     @SuppressWarnings("unchecked")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateContacts(String input) {
+    public Response updateMain(String input) {
         JSONObject json;
         try {
             json = (JSONObject) new JSONParser().parse(input);
@@ -86,7 +86,7 @@ public class ContactsResource extends BaseResource<ContactsPojo> {
             }
 
             json = new JSONObject();
-            json.put(PojoProperties.Contacts.PROP_VALUE.DTO, body);
+            json.put(PojoProperties.Main.PROP_VALUE.DTO, body);
         }
         return update(json);
     }

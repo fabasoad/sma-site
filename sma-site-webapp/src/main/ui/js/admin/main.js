@@ -6,7 +6,7 @@ restClient.getAll(data => {
 });
 
 document.getElementById('wysiwyg-save-button').addEventListener('click', event => {
-    restClient.update('SMA_MAIN_BODY', { body: document.getElementById('editor').innerHTML }, data => {
+    restClient.update(null, { body: document.getElementById('editor').innerHTML }, data => {
         BootboxAlert.show(data);
     });
 });

@@ -251,7 +251,7 @@ public interface PojoProperties {
 
     enum Main {
         PROP_NAME("SP_PROP_NAME", "prop-name"),
-        PROP_VALUE("SP_PROP_VALUE", "prop-value") {
+        PROP_VALUE("SP_PROP_VALUE", "body") {
             @Override
             public void validate(String value) throws ValidationException {
                 if (StringUtils.isEmpty(value)) {

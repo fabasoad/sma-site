@@ -29,6 +29,8 @@ public class DaoFactory extends ParametersAware {
         return (BaseDao<T>) new VacanciesDao(adapter);
         } else if (pojoClazz == ContactsPojo.class) {
             return (BaseDao<T>) new ContactsDao(adapter);
+        } else if (pojoClazz == MainPojo.class) {
+            return (BaseDao<T>) new MainDao(adapter);
         } else {
             throw new RuntimeException(String.format("Unknown type '%s'", pojoClazz.getSimpleName()));
         }
