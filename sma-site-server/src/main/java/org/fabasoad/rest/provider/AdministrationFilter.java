@@ -32,20 +32,26 @@ public class AdministrationFilter implements javax.servlet.Filter {
         HttpServletRequest httpReequest = (HttpServletRequest) request;
         HttpServletResponse httpResponse = (HttpServletResponse) response;
 
-        Optional<String> encodedValue = Arrays.stream(httpReequest.getCookies())
-                .filter(c -> Objects.equals(c.getName(), SMA_SESSION_COOKIE_NAME))
-                .findAny()
-                .map(Cookie::getValue);
+        Cookie[] cookies = httpReequest.getCookies();
+        if (cookies == null) {
+            httpResponse.sendRedirect("/login");
+        } else {
+            Optional<String> encodedValue = Arrays.stream(cookies)
+                    .filter(c -> Objects.equals(c.getName(), SMA_SESSION_COOKIE_NAME))
+                    .findAny()
+                    .map(Cookie::getValue);
 
-        if (encodedValue.isPresent()) {
-            try {
-                AuthenticationUtils.validateUser(encodedValue.get(), new String[] { Roles.ADMIN });
-            } catch (AuthenticationException e) {
+            if (encodedValue.isPresent()) {
+                try {
+                    AuthenticationUtils.validateUser(encodedValue.get(), new String[]{Roles.ADMIN});
+                } catch (AuthenticationException e) {
+                    httpResponse.sendRedirect("/login");
+                    return;
+                }
+                filterChain.doFilter(request, response);
+            } else {
                 httpResponse.sendRedirect("/login");
             }
-            filterChain.doFilter(request, response);
-        } else {
-            httpResponse.sendRedirect("/login");
         }
     }
 

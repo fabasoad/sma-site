@@ -77,7 +77,11 @@ abstract class BaseResource<T extends BasePojo> {
 
     Response delete(int id) {
         BaseDao<T> dao = DaoFactory.create(getPojoClass());
-        dao.delete(id);
+        try {
+            dao.delete(id);
+        } catch (ValidationException e) {
+            return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
+        }
         getLogger().flow(getClass(), getDisplayName() + " with id = " + id + " deleted successfully");
         return Response.ok(buildSuccess(getDisplayName() + " deleted successfully").toJSONString()).build();
     }
@@ -141,6 +145,10 @@ abstract class BaseResource<T extends BasePojo> {
         return json;
     }
 
+    Response create(String input) {
+        return runAction(input, this::create);
+    }
+
     Response create(JSONObject json) {
         BaseDao<T> dao = DaoFactory.create(getPojoClass());
         int id;
@@ -161,7 +169,11 @@ abstract class BaseResource<T extends BasePojo> {
 
     Response update(JSONObject json) {
         BaseDao<T> dao = DaoFactory.create(getPojoClass());
-        dao.update(buildPojo(json));
+        try {
+            dao.update(buildPojo(json));
+        } catch (ValidationException e) {
+            return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
+        }
         String message = getDisplayName() + " updated successfully";
         return Response.ok(buildSuccess(message).toJSONString()).build();
     }

@@ -20,10 +20,10 @@ class VacanciesDao extends BaseDao<VacanciesPojo> {
     VacanciesDao(DbAdapter adapter) { super(adapter); }
 
     @Override
-    void validate(String dbColumnName, Object value) throws ValidationException {
+    void validateBeforeCreate(String dbColumnName, Object value) throws ValidationException {
         Vacancies.fromDb(dbColumnName)
                 .orElseThrow(() -> new ValidationException(String.format("Unknown column with name '%s'", dbColumnName)))
-                .validate((String) value);
+                .validateBeforeCreate((String) value);
     }
 
     @Override

@@ -4,6 +4,8 @@ import org.fabasoad.db.DbAdapter;
 import org.fabasoad.db.exceptions.ValidationException;
 import org.fabasoad.db.pojo.UserPojo;
 
+import java.util.function.BiFunction;
+
 import static org.fabasoad.db.pojo.PojoProperties.Users;
 import static org.fabasoad.db.pojo.PojoProperties.UserRoles;
 import static org.fabasoad.db.pojo.PojoProperties.UsersRolesRelations;
@@ -19,10 +21,22 @@ class UsersDao extends BaseDao<UserPojo> {
     }
 
     @Override
-    void validate(String dbColumnName, Object value) throws ValidationException {
+    void validateBeforeCreate(String dbColumnName, Object value) throws ValidationException {
         Users.fromDb(dbColumnName)
                 .orElseThrow(() -> new ValidationException(String.format("Unknown column with name '%s'", dbColumnName)))
-                .validate((String) value);
+                .validateBeforeCreate((String) value);
+    }
+
+    @Override
+    void validateBeforeUpdate(Object id, String dbColumnName, Object value) throws ValidationException {
+        Users.fromDb(dbColumnName)
+                .orElseThrow(() -> new ValidationException(String.format("Unknown column with name '%s'", dbColumnName)))
+                .validateBeforeUpdate(id, (String) value);
+    }
+
+    @Override
+    void validateBeforeDelete(Object id) throws ValidationException {
+        Users.ID.validateBeforeDelete(id);
     }
 
     @Override
@@ -43,8 +57,13 @@ class UsersDao extends BaseDao<UserPojo> {
     }
 
     @Override
+    String[] getColumnsForInsert() {
+        return new String[] { Users.EMAIL.DB };
+    }
+
+    @Override
     String[] getColumnsForUpdate() {
-        return new String[0];
+        return new String[] { Users.EMAIL.DB };
     }
 
     @Override
@@ -66,5 +85,16 @@ class UsersDao extends BaseDao<UserPojo> {
                 UserRoles.TABLE_NAME,
                 UsersRolesRelations.ROLE_ID.DB,
                 UserRoles.ID.DB);
+    }
+
+    @Override
+    BiFunction<DbAdapter, Integer, Integer> getPostInsertFunction() {
+        return (adapter, id) -> {
+            String sql = String.format("INSERT INTO %s SELECT ?, SUR_ID FROM SMA_USER_ROLES WHERE SUR_NAME = 'admin'",
+                    UsersRolesRelations.TABLE_NAME);
+
+            adapter.runInsert(sql, new Object[] { id }, i -> {});
+            return id;
+        };
     }
 }

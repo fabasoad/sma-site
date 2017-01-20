@@ -1,7 +1,7 @@
 package org.fabasoad.rest;
 
 import org.fabasoad.db.pojo.PojoProperties;
-import org.fabasoad.db.pojo.VacanciesPojo;
+import org.fabasoad.db.pojo.UserPojo;
 
 import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.Consumes;
@@ -20,39 +20,46 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-@Path("vacancies")
-public class VacanciesResource extends BaseResource<VacanciesPojo> {
+/**
+ * @author efabizhevsky
+ * @date 1/20/2017.
+ */
+@Path("users")
+public class UsersResource extends BaseResource<UserPojo> {
 
     @Override
-    public Class<VacanciesPojo> getPojoClass() {
-        return VacanciesPojo.class;
+    Class<UserPojo> getPojoClass() {
+        return UserPojo.class;
     }
 
     @Override
-    public Function<String, Optional<String>> fromDto() {
-        return PojoProperties.Vacancies::fromDto;
+    Function<String, Optional<String>> fromDto() {
+        return PojoProperties.Users::fromDto;
     }
 
     @Override
-    public Map<String, String> getPojoProperties() {
-        return Stream.of(PojoProperties.Vacancies.values()).collect(Collectors.toMap(v -> v.DB, v -> v.DTO));
+    Map<String, String> getPojoProperties() {
+        return Stream.of(PojoProperties.Users.values())
+                .filter(v -> v != PojoProperties.Users.PASSWORD)
+                .collect(Collectors.toMap(v -> v.DB, v -> v.DTO));
     }
 
     @Override
     String getDisplayName() {
-        return "Vacancy";
+        return "User";
     }
 
     @GET
+    @RolesAllowed(Roles.ADMIN)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getVacancies() {
+    public Response getUsers() {
         return getAll();
     }
 
     @GET
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getVacancy(@PathParam("id") int id) {
+    public Response getUser(@PathParam("id") int id) {
         return get(id);
     }
 
@@ -60,7 +67,7 @@ public class VacanciesResource extends BaseResource<VacanciesPojo> {
     @RolesAllowed(Roles.ADMIN)
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response createVacancy(String input) {
+    public Response createUser(String input) {
         return create(input);
     }
 
@@ -70,7 +77,7 @@ public class VacanciesResource extends BaseResource<VacanciesPojo> {
     @SuppressWarnings("unchecked")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateVacancy(@PathParam("id") final int id, String input) {
+    public Response updateUser(@PathParam("id") final int id, String input) {
         return runAction(input, json -> {
             json.put(PojoProperties.Vacancies.ID.DTO, id);
             return update(json);
@@ -80,7 +87,7 @@ public class VacanciesResource extends BaseResource<VacanciesPojo> {
     @DELETE
     @Path("{id}")
     @RolesAllowed(Roles.ADMIN)
-    public Response deleteVacancy(@PathParam("id") int id) {
+    public Response deleteUser(@PathParam("id") int id) {
         return delete(id);
     }
 }

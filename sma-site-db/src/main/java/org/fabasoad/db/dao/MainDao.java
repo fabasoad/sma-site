@@ -14,10 +14,10 @@ class MainDao extends BaseDao<MainPojo> {
     MainDao(DbAdapter adapter) { super(adapter); }
 
     @Override
-    void validate(String dbColumnName, Object value) throws ValidationException {
+    void validateBeforeCreate(String dbColumnName, Object value) throws ValidationException {
         Main.fromDb(dbColumnName)
                 .orElseThrow(() -> new ValidationException(String.format("Unknown column with name '%s'", dbColumnName)))
-                .validate((String) value);
+                .validateBeforeCreate((String) value);
     }
 
     @Override

@@ -12,8 +12,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Objects;
+import java.util.function.BiFunction;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import static org.fabasoad.api.Logger.getLogger;
@@ -38,13 +38,19 @@ public abstract class BaseDao<T extends BasePojo> {
 
     abstract String[] getColumnsForUpdate();
 
-    abstract void validate(String dbColumnName, Object value) throws ValidationException;
+    abstract void validateBeforeCreate(String dbColumnName, Object value) throws ValidationException;
+
+    void validateBeforeUpdate(Object id, String dbColumnName, Object value) throws ValidationException {
+    }
+
+    void validateBeforeDelete(Object id) throws ValidationException {
+    }
 
     private Object[] getValuesForInsert(T obj) throws ValidationException {
         String[] columns = getColumnsForInsert();
         Object[] properties = new Object[columns.length];
         for (int i = 0; i < columns.length; i++) {
-            validate(columns[i], obj.getProperty(columns[i]));
+            validateBeforeCreate(columns[i], obj.getProperty(columns[i]));
             properties[i] = obj.getProperty(columns[i]);
         }
         return properties;
@@ -90,8 +96,7 @@ public abstract class BaseDao<T extends BasePojo> {
 
     @SuppressWarnings("unchecked")
     public <C> T get(C id) {
-        final String sql = String.format(
-                "SELECT %s FROM %s WHERE %s = ?", String.join(",", getColumns()), getTableName(), getIdColumn());
+        final String sql = String.format("%s WHERE %s = ?", sqlSelect(), getIdColumn());
         final Object[] result = new Object[1];
         adapter.run(sql, new Object[] { id }, rs -> {
             try {
@@ -101,6 +106,10 @@ public abstract class BaseDao<T extends BasePojo> {
             }
         });
         return (T) result[0];
+    }
+
+    BiFunction<DbAdapter, Integer, Integer> getPostInsertFunction() {
+        return (a, i) -> i;
     }
 
     public int create(T obj) throws ValidationException {
@@ -113,14 +122,17 @@ public abstract class BaseDao<T extends BasePojo> {
         );
         final int[] id = new int[] { -1 };
         adapter.runInsert(sql, params, arg -> id[0] = arg);
-        return id[0];
+        return getPostInsertFunction().apply(adapter, id[0]);
     }
 
-    public void update(T obj) {
+    public void update(T obj) throws ValidationException {
         String[] columns = getColumnsForUpdate();
         if (columns.length > 0) {
             Object[] params = new Object[columns.length + 1];
-            IntStream.range(0, columns.length).forEach(i -> params[i] = obj.getProperty(columns[i]));
+            for (int i = 0; i < columns.length; i++) {
+                validateBeforeUpdate(obj.getProperty(getIdColumn()), columns[i], obj.getProperty(columns[i]));
+                params[i] = obj.getProperty(columns[i]);
+            }
             final String sql = Stream.of(columns)
                     .map(c -> c + " = ?")
                     .collect(Collectors.joining(
@@ -133,7 +145,8 @@ public abstract class BaseDao<T extends BasePojo> {
         }
     }
 
-    public <C> void delete(C id) {
+    public <C> void delete(C id) throws ValidationException {
+        validateBeforeDelete(id);
         final String sql = String.format("DELETE FROM %s WHERE %s = ?", getTableName(), getIdColumn());
         adapter.run(sql, new Object[] { id });
     }

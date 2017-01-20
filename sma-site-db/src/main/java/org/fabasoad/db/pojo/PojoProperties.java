@@ -2,6 +2,7 @@ package org.fabasoad.db.pojo;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
+import org.apache.commons.validator.routines.EmailValidator;
 import org.fabasoad.db.exceptions.ValidationException;
 
 import java.text.ParseException;
@@ -23,7 +24,7 @@ public interface PojoProperties {
         SENDER_NAME("SAF_SENDER_NAME", "sender-name"),
         FILE_NAME("SAF_FILE_NAME", "file-name") {
             @Override
-            public void validate(String value) throws ValidationException {
+            public void validateBeforeCreate(String value) throws ValidationException {
                 if (StringUtils.isEmpty(value)) {
                     throw new ValidationException(String.format("'%s' field cannot be empty", this.DTO));
                 }
@@ -46,7 +47,13 @@ public interface PojoProperties {
             return Stream.of(values()).filter(v -> Objects.equals(v.DB, dbProp)).findAny();
         }
 
-        public void validate(String value) throws ValidationException {
+        public void validateBeforeCreate(String value) throws ValidationException {
+        }
+
+        public void validateBeforeUpdate(Object id, String value) throws ValidationException {
+        }
+
+        public void validateBeforeDelete(Object id) throws ValidationException {
         }
 
         public final static String TABLE_NAME = "SMA_APPLICATION_FORMS";
@@ -57,7 +64,7 @@ public interface PojoProperties {
         TITLE("SR_TITLE", "title"),
         FILE_NAME("SR_FILE_NAME", "src") {
             @Override
-            public void validate(String value) throws ValidationException {
+            public void validateBeforeCreate(String value) throws ValidationException {
                 if (StringUtils.isEmpty(value)) {
                     throw new ValidationException(String.format("'%s' field cannot be empty", this.DTO));
                 }
@@ -80,7 +87,13 @@ public interface PojoProperties {
             return Stream.of(values()).filter(v -> Objects.equals(v.DB, dbProp)).findAny();
         }
 
-        public void validate(String value) throws ValidationException {
+        public void validateBeforeCreate(String value) throws ValidationException {
+        }
+
+        public void validateBeforeUpdate(Object id, String value) throws ValidationException {
+        }
+
+        public void validateBeforeDelete(Object id) throws ValidationException {
         }
 
         public final static String TABLE_NAME = "SMA_REFERENCES";
@@ -90,14 +103,14 @@ public interface PojoProperties {
         ID("SN_ID", "id"),
         TITLE("SN_TITLE", "title") {
             @Override
-            public void validate(String value) throws ValidationException {
+            public void validateBeforeCreate(String value) throws ValidationException {
                 if (StringUtils.isEmpty(value)) {
                     throw new ValidationException(String.format("'%s' field cannot be empty", this.DTO));
                 }
             }
         }, BODY("SN_BODY", "body") {
             @Override
-            public void validate(String value) throws ValidationException {
+            public void validateBeforeCreate(String value) throws ValidationException {
                 if (StringUtils.isEmpty(value)) {
                     throw new ValidationException(String.format("'%s' field cannot be empty", this.DTO));
                 }
@@ -121,7 +134,13 @@ public interface PojoProperties {
             return Stream.of(values()).filter(v -> Objects.equals(v.DB, dbProp)).findAny();
         }
 
-        public void validate(String value) throws ValidationException {
+        public void validateBeforeCreate(String value) throws ValidationException {
+        }
+
+        public void validateBeforeUpdate(Object id, String value) throws ValidationException {
+        }
+
+        public void validateBeforeDelete(Object id) throws ValidationException {
         }
 
         public final static String TABLE_NAME = "SMA_NEWS";
@@ -131,7 +150,7 @@ public interface PojoProperties {
         ID("SV_ID", "id"),
         RANK("SV_RANK", "rank") {
             @Override
-            public void validate(String value) throws ValidationException {
+            public void validateBeforeCreate(String value) throws ValidationException {
                 if (StringUtils.isEmpty(value)) {
                     throw new ValidationException(String.format("'%s' field cannot be empty", this.DTO));
                 }
@@ -140,7 +159,7 @@ public interface PojoProperties {
         VESSEL_TYPE("SV_VESSEL_TYPE", "vessel-type"),
         JOINING_DATE("SV_JOINING_DATE", "joining-date") {
             @Override
-            public void validate(String value) throws ValidationException {
+            public void validateBeforeCreate(String value) throws ValidationException {
                 if (StringUtils.isEmpty(value)) {
                     throw new ValidationException(String.format("'%s' field cannot be empty", this.DTO));
                 }
@@ -162,7 +181,7 @@ public interface PojoProperties {
         },
         CONTRACT_DURATION("SV_CONTRACT_DURATION", "contract-duration") {
             @Override
-            public void validate(String value) throws ValidationException {
+            public void validateBeforeCreate(String value) throws ValidationException {
                 if (StringUtils.isEmpty(value)) {
                     throw new ValidationException(String.format("'%s' field cannot be empty", this.DTO));
                 }
@@ -170,7 +189,7 @@ public interface PojoProperties {
         },
         NATIONALITY("SV_NATIONALITY", "nationality") {
             @Override
-            public void validate(String value) throws ValidationException {
+            public void validateBeforeCreate(String value) throws ValidationException {
                 if (StringUtils.isEmpty(value)) {
                     throw new ValidationException(String.format("'%s' field cannot be empty", this.DTO));
                 }
@@ -178,7 +197,7 @@ public interface PojoProperties {
         },
         WAGE("SV_WAGE", "wage") {
             @Override
-            public void validate(String value) throws ValidationException {
+            public void validateBeforeCreate(String value) throws ValidationException {
                 if (StringUtils.isEmpty(value)) {
                     throw new ValidationException(String.format("'%s' field cannot be empty", this.DTO));
                 }
@@ -186,7 +205,7 @@ public interface PojoProperties {
         },
         DESCRIPTION("SV_DESCRIPTION", "description") {
             @Override
-            public void validate(String value) throws ValidationException {
+            public void validateBeforeCreate(String value) throws ValidationException {
                 if (StringUtils.isEmpty(value)) {
                     throw new ValidationException(String.format("'%s' field cannot be empty", this.DTO));
                 }
@@ -209,7 +228,13 @@ public interface PojoProperties {
             return Stream.of(values()).filter(v -> Objects.equals(v.DB, dbProp)).findAny();
         }
 
-        public void validate(String value) throws ValidationException {
+        public void validateBeforeCreate(String value) throws ValidationException {
+        }
+
+        public void validateBeforeUpdate(Object id, String value) throws ValidationException {
+        }
+
+        public void validateBeforeDelete(Object id) throws ValidationException {
         }
 
         public final static String TABLE_NAME = "SMA_VACANCIES";
@@ -219,7 +244,7 @@ public interface PojoProperties {
         PROP_NAME("SP_PROP_NAME", "prop-name"),
         PROP_VALUE("SP_PROP_VALUE", "body") {
             @Override
-            public void validate(String value) throws ValidationException {
+            public void validateBeforeCreate(String value) throws ValidationException {
                 if (StringUtils.isEmpty(value)) {
                     throw new ValidationException(String.format("'%s' field cannot be empty", this.DTO));
                 }
@@ -242,7 +267,13 @@ public interface PojoProperties {
             return Stream.of(values()).filter(v -> Objects.equals(v.DB, dbProp)).findAny();
         }
 
-        public void validate(String value) throws ValidationException {
+        public void validateBeforeCreate(String value) throws ValidationException {
+        }
+
+        public void validateBeforeUpdate(Object id, String value) throws ValidationException {
+        }
+
+        public void validateBeforeDelete(Object id) throws ValidationException {
         }
 
         public final static String BODY_KEY = "SMA_CONTACTS_BODY";
@@ -253,7 +284,7 @@ public interface PojoProperties {
         PROP_NAME("SP_PROP_NAME", "prop-name"),
         PROP_VALUE("SP_PROP_VALUE", "body") {
             @Override
-            public void validate(String value) throws ValidationException {
+            public void validateBeforeCreate(String value) throws ValidationException {
                 if (StringUtils.isEmpty(value)) {
                     throw new ValidationException(String.format("'%s' field cannot be empty", this.DTO));
                 }
@@ -276,7 +307,13 @@ public interface PojoProperties {
             return Stream.of(values()).filter(v -> Objects.equals(v.DB, dbProp)).findAny();
         }
 
-        public void validate(String value) throws ValidationException {
+        public void validateBeforeCreate(String value) throws ValidationException {
+        }
+
+        public void validateBeforeUpdate(Object id, String value) throws ValidationException {
+        }
+
+        public void validateBeforeDelete(Object id) throws ValidationException {
         }
 
         public final static String BODY_KEY = "SMA_MAIN_BODY";
@@ -284,8 +321,39 @@ public interface PojoProperties {
     }
 
     enum Users {
-        ID("SU_ID", "id"),
-        EMAIL("SU_EMAIL", "email"),
+        ID("SU_ID", "id") {
+
+            @Override
+            public void validateBeforeDelete(Object id) throws ValidationException {
+                if (Objects.equals(SUPER_USER_ID, id)) {
+                    throw new ValidationException("This user cannot be removed");
+                }
+            }
+        },
+        EMAIL("SU_EMAIL", "email") {
+
+            @Override
+            public void validateBeforeCreate(String value) throws ValidationException {
+                if (StringUtils.isEmpty(value)) {
+                    throw new ValidationException(String.format("'%s' field cannot be empty", this.DTO));
+                }
+
+                if (!EmailValidator.getInstance().isValid(value)) {
+                    throw new ValidationException(String.format("'%s' is invalid", this.DTO));
+                }
+            }
+
+            @Override
+            public void validateBeforeUpdate(Object id, String value) throws ValidationException {
+                if (Objects.equals(SUPER_USER_ID, id)) {
+                    throw new ValidationException("This user cannot be updated");
+                }
+
+                if (!EmailValidator.getInstance().isValid(value)) {
+                    throw new ValidationException(String.format("'%s' is invalid", this.DTO));
+                }
+            }
+        },
         PASSWORD("SU_PASSWORD", "password");
 
         public String DB;
@@ -304,10 +372,17 @@ public interface PojoProperties {
             return Stream.of(values()).filter(v -> Objects.equals(v.DB, dbProp)).findAny();
         }
 
-        public void validate(String value) throws ValidationException {
+        public void validateBeforeCreate(String value) throws ValidationException {
+        }
+
+        public void validateBeforeUpdate(Object id, String value) throws ValidationException {
+        }
+
+        public void validateBeforeDelete(Object id) throws ValidationException {
         }
 
         public final static String TABLE_NAME = "SMA_USERS";
+        public final static int SUPER_USER_ID = 1;
     }
 
     enum UserRoles {
@@ -329,7 +404,13 @@ public interface PojoProperties {
             return Stream.of(values()).filter(v -> Objects.equals(v.DB, dbProp)).findAny();
         }
 
-        public void validate(String value) throws ValidationException {
+        public void validateBeforeCreate(String value) throws ValidationException {
+        }
+
+        public void validateBeforeUpdate(Object id, String value) throws ValidationException {
+        }
+
+        public void validateBeforeDelete(Object id) throws ValidationException {
         }
 
         public final static String TABLE_NAME = "SMA_USER_ROLES";
@@ -354,7 +435,13 @@ public interface PojoProperties {
             return Stream.of(values()).filter(v -> Objects.equals(v.DB, dbProp)).findAny();
         }
 
-        public void validate(String value) throws ValidationException {
+        public void validateBeforeCreate(String value) throws ValidationException {
+        }
+
+        public void validateBeforeUpdate(Object id, String value) throws ValidationException {
+        }
+
+        public void validateBeforeDelete(Object id) throws ValidationException {
         }
 
         public final static String TABLE_NAME = "SMA_USERS_ROLES_RELATIONS";

@@ -64,7 +64,7 @@ public class NewsResource extends BaseResource<NewsPojo> {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response createNews(String input) {
-        return runAction(input, this::create);
+        return create(input);
     }
 
     @PUT

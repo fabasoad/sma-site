@@ -6,7 +6,8 @@ export const REST_CLIENT_RESOURCE = {
     VACANCIES: 'vacancies',
     REFERENCES: 'references',
     CONTACTS: 'contacts',
-    APPLICATION_FORMS: 'application-forms'
+    APPLICATION_FORMS: 'application-forms',
+    USERS: 'users'
 };
 
 let __resources = {
@@ -40,6 +41,13 @@ let __resources = {
         .add('update')
         .build(),
     'application-forms': new RestClientBuilder('application-forms')
+        .add('getAll')
+        .add('getById')
+        .add('create')
+        .add('update')
+        .add('delete')
+        .build(),
+    users: new RestClientBuilder('users')
         .add('getAll')
         .add('getById')
         .add('create')

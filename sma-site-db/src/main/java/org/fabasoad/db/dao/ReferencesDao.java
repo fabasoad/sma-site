@@ -21,10 +21,10 @@ class ReferencesDao extends BaseDao<ReferencePojo> {
     }
 
     @Override
-    void validate(String dbColumnName, Object value) throws ValidationException {
+    void validateBeforeCreate(String dbColumnName, Object value) throws ValidationException {
         References.fromDb(dbColumnName)
                 .orElseThrow(() -> new ValidationException(String.format("Unknown column with name '%s'", dbColumnName)))
-                .validate((String) value);
+                .validateBeforeCreate((String) value);
     }
 
     @Override

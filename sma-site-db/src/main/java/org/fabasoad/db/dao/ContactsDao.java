@@ -14,10 +14,10 @@ class ContactsDao extends BaseDao<ContactsPojo> {
     ContactsDao(DbAdapter adapter) { super(adapter); }
 
     @Override
-    void validate(String dbColumnName, Object value) throws ValidationException {
+    void validateBeforeCreate(String dbColumnName, Object value) throws ValidationException {
         Contacts.fromDb(dbColumnName)
                 .orElseThrow(() -> new ValidationException(String.format("Unknown column with name '%s'", dbColumnName)))
-                .validate((String) value);
+                .validateBeforeCreate((String) value);
     }
 
     @Override

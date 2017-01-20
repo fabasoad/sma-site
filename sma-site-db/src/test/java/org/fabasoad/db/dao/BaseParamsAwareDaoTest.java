@@ -1,6 +1,7 @@
 package org.fabasoad.db.dao;
 
 import org.apache.commons.lang3.RandomStringUtils;
+import org.fabasoad.db.exceptions.ValidationException;
 import org.fabasoad.db.pojo.BasePojo;
 import org.junit.Before;
 import org.junit.Test;
@@ -41,7 +42,7 @@ abstract class BaseParamsAwareDaoTest<T extends BasePojo> {
     }
 
     @Test
-    public void testUpdate() throws IllegalAccessException, InstantiationException {
+    public void testUpdate() throws IllegalAccessException, InstantiationException, ValidationException {
         Object initialValue = dao.get(bodyKey).getProperty(propValue);
 
         T pojo = this.pojoClazz.newInstance();
