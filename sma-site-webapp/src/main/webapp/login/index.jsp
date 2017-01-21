@@ -33,6 +33,9 @@
                     <input type="password" class="form-control" placeholder="Password"/>
                     <button id="login-button" class="btn btn-lg btn-primary btn-block" type="button">Sign in</button>
                 </div>
+                <div class="form-change-password">
+                    <button type="button" class="btn btn-link">Change password</button>
+                </div>
             </div>
         </div>
     </div>

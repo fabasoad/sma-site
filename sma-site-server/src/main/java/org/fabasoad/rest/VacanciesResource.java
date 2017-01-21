@@ -57,7 +57,7 @@ public class VacanciesResource extends BaseResource<VacanciesPojo> {
     }
 
     @POST
-    @RolesAllowed(Roles.ADMIN)
+    @RolesAllowed(PojoProperties.UserRoles.Values.ADMIN)
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response createVacancy(String input) {
@@ -66,7 +66,7 @@ public class VacanciesResource extends BaseResource<VacanciesPojo> {
 
     @PUT
     @Path("{id}")
-    @RolesAllowed(Roles.ADMIN)
+    @RolesAllowed(PojoProperties.UserRoles.Values.ADMIN)
     @SuppressWarnings("unchecked")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
@@ -79,7 +79,7 @@ public class VacanciesResource extends BaseResource<VacanciesPojo> {
 
     @DELETE
     @Path("{id}")
-    @RolesAllowed(Roles.ADMIN)
+    @RolesAllowed(PojoProperties.UserRoles.Values.ADMIN)
     public Response deleteVacancy(@PathParam("id") int id) {
         return delete(id);
     }

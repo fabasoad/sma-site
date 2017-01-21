@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Objects;
-import java.util.function.BiFunction;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -24,7 +24,7 @@ import static org.fabasoad.api.Logger.getLogger;
  */
 public abstract class BaseDao<T extends BasePojo> {
 
-    private DbAdapter adapter;
+    DbAdapter adapter;
 
     abstract String getTableName();
 
@@ -108,8 +108,8 @@ public abstract class BaseDao<T extends BasePojo> {
         return (T) result[0];
     }
 
-    BiFunction<DbAdapter, Integer, Integer> getPostInsertFunction() {
-        return (a, i) -> i;
+    Function<Integer, Integer> getPostInsertFunction() {
+        return i -> i;
     }
 
     public int create(T obj) throws ValidationException {
@@ -122,7 +122,7 @@ public abstract class BaseDao<T extends BasePojo> {
         );
         final int[] id = new int[] { -1 };
         adapter.runInsert(sql, params, arg -> id[0] = arg);
-        return getPostInsertFunction().apply(adapter, id[0]);
+        return getPostInsertFunction().apply(id[0]);
     }
 
     public void update(T obj) throws ValidationException {

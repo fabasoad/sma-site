@@ -67,7 +67,7 @@ public class ContactsResource extends BaseResource<ContactsPojo> {
     }
 
     @PUT
-    @RolesAllowed(Roles.ADMIN)
+    @RolesAllowed(PojoProperties.UserRoles.Values.ADMIN)
     @SuppressWarnings("unchecked")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)

@@ -53,6 +53,7 @@ let __resources = {
         .add('create')
         .add('update')
         .add('delete')
+        .add('patch')
         .build()
 };
 

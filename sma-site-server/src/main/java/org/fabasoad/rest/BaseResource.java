@@ -114,12 +114,16 @@ abstract class BaseResource<T extends BasePojo> {
     }
 
     Response runAction(String input, Function<JSONObject, Response> action) {
+        return runAction(input, action, getPojoProperties().values());
+    }
+
+    Response runAction(String input, Function<JSONObject, Response> action, Collection<String> keys) {
         JSONObject json;
         try {
             json = (JSONObject) new JSONParser().parse(input);
         } catch (ParseException ignored) {
             try {
-                json = parseInput(input, getPojoProperties().values());
+                json = parseInput(input, keys);
             } catch (UnsupportedEncodingException e) {
                 return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                         .entity(buildError(e.getMessage()).toJSONString())
@@ -241,7 +245,7 @@ abstract class BaseResource<T extends BasePojo> {
     }
 
     @SuppressWarnings("unchecked")
-    private JSONObject buildSuccess(String message) {
+    JSONObject buildSuccess(String message) {
         final JSONObject json = new JSONObject();
         json.put("type", "success");
         json.put("message", message);

@@ -3,6 +3,7 @@ package org.fabasoad.rest;
 import com.google.common.collect.ImmutableMap;
 import org.fabasoad.db.pojo.ApplicationFormPojo;
 import org.fabasoad.db.pojo.BasePojo;
+import org.fabasoad.db.pojo.PojoProperties;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.json.simple.JSONObject;
@@ -65,7 +66,7 @@ public class ApplicationFormsResource extends BaseResource<ApplicationFormPojo> 
     }
 
     @GET
-    @RolesAllowed(Roles.ADMIN)
+    @RolesAllowed(PojoProperties.UserRoles.Values.ADMIN)
     @Produces(MediaType.APPLICATION_JSON)
     public Response getApplicationForms() {
         return getAll();
@@ -73,7 +74,7 @@ public class ApplicationFormsResource extends BaseResource<ApplicationFormPojo> 
 
     @GET
     @Path("{id}")
-    @RolesAllowed(Roles.ADMIN)
+    @RolesAllowed(PojoProperties.UserRoles.Values.ADMIN)
     @Produces(MediaType.APPLICATION_JSON)
     public Response getApplicationForm(@PathParam("id") int id) {
         return get(id);
@@ -137,7 +138,7 @@ public class ApplicationFormsResource extends BaseResource<ApplicationFormPojo> 
 
     @DELETE
     @Path("{id}")
-    @RolesAllowed(Roles.ADMIN)
+    @RolesAllowed(PojoProperties.UserRoles.Values.ADMIN)
     public Response deleteApplicationForm(@PathParam("id") int id) {
         try {
             deleteFile(id, ApplicationForms.FILE_NAME.DB);

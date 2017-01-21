@@ -4,7 +4,7 @@ import org.fabasoad.db.DbAdapter;
 import org.fabasoad.db.exceptions.ValidationException;
 import org.fabasoad.db.pojo.UserPojo;
 
-import java.util.function.BiFunction;
+import java.util.function.Function;
 
 import static org.fabasoad.db.pojo.PojoProperties.Users;
 import static org.fabasoad.db.pojo.PojoProperties.UserRoles;
@@ -14,7 +14,7 @@ import static org.fabasoad.db.pojo.PojoProperties.UsersRolesRelations;
  * @author Yevhen Fabizhevskyi
  * @date 04.12.2016.
  */
-class UsersDao extends BaseDao<UserPojo> {
+public class UsersDao extends BaseDao<UserPojo> {
 
     UsersDao(DbAdapter adapter) {
         super(adapter);
@@ -88,13 +88,17 @@ class UsersDao extends BaseDao<UserPojo> {
     }
 
     @Override
-    BiFunction<DbAdapter, Integer, Integer> getPostInsertFunction() {
-        return (adapter, id) -> {
+    Function<Integer, Integer> getPostInsertFunction() {
+        return id -> {
             String sql = String.format("INSERT INTO %s SELECT ?, SUR_ID FROM SMA_USER_ROLES WHERE SUR_NAME = 'admin'",
                     UsersRolesRelations.TABLE_NAME);
 
             adapter.runInsert(sql, new Object[] { id }, i -> {});
             return id;
         };
+    }
+
+    public void changePassword(String email, String oldPassword, String newPassword, String repeatedPassword) {
+
     }
 }

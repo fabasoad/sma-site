@@ -66,6 +66,16 @@ export default function RestClientBuilder(url) {
                 url: __url + '/' + id,
                 complete: data => RestUtils.handleResponse(data, callback)
             });
+        },
+        patch(obj, callback) {
+            $.ajax({
+                type: 'PATCH',
+                url: __url,
+                contentType: "application/json",
+                dataType: 'json',
+                data: obj,
+                complete: data => RestUtils.handleResponse(data, callback)
+            });
         }
     };
 

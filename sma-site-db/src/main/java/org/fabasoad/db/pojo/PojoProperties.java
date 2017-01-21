@@ -414,6 +414,11 @@ public interface PojoProperties {
         }
 
         public final static String TABLE_NAME = "SMA_USER_ROLES";
+
+        public interface Values {
+            String ADMIN = "admin";
+            String BASIC = "basic";
+        }
     }
 
     enum UsersRolesRelations {
