@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="/public/css/bootstrap.min.css" />
     <link rel="stylesheet" href="/public/css/ekko-lightbox.min.css" />
     <link rel="stylesheet" href="/public/css/min/gallery/editable/gallery-editable-control-panel.css" />
+    <link rel="stylesheet" href="/public/css/min/references.css" />
     <script src="/public/js/jquery.min.js"></script>
     <script src="/public/js/bootstrap.min.js"></script>
     <script src="/public/js/require.js"></script>
