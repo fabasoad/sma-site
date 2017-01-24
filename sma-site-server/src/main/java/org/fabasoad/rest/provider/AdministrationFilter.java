@@ -1,7 +1,5 @@
 package org.fabasoad.rest.provider;
 
-import org.fabasoad.rest.Roles;
-
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
@@ -15,6 +13,7 @@ import java.util.Arrays;
 import java.util.Objects;
 import java.util.Optional;
 
+import static org.fabasoad.db.pojo.PojoProperties.UserRoles.Values.ADMIN;
 import static org.fabasoad.rest.provider.AuthenticationUtils.SMA_SESSION_COOKIE_NAME;
 
 /**
@@ -28,7 +27,8 @@ public class AdministrationFilter implements javax.servlet.Filter {
     }
 
     @Override
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain) throws IOException, ServletException {
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain)
+            throws IOException, ServletException {
         HttpServletRequest httpReequest = (HttpServletRequest) request;
         HttpServletResponse httpResponse = (HttpServletResponse) response;
 
@@ -43,7 +43,7 @@ public class AdministrationFilter implements javax.servlet.Filter {
 
             if (encodedValue.isPresent()) {
                 try {
-                    AuthenticationUtils.validateUser(encodedValue.get(), new String[]{Roles.ADMIN});
+                    AuthenticationUtils.validateUser(encodedValue.get(), new String[]{ADMIN});
                 } catch (AuthenticationException e) {
                     httpResponse.sendRedirect("/login");
                     return;

@@ -3,7 +3,7 @@ import BaseDialogBox from '../core/base-dialog-box.js';
 export default class VacancyDialogBox extends BaseDialogBox {
 
     constructor(item) {
-        super({
+        super(item, {
             id: 'vacancy',
             message: `
                 <div class="form-group vacancy-labeled-group">
@@ -52,20 +52,19 @@ export default class VacancyDialogBox extends BaseDialogBox {
                     <div id="vacancy-error-description" class="alert-danger"></div>
                     <textarea id="vacancy-description" rows="4" class="form-control" placeholder="` + (item['description'] || '') + `">` + (item['description'] || '') + `</textarea>
                 </div>
-                <script>
-                    $('#vacancy-joining-date').parent().datetimepicker({
-                        ` + (item['joining-date'] ? 'defaultDate: "' + item['joining-date'] + '",' : '') + `
-                        minDate: moment(),
-                        format: 'YYYY-MM-DD'
-                    });
-                </script>
             `,
             properties: ['rank', 'vessel-type', 'joining-date', 'contract-duration', 'nationality', 'wage', 'description']
         });
-        this.item = item;
     }
 
-    getProperty(key) {
-        return this.item[key] || '';
+    postInit() {
+        let config = {
+            minDate: moment(),
+            format: 'YYYY-MM-DD'
+        };
+        if (this.item['joining-date']) {
+            config.defaultDate = this.item['joining-date'];
+        }
+        $('#vacancy-joining-date').parent().datetimepicker(config);
     }
 }

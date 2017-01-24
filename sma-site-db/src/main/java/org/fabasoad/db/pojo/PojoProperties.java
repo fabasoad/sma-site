@@ -386,7 +386,7 @@ public interface PojoProperties {
     }
 
     enum UserRoles {
-        ID("SUR_ID", "id"), NAME("SUR_NAME", "name");
+        ID("SUR_ID", "id"), NAME("SUR_NAME", "role-name");
 
         public String DB;
         public String DTO;

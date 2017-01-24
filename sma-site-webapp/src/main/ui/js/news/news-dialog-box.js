@@ -3,7 +3,7 @@ import BaseDialogBox from '../core/base-dialog-box.js';
 export default class NewsDialogBox extends BaseDialogBox {
 
     constructor(item) {
-        super({
+        super(item || {}, {
             id: 'news',
             message: `
                 <div class="form-group news-labeled-group">
@@ -77,11 +77,6 @@ export default class NewsDialogBox extends BaseDialogBox {
             properties: ['title', 'body'],
             size: 'large'
         });
-        this.item = item || {};
-    }
-
-    getProperty(key) {
-        return this.item[key] || '';
     }
 
     getDocumentValue(key) {

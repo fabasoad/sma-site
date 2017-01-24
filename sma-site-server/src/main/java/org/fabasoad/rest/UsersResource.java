@@ -5,6 +5,7 @@ import org.fabasoad.db.dao.UsersDao;
 import org.fabasoad.db.pojo.PojoProperties;
 import org.fabasoad.db.pojo.UserPojo;
 import org.fabasoad.ws.rs.PATCH;
+import org.json.simple.JSONObject;
 
 import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.Consumes;
@@ -47,10 +48,20 @@ public class UsersResource extends BaseResource<UserPojo> {
     }
 
     @Override
+    void fillPojo(UserPojo pojo, JSONObject json) {
+        super.fillPojo(pojo, json);
+        if (json.containsKey(PojoProperties.UserRoles.NAME.DTO)) {
+            pojo.setProperty(PojoProperties.UserRoles.NAME.DB, json.get(PojoProperties.UserRoles.NAME.DTO));
+        }
+    }
+
+    @Override
     Map<String, String> getPojoProperties() {
-        return Stream.of(PojoProperties.Users.values())
+        Map<String, String> result = Stream.of(PojoProperties.Users.values())
                 .filter(v -> v != PojoProperties.Users.PASSWORD)
                 .collect(Collectors.toMap(v -> v.DB, v -> v.DTO));
+        result.put(PojoProperties.UserRoles.NAME.DB, PojoProperties.UserRoles.NAME.DTO);
+        return result;
     }
 
     @Override

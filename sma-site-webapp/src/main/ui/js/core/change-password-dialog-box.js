@@ -3,7 +3,7 @@ import BaseDialogBox from './base-dialog-box.js';
 export default class ChangePasswordDialogBox extends BaseDialogBox {
 
     constructor() {
-        super({
+        super(null, {
             id: 'change-password',
             message: `
                 <div class="form-group change-password-labeled-group">

@@ -4,8 +4,6 @@ import org.fabasoad.db.DbAdapter;
 import org.fabasoad.db.exceptions.ValidationException;
 import org.fabasoad.db.pojo.UserPojo;
 
-import java.util.function.Function;
-
 import static org.fabasoad.db.pojo.PojoProperties.Users;
 import static org.fabasoad.db.pojo.PojoProperties.UserRoles;
 import static org.fabasoad.db.pojo.PojoProperties.UsersRolesRelations;
@@ -51,9 +49,7 @@ public class UsersDao extends BaseDao<UserPojo> {
 
     @Override
     String[] getColumns() {
-        return new String[] {
-                Users.ID.DB, Users.EMAIL.DB, Users.PASSWORD.DB, UserRoles.NAME.DB
-        };
+        return new String[] { Users.ID.DB, Users.EMAIL.DB, Users.PASSWORD.DB, UserRoles.NAME.DB };
     }
 
     @Override
@@ -88,17 +84,23 @@ public class UsersDao extends BaseDao<UserPojo> {
     }
 
     @Override
-    Function<Integer, Integer> getPostInsertFunction() {
-        return id -> {
-            String sql = String.format("INSERT INTO %s SELECT ?, SUR_ID FROM SMA_USER_ROLES WHERE SUR_NAME = 'admin'",
-                    UsersRolesRelations.TABLE_NAME);
+    int postInsert(UserPojo obj) {
+        final String sql = String.format("INSERT INTO %s SELECT ?, SUR_ID FROM SMA_USER_ROLES WHERE SUR_NAME = ?",
+                UsersRolesRelations.TABLE_NAME);
 
-            adapter.runInsert(sql, new Object[] { id }, i -> {});
-            return id;
-        };
+        final Object[] params = {obj.getProperty(Users.ID.DB), obj.getProperty(UserRoles.NAME.DB)};
+        adapter.runInsert(sql, params, i -> {});
+        return (Integer) obj.getProperty(Users.ID.DB);
+    }
+
+    @Override
+    void postUpdate(UserPojo obj) {
+        final String sql = String.format("UPDATE %s SET %s = (SELECT %s FROM %s WHERE %s = ?) WHERE %s = ?",
+                UsersRolesRelations.TABLE_NAME, UsersRolesRelations.ROLE_ID.DB, UserRoles.ID.DB, UserRoles.TABLE_NAME,
+                UserRoles.NAME.DB, UsersRolesRelations.USER_ID.DB);
+        adapter.run(sql, new Object[] { obj.getProperty(UserRoles.NAME.DB), obj.getProperty(Users.ID.DB) });
     }
 
     public void changePassword(String email, String oldPassword, String newPassword, String repeatedPassword) {
-
     }
 }

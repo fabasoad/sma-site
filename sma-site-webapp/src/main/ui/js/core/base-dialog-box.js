@@ -2,11 +2,17 @@ import Constants from '../core/constants.js';
 
 export default class BaseDialogBox {
 
-    constructor(config) {
+    constructor(item, config) {
+        this.item = item;
         this.config = config;
+        this.postInit();
+    }
+
+    postInit() {
     }
 
     getProperty(key) {
+        return this.item[key] || '';
     }
 
     getDocumentValue(key) {

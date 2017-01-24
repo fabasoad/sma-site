@@ -4,6 +4,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.fabasoad.db.DbAdapter;
 import org.fabasoad.db.exceptions.ValidationException;
 import org.fabasoad.db.pojo.BasePojo;
+import org.fabasoad.db.pojo.PojoProperties;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -12,7 +13,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Objects;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -63,7 +63,7 @@ public abstract class BaseDao<T extends BasePojo> {
         return (Class<T>) paramType.getActualTypeArguments()[0];
     }
 
-    private T buildObject(ResultSet rs) throws Exception {
+    T buildObject(ResultSet rs) throws Exception {
         T result = getPojoClass().newInstance();
         for (String column : getColumns()) {
             result.setProperty(column, rs.getObject(column));
@@ -108,8 +108,8 @@ public abstract class BaseDao<T extends BasePojo> {
         return (T) result[0];
     }
 
-    Function<Integer, Integer> getPostInsertFunction() {
-        return i -> i;
+    int postInsert(T obj) {
+        return (Integer) obj.getProperty(PojoProperties.Users.ID.DB);
     }
 
     public int create(T obj) throws ValidationException {
@@ -120,9 +120,11 @@ public abstract class BaseDao<T extends BasePojo> {
                 String.join(",", getColumnsForInsert()),
                 StringUtils.join(Collections.nCopies(params.length, "?"), ",")
         );
-        final int[] id = new int[] { -1 };
-        adapter.runInsert(sql, params, arg -> id[0] = arg);
-        return getPostInsertFunction().apply(id[0]);
+        adapter.runInsert(sql, params, arg -> obj.setProperty(PojoProperties.Users.ID.DB, arg));
+        return postInsert(obj);
+    }
+
+    void postUpdate(T obj) {
     }
 
     public void update(T obj) throws ValidationException {
@@ -142,6 +144,7 @@ public abstract class BaseDao<T extends BasePojo> {
                     ));
             params[params.length - 1] = obj.getProperty(getIdColumn());
             adapter.run(sql, params);
+            postUpdate(obj);
         }
     }
 

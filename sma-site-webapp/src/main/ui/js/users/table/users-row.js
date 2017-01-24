@@ -27,6 +27,10 @@ export default class UsersRow {
         email.innerHTML = this.item['email'];
         tr.appendChild(email);
 
+        let role = document.createElement('td');
+        role.innerHTML = this.item['role-name'];
+        tr.appendChild(role);
+
         tr.appendChild(createButton(DomEditButton, this.editCallback));
         tr.appendChild(createButton(DomRemoveButton, this.removeCallback));
 
