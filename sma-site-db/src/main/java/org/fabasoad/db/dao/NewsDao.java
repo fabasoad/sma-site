@@ -1,5 +1,6 @@
 package org.fabasoad.db.dao;
 
+import org.apache.commons.lang3.tuple.Pair;
 import org.fabasoad.db.DbAdapter;
 import org.fabasoad.db.exceptions.ValidationException;
 import org.fabasoad.db.pojo.NewsPojo;
@@ -49,5 +50,10 @@ class NewsDao extends BaseDao<NewsPojo> {
     @Override
     String[] getColumnsForUpdate() {
         return new String[] { TITLE.DB, BODY.DB };
+    }
+
+    @Override
+    Pair<String, String> getOrderByColumn() {
+        return Pair.of(CREATION_DATE.DB, "DESC");
     }
 }

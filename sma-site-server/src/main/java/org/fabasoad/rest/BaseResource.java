@@ -184,7 +184,7 @@ abstract class BaseResource<T extends BasePojo> {
     }
 
     @SuppressWarnings("unchecked")
-    private JSONObject buildObjects(Collection<? extends BasePojo> pojos) {
+    JSONObject buildObjects(Collection<? extends BasePojo> pojos) {
         JSONArray array = new JSONArray();
         pojos.stream().map(this::buildObject).forEach(array::add);
 

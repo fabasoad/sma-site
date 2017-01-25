@@ -1,6 +1,7 @@
 package org.fabasoad.db.dao;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.tuple.Pair;
 import org.fabasoad.db.DbAdapter;
 import org.fabasoad.db.exceptions.ValidationException;
 import org.fabasoad.db.pojo.BasePojo;
@@ -63,7 +64,7 @@ public abstract class BaseDao<T extends BasePojo> {
         return (Class<T>) paramType.getActualTypeArguments()[0];
     }
 
-    T buildObject(ResultSet rs) throws Exception {
+    private T buildObject(ResultSet rs) throws Exception {
         T result = getPojoClass().newInstance();
         for (String column : getColumns()) {
             result.setProperty(column, rs.getObject(column));
@@ -79,8 +80,22 @@ public abstract class BaseDao<T extends BasePojo> {
         return String.format("SELECT %s FROM %s", String.join(",", getColumns()), getTableName());
     }
 
+    Pair<String, String> getOrderByColumn() {
+        return Pair.of(getIdColumn(), "ASC");
+    }
+
     public Collection<T> getAll() {
         final String sql = sqlSelect();
+        return getElements(sql);
+    }
+
+    public Collection<T> getLimit(String limit) {
+        final String sql = String.format("%s ORDER BY %s %s LIMIT %s",
+                sqlSelect(), getOrderByColumn().getLeft(), getOrderByColumn().getRight(), limit);
+        return getElements(sql);
+    }
+
+    private Collection<T> getElements(String sql) {
         Collection<T> result = new ArrayList<>();
         adapter.run(sql, rs -> {
             try {
