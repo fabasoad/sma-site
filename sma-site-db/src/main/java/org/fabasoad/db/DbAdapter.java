@@ -99,6 +99,21 @@ public abstract class DbAdapter {
         }
     }
 
+    public int runUpdate(String sql, Object[] params) {
+        try (Connection conn = connect();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            for (int i = 0; i < params.length; i++) {
+                stmt.setObject(i + 1, params[i]);
+            }
+            return stmt.executeUpdate();
+        } catch (SQLException e) {
+            getLogger().error(this.getClass(), e.getMessage());
+            return -1;
+        } finally {
+            getLogger().flow(this.getClass(), "Database connection closed");
+        }
+    }
+
     public void run(String sql) {
         try (Connection conn = connect();
              Statement stmt = conn.createStatement()) {

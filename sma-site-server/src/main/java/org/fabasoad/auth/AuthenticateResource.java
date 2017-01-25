@@ -4,6 +4,7 @@ import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
 import org.fabasoad.crypto.CryptoUtils;
 import org.fabasoad.db.pojo.PojoProperties;
 import org.fabasoad.db.pojo.UserPojo;
+import org.fabasoad.rest.config.ConfigUtils;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -14,17 +15,12 @@ import javax.ws.rs.Path;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.NewCookie;
 import javax.ws.rs.core.Response;
-
-import java.io.IOException;
-import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.Properties;
 
-import static org.fabasoad.api.Logger.getLogger;
 import static org.fabasoad.rest.provider.AuthenticationUtils.SMA_SESSION_COOKIE_NAME;
 import static org.fabasoad.rest.provider.AuthenticationUtils.getUser;
 
@@ -34,18 +30,6 @@ import static org.fabasoad.rest.provider.AuthenticationUtils.getUser;
  */
 @Path("/")
 public class AuthenticateResource {
-
-    private static String CRYPTO_SALT_PROPERTY_NAME = "crypto-salt";
-    private static Properties config = new Properties();
-    static {
-        InputStream inputStream =
-                AuthenticateResource.class.getClassLoader().getResourceAsStream("config.properties");
-        try {
-            config.load(inputStream);
-        } catch (IOException e) {
-            getLogger().error(AuthenticateResource.class, e.getMessage());
-        }
-    }
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
@@ -75,7 +59,7 @@ public class AuthenticateResource {
                 }
             }
         }
-        final String encryptedPassword = CryptoUtils.BCrypt.encrypt(password, config.getProperty(CRYPTO_SALT_PROPERTY_NAME));
+        final String encryptedPassword = CryptoUtils.BCrypt.encrypt(password, ConfigUtils.getCryptoSalt());
         final Optional<UserPojo> user = getUser(email, encryptedPassword);
 
         if (!user.isPresent()) {

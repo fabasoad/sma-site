@@ -5,10 +5,6 @@ export default class BaseDialogBox {
     constructor(item, config) {
         this.item = item;
         this.config = config;
-        this.postInit();
-    }
-
-    postInit() {
     }
 
     getProperty(key) {

@@ -1,9 +1,12 @@
 package org.fabasoad.rest;
 
+import org.fabasoad.crypto.CryptoUtils;
 import org.fabasoad.db.dao.DaoFactory;
 import org.fabasoad.db.dao.UsersDao;
+import org.fabasoad.db.exceptions.ValidationException;
 import org.fabasoad.db.pojo.PojoProperties;
 import org.fabasoad.db.pojo.UserPojo;
+import org.fabasoad.rest.config.ConfigUtils;
 import org.fabasoad.ws.rs.PATCH;
 import org.json.simple.JSONObject;
 
@@ -84,17 +87,22 @@ public class UsersResource extends BaseResource<UserPojo> {
     }
 
     @POST
+    @SuppressWarnings("unchecked")
     @RolesAllowed(PojoProperties.UserRoles.Values.ADMIN)
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response createUser(String input) {
-        return create(input);
+        return runAction(input, json -> {
+            json.put(PojoProperties.Users.PASSWORD.DTO,
+                    CryptoUtils.BCrypt.encrypt("", ConfigUtils.getCryptoSalt()));
+            return create(json);
+        });
     }
 
     @PUT
     @Path("{id}")
-    @RolesAllowed(PojoProperties.UserRoles.Values.ADMIN)
     @SuppressWarnings("unchecked")
+    @RolesAllowed(PojoProperties.UserRoles.Values.ADMIN)
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response updateUser(@PathParam("id") final int id, String input) {
@@ -115,13 +123,22 @@ public class UsersResource extends BaseResource<UserPojo> {
                 CHANGE_PASSWORD_PROPERTY_REPEATED);
 
         return runAction(input, json -> {
+            final Function<Integer, String> prop =
+                    i -> CryptoUtils.BCrypt.encrypt((String) json.get(keys.get(i)), ConfigUtils.getCryptoSalt());
+
             UsersDao dao = (UsersDao) DaoFactory.create(getPojoClass());
-            dao.changePassword(
-                (String) json.get(keys.get(0)),
-                (String) json.get(keys.get(1)),
-                (String) json.get(keys.get(2)),
-                (String) json.get(keys.get(3))
-            );
+            try {
+                dao.changePassword(
+                    (String) json.get(keys.get(0)),
+                    prop.apply(1),
+                    prop.apply(2),
+                    prop.apply(3)
+                );
+            } catch (ValidationException e) {
+                return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
+            } catch (Exception e) {
+                return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
+            }
             return Response.ok(buildSuccess("Password changed successfully").toJSONString()).build();
         }, keys);
     }

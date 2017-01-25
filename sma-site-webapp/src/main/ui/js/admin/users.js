@@ -2,10 +2,19 @@ import BootboxAlert from '../core/bootbox-alert.js';
 import Constants from '../core/constants.js';
 import UserDialogBox from '../users/user-dialog-box.js';
 import UsersLoader from '../users/users-loader.js';
-import {restClient} from '../rest/users-rest-client.js';
+import {restClient as usersRestClient} from '../rest/users-rest-client.js';
+import {restClient as userRolesRestClient} from '../rest/user-roles-rest-client.js';
+
+let loadUserRoles = callback => {
+    userRolesRestClient.getAll(json => {
+        if (typeof callback === 'function') {
+            callback(json.data);
+        }
+    });
+};
 
 document.getElementById('users-confirm-button').addEventListener('click', event => {
-    new UserDialogBox({}).show({
+    loadUserRoles(roles => new UserDialogBox({}, roles).show({
         label: 'Create',
         callback: (obj, event) => {
             let result = true;
@@ -20,7 +29,7 @@ document.getElementById('users-confirm-button').addEventListener('click', event 
 
             clearErrors();
 
-            restClient.create(obj, json => {
+            usersRestClient.create(obj, json => {
                 if (json.type === 'validation-error') {
                     let findParent =
                         el => el.classList.contains('user-labeled-group') ? el : findParent(el.parentNode);
@@ -37,11 +46,11 @@ document.getElementById('users-confirm-button').addEventListener('click', event 
             });
             return result;
         }
-    });
+    }));
 });
 
 let editCallback = (item, event) => {
-    new UserDialogBox(item).show({
+    loadUserRoles(roles => new UserDialogBox(item, roles).show({
         label: 'Save',
         callback: (obj, event) => {
             let result = true;
@@ -56,7 +65,7 @@ let editCallback = (item, event) => {
 
             clearErrors();
 
-            restClient.update(item['id'], obj, json => {
+            usersRestClient.update(item['id'], obj, json => {
                 if (json.type === 'validation-error') {
                     let findParent =
                         el => el.classList.contains('user-labeled-group') ? el : findParent(el.parentNode);
@@ -73,7 +82,7 @@ let editCallback = (item, event) => {
             });
             return result;
         }
-    });
+    }));
 };
 
 let removeCallback = (item, event) => {
@@ -92,7 +101,7 @@ let removeCallback = (item, event) => {
         },
         callback: result => {
             if (result) {
-                restClient.delete(item['id'], json => {
+                usersRestClient.delete(item['id'], json => {
                     BootboxAlert.show(json, refreshData);
                 });
             }

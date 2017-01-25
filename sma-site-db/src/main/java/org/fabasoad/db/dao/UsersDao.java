@@ -1,5 +1,6 @@
 package org.fabasoad.db.dao;
 
+import org.apache.commons.lang3.StringUtils;
 import org.fabasoad.db.DbAdapter;
 import org.fabasoad.db.exceptions.ValidationException;
 import org.fabasoad.db.pojo.UserPojo;
@@ -54,7 +55,7 @@ public class UsersDao extends BaseDao<UserPojo> {
 
     @Override
     String[] getColumnsForInsert() {
-        return new String[] { Users.EMAIL.DB };
+        return new String[] { Users.EMAIL.DB, Users.PASSWORD.DB };
     }
 
     @Override
@@ -101,6 +102,23 @@ public class UsersDao extends BaseDao<UserPojo> {
         adapter.run(sql, new Object[] { obj.getProperty(UserRoles.NAME.DB), obj.getProperty(Users.ID.DB) });
     }
 
-    public void changePassword(String email, String oldPassword, String newPassword, String repeatedPassword) {
+    public void changePassword(
+            final String email, final String oldPassword, final String newPassword, final String repeatedPassword)
+            throws ValidationException {
+        if (!StringUtils.equals(newPassword, repeatedPassword)) {
+            throw new ValidationException("New password doesn't match to the repeated one");
+        }
+
+        final String sql = String.format("UPDATE %1$s SET %2$s = ? WHERE %3$s = ? AND ? = ? AND %2$s = ?",
+                Users.TABLE_NAME, Users.PASSWORD.DB, Users.EMAIL.DB);
+        final Object[] params = { newPassword, email, newPassword, repeatedPassword, oldPassword };
+        int rows = adapter.runUpdate(sql, params);
+        if (rows == 0) {
+            throw new ValidationException("Email or password is incorrect");
+        } else if (rows == -1) {
+            throw new RuntimeException("There was a problem while changing the password. Please contact administrator");
+        } else if (rows > 1) {
+            throw new RuntimeException("More than 1 user has been changed. Please contact administrator");
+        }
     }
 }

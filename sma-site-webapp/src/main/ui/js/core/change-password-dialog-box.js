@@ -26,6 +26,21 @@ export default class ChangePasswordDialogBox extends BaseDialogBox {
                     <div id="change-password-error-repeated-password" class="alert-danger"></div>
                     <input id="change-password-repeated-password" type="password" class="form-control" placeholder="Enter new password again"/>
                 </div>
+                <script>
+                    function onChangePasswordDialogInputKeyPressHandler(e) {
+                        if (e.which === 13) {
+                            document.querySelector('.modal-content > .modal-footer > button[data-bb-handler="confirm"]').click();
+                        }
+                    }
+                    function addChangePasswordDialogInputKeyPressHandler(prop) {
+                        document.getElementById('change-password-' + prop)
+                            .addEventListener('keypress', onChangePasswordDialogInputKeyPressHandler);                        
+                    }
+                    addChangePasswordDialogInputKeyPressHandler("email");
+                    addChangePasswordDialogInputKeyPressHandler("old-password");
+                    addChangePasswordDialogInputKeyPressHandler("new-password");
+                    addChangePasswordDialogInputKeyPressHandler("repeated-password");
+                </script>
             `,
             properties: ['email', 'old-password', 'new-password', 'repeated-password']
         });

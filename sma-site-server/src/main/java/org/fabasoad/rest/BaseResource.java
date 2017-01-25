@@ -138,10 +138,11 @@ abstract class BaseResource<T extends BasePojo> {
         JSONObject json = new JSONObject();
         for (String element : input.split("&")) {
             String[] pair = element.split("=");
-            if (pair.length == 2) {
+            if (pair.length > 0 && pair.length < 3) {
+                String value = pair.length == 2 ? URLDecoder.decode(pair[1], StandardCharsets.UTF_8.displayName()) : "";
                 for (String key : keys) {
                     if (Objects.equals(key, pair[0])) {
-                        json.put(key, URLDecoder.decode(pair[1], StandardCharsets.UTF_8.displayName()));
+                        json.put(key, value);
                     }
                 }
             }

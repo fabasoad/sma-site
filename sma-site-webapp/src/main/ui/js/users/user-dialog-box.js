@@ -1,9 +1,8 @@
 import BaseDialogBox from '../core/base-dialog-box.js';
-import {restClient} from '../rest/user-roles-rest-client.js';
 
 export default class UserDialogBox extends BaseDialogBox {
 
-    constructor(item) {
+    constructor(item, roles) {
         super(item, {
             id: 'user',
             message: `
@@ -17,23 +16,18 @@ export default class UserDialogBox extends BaseDialogBox {
                     <div id="user-error-role-name" class="alert-danger"></div>
                     <select id="user-role-name" class="form-control"></select>
                 </div>
+                <script>
+                    var userRolesSelect = document.getElementById('user-role-name');
+                    ` + roles.map(roleItem => `var userRoleOption` +  roleItem['id'] + ` = document.createElement("option");
+                                userRoleOption` +  roleItem['id'] + `.setAttribute("id", "role-` +  roleItem['id'] + `");
+                                userRoleOption` +  roleItem['id'] + `.appendChild(document.createTextNode("` + roleItem['role-name'] + `"));
+                                if (` + (roleItem['role-name'] === item['role-name']) + `) {
+                                    userRoleOption` +  roleItem['id'] + `.setAttribute("selected", "true");
+                                }
+                                userRolesSelect.appendChild(userRoleOption` +  roleItem['id'] + `);`).join('') + `
+                </script>
             `,
             properties: ['email', 'role-name']
-        });
-    }
-
-    postInit() {
-        restClient.getAll(json => {
-            let select = document.getElementById('user-role-name');
-            for (let roleItem of json.data) {
-                let option = document.createElement('option');
-                option.setAttribute('id', 'role-' + roleItem['id']);
-                option.appendChild(document.createTextNode(roleItem['role-name']));
-                if (roleItem['role-name'] === this.item['role-name']) {
-                    option.setAttribute('selected', 'true');
-                }
-                select.appendChild(option);
-            }
         });
     }
 }
