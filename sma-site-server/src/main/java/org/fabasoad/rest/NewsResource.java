@@ -18,6 +18,8 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
@@ -58,7 +60,14 @@ public class NewsResource extends BaseResource<NewsPojo> {
         }
 
         BaseDao<NewsPojo> dao = DaoFactory.create(getPojoClass());
-        JSONObject json = buildObjects(dao.getLimit(limit));
+        Collection<NewsPojo> news = new ArrayList<>();
+        int totalCount = dao.getLimit(limit, news);
+        if (totalCount == -1) {
+            String message = String.format(
+                    "There is an error while retrieving count of %s. Please contact administrator", getDisplayName());
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(message).build();
+        }
+        JSONObject json = buildObjects(news, totalCount);
         return Response.ok(json.toJSONString()).build();
     }
 	

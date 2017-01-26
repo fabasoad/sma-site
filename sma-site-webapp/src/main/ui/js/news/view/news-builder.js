@@ -1,6 +1,11 @@
 import NewsItem from './news-item.js';
+import DomRefreshButton from '../../dom/buttons/dom-refresh-button.js';
 
 export default class NewsBuilder {
+
+    setSeeMoreCallback(seeMoreCallback) {
+        this.seeMoreCallback = seeMoreCallback;
+    }
 
     createNewsItem() {
         return new NewsItem();
@@ -29,16 +34,9 @@ export default class NewsBuilder {
         div.appendChild(divPosts);
 
         if (json['total-count'] > json.data.length) {
-            let text = document.createTextNode('See more');
-
-            let a = document.createElement('a');
-            a.setAttribute('href', '#');
-            a.setAttribute('class', 'btn btn-primary');
-            a.appendChild(text);
-
             let divTextCenter = document.createElement('div');
             divTextCenter.setAttribute('class', 'text-center');
-            divTextCenter.appendChild(a);
+            divTextCenter.appendChild(new DomRefreshButton(this.seeMoreCallback, 'See more'));
 
             div.appendChild(divTextCenter);
         }

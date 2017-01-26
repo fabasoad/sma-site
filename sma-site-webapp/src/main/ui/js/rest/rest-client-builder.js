@@ -18,6 +18,13 @@ export default function RestClientBuilder(url) {
                 complete: data => RestUtils.handleResponse(data, callback)
             });
         },
+        getLimit(limit, callback) {
+            $.ajax({
+                type: 'GET',
+                url: __url + '?limit=' + limit,
+                complete: data => RestUtils.handleResponse(data, callback)
+            });
+        },
         create(obj, callback) {
             try {
                 this.validate(obj);

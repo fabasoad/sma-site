@@ -13,8 +13,8 @@ export const REST_CLIENT_RESOURCE = {
 
 let __resources = {
     news: new RestClientBuilder('news')
-        .add('getAll')
         .add('getById')
+        .add('getLimit')
         .add('create')
         .add('update')
         .add('delete')

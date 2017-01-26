@@ -1,6 +1,6 @@
 export default class DomButton {
 
-    constructor(clickCallback, className) {
+    constructor(clickCallback, className, text) {
         let button = document.createElement('button');
         button.classList.add('btn');
         button.classList.add('btn-default');
@@ -11,6 +11,10 @@ export default class DomButton {
         span.classList.add('glyphicon');
         span.classList.add(className);
         button.appendChild(span);
+
+        if (text) {
+            button.appendChild(document.createTextNode(' ' + text));
+        }
 
         return button;
     }

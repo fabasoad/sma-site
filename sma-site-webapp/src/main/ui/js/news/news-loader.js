@@ -27,7 +27,11 @@ let loadInternal = (builder, restCall, minimized = true, wrapper = v => v) => {
 
 export default class NewsLoader {
 
-    static load(builder) {
+    constructor() {
+        this.limit = 2;
+    }
+
+    __loadInternal(builder) {
         divError404.classList.add('hide');
         let hash = window.location.hash;
         if (hash) {
@@ -38,7 +42,15 @@ export default class NewsLoader {
                 i => new Object({ data: [ i ] })
             );
         } else {
-            loadInternal(builder, restClient.getAll);
+            loadInternal(builder, callback => restClient.getLimit(this.limit, callback));
         }
+    }
+
+    load(builder) {
+        builder.setSeeMoreCallback(event => {
+            this.limit += 2;
+            this.__loadInternal(builder);
+        });
+        this.__loadInternal(builder);
     }
 }

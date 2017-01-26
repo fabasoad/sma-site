@@ -77,7 +77,12 @@ public abstract class BaseDao<T extends BasePojo> {
     }
 
     String sqlSelect() {
-        return String.format("SELECT %s FROM %s", String.join(",", getColumns()), getTableName());
+        return sqlSelect("");
+    }
+
+    String sqlSelect(String whereClause) {
+        return String.format("SELECT %s FROM %s %s ORDER BY %s %s", String.join(",", getColumns()),
+                getTableName(), whereClause, getOrderByColumn().getLeft(), getOrderByColumn().getRight());
     }
 
     Pair<String, String> getOrderByColumn() {
@@ -89,10 +94,28 @@ public abstract class BaseDao<T extends BasePojo> {
         return getElements(sql);
     }
 
-    public Collection<T> getLimit(String limit) {
-        final String sql = String.format("%s ORDER BY %s %s LIMIT %s",
-                sqlSelect(), getOrderByColumn().getLeft(), getOrderByColumn().getRight(), limit);
-        return getElements(sql);
+    public int getLimit(String limit, Collection<T> elements) {
+        final String sql = String.format("%s LIMIT %s", sqlSelect(), limit);
+        elements.addAll(getElements(sql));
+        return getCount();
+    }
+
+    private int getCount() {
+        final String COLUMN_LABEL = "C";
+        final String sql = String.format("SELECT COUNT(%s) AS %s FROM %s", getIdColumn(), COLUMN_LABEL, getTableName());
+        final int[] result = { -1 };
+        adapter.run(sql, rs -> {
+            try {
+                result[0] = rs.getInt(COLUMN_LABEL);
+            } catch (Exception e) {
+                getLogger().error(getClass(), e.getMessage());
+            }
+        });
+        if (result[0] == -1) {
+            getLogger().error(getClass(),
+                    String.format("There is an error while retrieving count of %s elements", getPojoClass().getName()));
+        }
+        return result[0];
     }
 
     private Collection<T> getElements(String sql) {
@@ -111,7 +134,7 @@ public abstract class BaseDao<T extends BasePojo> {
 
     @SuppressWarnings("unchecked")
     public <C> T get(C id) {
-        final String sql = String.format("%s WHERE %s = ?", sqlSelect(), getIdColumn());
+        final String sql = sqlSelect(String.format("WHERE %s = ?", getIdColumn()));
         final Object[] result = new Object[1];
         adapter.run(sql, new Object[] { id }, rs -> {
             try {

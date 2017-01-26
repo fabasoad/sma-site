@@ -58,7 +58,8 @@ abstract class BaseResource<T extends BasePojo> {
 
     Response getAll() {
         BaseDao<T> dao = DaoFactory.create(getPojoClass());
-        JSONObject json = buildObjects(dao.getAll());
+        Collection<T> elements = dao.getAll();
+        JSONObject json = buildObjects(elements, elements.size());
         return Response.ok(json.toJSONString()).build();
     }
 
@@ -184,12 +185,12 @@ abstract class BaseResource<T extends BasePojo> {
     }
 
     @SuppressWarnings("unchecked")
-    JSONObject buildObjects(Collection<? extends BasePojo> pojos) {
+    JSONObject buildObjects(Collection<? extends BasePojo> pojos, int totalCount) {
         JSONArray array = new JSONArray();
         pojos.stream().map(this::buildObject).forEach(array::add);
 
         final JSONObject result = new JSONObject();
-        result.put("total-count", pojos.size());
+        result.put("total-count", totalCount);
         result.put("data", array);
         return result;
     }
