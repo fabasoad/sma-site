@@ -1,5 +1,6 @@
 package org.fabasoad.rest.provider;
 
+import org.apache.commons.lang3.StringUtils;
 import org.fabasoad.db.dao.DaoFactory;
 import org.fabasoad.db.pojo.UserPojo;
 import org.glassfish.jersey.internal.util.Base64;
@@ -47,7 +48,7 @@ public class AuthenticationUtils {
     }
 
     public static Optional<UserPojo> getUser(final String email, final String password) {
-        final Predicate<UserPojo> matches = u -> Objects.equals(email, u.getProperty(EMAIL.DB))
+        final Predicate<UserPojo> matches = u -> StringUtils.equalsIgnoreCase(email, (String) u.getProperty(EMAIL.DB))
                 && Objects.equals(password, u.getProperty(PASSWORD.DB));
 
         return DaoFactory.create(UserPojo.class).getAll().stream().filter(matches).findAny();

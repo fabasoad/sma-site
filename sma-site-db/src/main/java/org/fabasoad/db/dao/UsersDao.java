@@ -109,7 +109,7 @@ public class UsersDao extends BaseDao<UserPojo> {
             throw new ValidationException("New password doesn't match to the repeated one");
         }
 
-        final String sql = String.format("UPDATE %1$s SET %2$s = ? WHERE %3$s = ? AND ? = ? AND %2$s = ?",
+        final String sql = String.format("UPDATE %1$s SET %2$s = ? WHERE UPPER(%3$s) = UPPER(?) AND ? = ? AND %2$s = ?",
                 Users.TABLE_NAME, Users.PASSWORD.DB, Users.EMAIL.DB);
         final Object[] params = { newPassword, email, newPassword, repeatedPassword, oldPassword };
         int rows = adapter.runUpdate(sql, params);
