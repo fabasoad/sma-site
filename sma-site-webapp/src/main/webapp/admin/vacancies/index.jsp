@@ -38,7 +38,7 @@
                 </div>
             </div>
         </div>
-        <div id="vacancies-table-div">
+        <div class="scrolled-container">
             <table id="vacancies-table" class="table table-hover table-sm">
                 <thead>
                     <tr>
