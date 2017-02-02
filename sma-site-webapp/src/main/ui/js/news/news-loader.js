@@ -28,7 +28,7 @@ let loadInternal = (builder, restCall, minimized = true, wrapper = v => v) => {
 export default class NewsLoader {
 
     constructor() {
-        this.limit = 2;
+        this.limit = 10;
     }
 
     __loadInternal(builder) {
