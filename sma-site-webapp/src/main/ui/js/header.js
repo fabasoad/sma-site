@@ -4,7 +4,9 @@ import Constants from './core/constants.js';
 let paths = location.pathname.split("/");
 
 if (paths[1] === 'admin') {
+    let attributes = paths[2] === 'params' || paths[2] === 'users' ? '' : 'target="_blank" href="/' + paths[2] + '"';
     let $navbar = $('.navbar .navbar-nav');
+    $navbar.prepend('<li><a class="glyphicon glyphicon-open-file" ' + attributes + '></a></li>');
     $navbar.append('<li><a href="/admin/params">Configuration</a></li>');
     $navbar.append('<li><a href="/admin/users">Users</a></li>');
     document.querySelector('.navbar-brand').appendChild(document.createTextNode('Administration'));
