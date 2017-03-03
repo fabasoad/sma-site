@@ -2,10 +2,9 @@ import RestClientBuilder from './rest-client-builder.js';
 
 export const REST_CLIENT_RESOURCE = {
     NEWS: 'news',
-    MAIN: 'main',
+    PARAMS: 'params',
     VACANCIES: 'vacancies',
     REFERENCES: 'references',
-    CONTACTS: 'contacts',
     APPLICATION_FORMS: 'application-forms',
     USERS: 'users',
     USER_ROLES: 'user-roles'
@@ -19,8 +18,8 @@ let __resources = {
         .add('update')
         .add('delete')
         .build(),
-    main: new RestClientBuilder('main')
-        .add('getAll')
+    params: new RestClientBuilder('params')
+        .add('getById')
         .add('update')
         .build(),
     vacancies: new RestClientBuilder('vacancies')
@@ -36,10 +35,6 @@ let __resources = {
         .add('create')
         .add('update')
         .add('delete')
-        .build(),
-    contacts: new RestClientBuilder('contacts')
-        .add('getAll')
-        .add('update')
         .build(),
     'application-forms': new RestClientBuilder('application-forms')
         .add('getAll')

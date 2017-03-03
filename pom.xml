@@ -70,4 +70,55 @@
         </dependencies>
     </dependencyManagement>
 
+    <profiles>
+        <profile>
+            <id>build-production</id>
+            <properties>
+                <deploy.root.dir>deploy</deploy.root.dir>
+            </properties>
+            <build>
+                <plugins>
+                    <plugin>
+                        <artifactId>maven-antrun-plugin</artifactId>
+                        <version>1.7</version>
+                        <executions>
+                            <execution>
+                                <phase>compile</phase>
+                                <goals>
+                                    <goal>run</goal>
+                                </goals>
+                                <configuration>
+                                    <target name="copying-files">
+                                        <copy tofile="${deploy.root.dir}\sma-site-api.jar" overwrite="true">
+                                            <fileset dir="${project.basedir}\sma-site-api\target">
+                                                <include name="sma-site-api-*.jar" />
+                                            </fileset>
+                                        </copy>
+                                        <copy tofile="${deploy.root.dir}\sma-site-db.jar" overwrite="true">
+                                            <fileset dir="${project.basedir}\sma-site-db\target">
+                                                <include name="sma-site-db-*.jar" />
+                                            </fileset>
+                                        </copy>
+                                        <copy tofile="${deploy.root.dir}\sma-site-server.jar" overwrite="true">
+                                            <fileset dir="${project.basedir}\sma-site-server\target">
+                                                <include name="sma-site-server-*.jar" />
+                                            </fileset>
+                                        </copy>
+                                        <copy todir="${deploy.root.dir}\sma-site-webapp" overwrite="true">
+                                            <fileset dir="${project.basedir}\sma-site-webapp\target\sma-site-webapp" />
+                                        </copy>
+                                        <copy
+                                            file="${project.basedir}\sma-site-webapp\target\sma-site-webapp.war"
+                                            tofile="${deploy.root.dir}\sma-site-webapp.war"
+                                            overwrite="true" />
+                                    </target>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+
 </project>

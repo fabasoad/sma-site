@@ -22,7 +22,6 @@
 <body>
     <div class="container">
         <jsp:include page="/header.jsp">
-            <jsp:param name="title" value="Administration" />
             <jsp:param name="locationPrefix" value="/admin" />
         </jsp:include>
         <div class="panel panel-default">

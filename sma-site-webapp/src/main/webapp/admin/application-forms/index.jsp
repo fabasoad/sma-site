@@ -21,7 +21,6 @@
 <body>
     <div class="container">
         <jsp:include page="/header.jsp">
-            <jsp:param name="title" value="Administration" />
             <jsp:param name="locationPrefix" value="/admin" />
         </jsp:include>
         <table id="application-forms-table" class="table table-hover table-sm">

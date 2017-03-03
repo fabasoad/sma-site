@@ -27,10 +27,8 @@ public class DaoFactory extends ParametersAware {
             return (BaseDao<T>) new NewsDao(adapter);
         } else if (pojoClazz == VacanciesPojo.class) {
         return (BaseDao<T>) new VacanciesDao(adapter);
-        } else if (pojoClazz == ContactsPojo.class) {
-            return (BaseDao<T>) new ContactsDao(adapter);
-        } else if (pojoClazz == MainPojo.class) {
-            return (BaseDao<T>) new MainDao(adapter);
+        } else if (pojoClazz == ParamPojo.class) {
+            return (BaseDao<T>) new ParamsDao(adapter);
         } else if (pojoClazz == UserRolePojo.class) {
             return (BaseDao<T>) new UserRolesDao(adapter);
         } else {

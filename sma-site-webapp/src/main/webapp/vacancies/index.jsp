@@ -22,9 +22,7 @@
 </head>
 <body>
     <div class="container">
-        <jsp:include page="/header.jsp">
-            <jsp:param name="title" value="Southern Maritime Agency" />
-        </jsp:include>
+        <jsp:include page="/header.jsp"/>
         <jsp:include page="/carousel.jsp"/>
         <div class="scrolled-container">
             <table id="vacancies-table" class="table table-hover table-sm hide">

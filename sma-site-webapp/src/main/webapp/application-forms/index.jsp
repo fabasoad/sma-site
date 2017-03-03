@@ -24,9 +24,7 @@
 </head>
 <body>
 <div class="container">
-    <jsp:include page="/header.jsp">
-        <jsp:param name="title" value="Southern Maritime Agency"/>
-    </jsp:include>
+    <jsp:include page="/header.jsp"/>
     <jsp:include page="/carousel.jsp"/>
     <div class="row">
         <div class="col-sm-3"></div>

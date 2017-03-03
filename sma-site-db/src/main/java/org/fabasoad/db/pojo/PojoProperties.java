@@ -240,7 +240,7 @@ public interface PojoProperties {
         public final static String TABLE_NAME = "SMA_VACANCIES";
     }
 
-    enum Contacts {
+    enum Params {
         PROP_NAME("SP_PROP_NAME", "prop-name"),
         PROP_VALUE("SP_PROP_VALUE", "body") {
             @Override
@@ -254,7 +254,7 @@ public interface PojoProperties {
         public String DB;
         public String DTO;
 
-        Contacts(String dbProperty, String dtoProperty) {
+        Params(String dbProperty, String dtoProperty) {
             this.DB = dbProperty;
             this.DTO = dtoProperty;
         }
@@ -263,7 +263,7 @@ public interface PojoProperties {
             return Stream.of(values()).filter(v -> Objects.equals(v.DTO, dtoProp)).map(v -> v.DB).findAny();
         }
 
-        public static Optional<Contacts> fromDb(String dbProp) {
+        public static Optional<Params> fromDb(String dbProp) {
             return Stream.of(values()).filter(v -> Objects.equals(v.DB, dbProp)).findAny();
         }
 
@@ -276,47 +276,6 @@ public interface PojoProperties {
         public void validateBeforeDelete(Object id) throws ValidationException {
         }
 
-        public final static String BODY_KEY = "SMA_CONTACTS_BODY";
-        public final static String TABLE_NAME = "SMA_PARAMS";
-    }
-
-    enum Main {
-        PROP_NAME("SP_PROP_NAME", "prop-name"),
-        PROP_VALUE("SP_PROP_VALUE", "body") {
-            @Override
-            public void validateBeforeCreate(String value) throws ValidationException {
-                if (StringUtils.isEmpty(value)) {
-                    throw new ValidationException(String.format("'%s' field cannot be empty", this.DTO));
-                }
-            }
-        };
-
-        public String DB;
-        public String DTO;
-
-        Main(String dbProperty, String dtoProperty) {
-            this.DB = dbProperty;
-            this.DTO = dtoProperty;
-        }
-
-        public static Optional<String> fromDto(String dtoProp) {
-            return Stream.of(values()).filter(v -> Objects.equals(v.DTO, dtoProp)).map(v -> v.DB).findAny();
-        }
-
-        public static Optional<Main> fromDb(String dbProp) {
-            return Stream.of(values()).filter(v -> Objects.equals(v.DB, dbProp)).findAny();
-        }
-
-        public void validateBeforeCreate(String value) throws ValidationException {
-        }
-
-        public void validateBeforeUpdate(Object id, String value) throws ValidationException {
-        }
-
-        public void validateBeforeDelete(Object id) throws ValidationException {
-        }
-
-        public final static String BODY_KEY = "SMA_MAIN_BODY";
         public final static String TABLE_NAME = "SMA_PARAMS";
     }
 

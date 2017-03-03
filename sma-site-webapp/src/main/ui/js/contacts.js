@@ -1,5 +1,6 @@
-import {restClient} from './rest/contacts-rest-client.js';
+import {restClient} from './rest/params-rest-client.js';
+import Constants from './core/constants.js';
 
-restClient.getAll(data => {
+restClient.getById(Constants.PARAMS.CONTACTS, data => {
     document.getElementById('contacts-container').innerHTML = data.body;
 });
