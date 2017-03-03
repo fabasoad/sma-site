@@ -29,6 +29,7 @@ $("#reference-upload").on('filebatchuploadsuccess', (event, data) => {
                 BootboxAlert.show(json2, refreshData);
             });
         }
+        document.getElementById('reference-title').value = '';
     }
 });
 
