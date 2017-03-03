@@ -1,5 +1,7 @@
 package org.fabasoad.db;
 
+import org.fabasoad.db.exceptions.FieldUniqueException;
+
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -66,6 +68,7 @@ public abstract class DbAdapter {
             callback.accept(rs);
         } catch (SQLException e) {
             getLogger().error(this.getClass(), e.getMessage());
+            handleSQLException(e);
         } finally {
             getLogger().flow(this.getClass(), "Database connection closed");
         }
@@ -80,6 +83,7 @@ public abstract class DbAdapter {
             callback.accept(stmt.executeQuery());
         } catch (SQLException e) {
             getLogger().error(this.getClass(), e.getMessage());
+            handleSQLException(e);
         } finally {
             getLogger().flow(this.getClass(), "Database connection closed");
         }
@@ -94,6 +98,7 @@ public abstract class DbAdapter {
             stmt.execute();
         } catch (SQLException e) {
             getLogger().error(this.getClass(), e.getMessage());
+            handleSQLException(e);
         } finally {
             getLogger().flow(this.getClass(), "Database connection closed");
         }
@@ -120,12 +125,13 @@ public abstract class DbAdapter {
             stmt.execute(sql);
         } catch (SQLException e) {
             getLogger().error(this.getClass(), e.getMessage());
+            handleSQLException(e);
         } finally {
             getLogger().flow(this.getClass(), "Database connection closed");
         }
     }
 
-    public void runInsert(String sql, Object[] params, Consumer<Integer> callback) {
+    public void runInsert(String sql, Object[] params, Consumer<Integer> callback) throws FieldUniqueException {
         try (Connection conn = connect();
              PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             for (int i = 0; i < params.length; i++) {
@@ -149,8 +155,11 @@ public abstract class DbAdapter {
             }
         } catch (SQLException e) {
             getLogger().error(this.getClass(), e.getMessage());
+            handleSQLException(e);
         } finally {
             getLogger().flow(this.getClass(), "Database connection closed");
         }
     }
+
+    abstract void handleSQLException(SQLException e);
 }

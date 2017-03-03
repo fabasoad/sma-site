@@ -3,6 +3,7 @@ package org.fabasoad.db.dao;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.fabasoad.db.DbAdapter;
+import org.fabasoad.db.exceptions.FieldUniqueException;
 import org.fabasoad.db.exceptions.ValidationException;
 import org.fabasoad.db.pojo.BasePojo;
 import org.fabasoad.db.pojo.PojoProperties;
@@ -146,7 +147,7 @@ public abstract class BaseDao<T extends BasePojo> {
         return (T) result[0];
     }
 
-    int postInsert(T obj) {
+    int postInsert(T obj) throws FieldUniqueException {
         return (Integer) obj.getProperty(PojoProperties.Users.ID.DB);
     }
 
@@ -158,8 +159,12 @@ public abstract class BaseDao<T extends BasePojo> {
                 String.join(",", getColumnsForInsert()),
                 StringUtils.join(Collections.nCopies(params.length, "?"), ",")
         );
-        adapter.runInsert(sql, params, arg -> obj.setProperty(PojoProperties.Users.ID.DB, arg));
-        return postInsert(obj);
+        try {
+            adapter.runInsert(sql, params, arg -> obj.setProperty(PojoProperties.Users.ID.DB, arg));
+            return postInsert(obj);
+        } catch (FieldUniqueException e) {
+            throw new ValidationException(e.getMessage(), e);
+        }
     }
 
     void postUpdate(T obj) {

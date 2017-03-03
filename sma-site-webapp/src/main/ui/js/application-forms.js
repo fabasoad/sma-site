@@ -19,9 +19,10 @@ $("#application-form-upload").on('filebatchuploadsuccess', (event, json1) => {
                 message: 'Application form uploaded successfully'
             });
         } else {
-            restClient.update(json1.response.id, { 'sender-name' : senderName}, json2 => {
+            restClient.update(json1.response.id, { 'sender-name' : senderName }, json2 => {
                 BootboxAlert.show(json2);
             });
         }
+        document.getElementById('application-form-sender-name').value = '';
     }
 });

@@ -2,6 +2,7 @@ package org.fabasoad.db.dao;
 
 import org.apache.commons.lang3.StringUtils;
 import org.fabasoad.db.DbAdapter;
+import org.fabasoad.db.exceptions.FieldUniqueException;
 import org.fabasoad.db.exceptions.ValidationException;
 import org.fabasoad.db.pojo.UserPojo;
 
@@ -85,7 +86,7 @@ public class UsersDao extends BaseDao<UserPojo> {
     }
 
     @Override
-    int postInsert(UserPojo obj) {
+    int postInsert(UserPojo obj) throws FieldUniqueException {
         final String sql = String.format("INSERT INTO %s SELECT ?, SUR_ID FROM SMA_USER_ROLES WHERE SUR_NAME = ?",
                 UsersRolesRelations.TABLE_NAME);
 
