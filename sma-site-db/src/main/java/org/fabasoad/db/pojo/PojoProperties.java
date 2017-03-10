@@ -410,4 +410,44 @@ public interface PojoProperties {
 
         public final static String TABLE_NAME = "SMA_USERS_ROLES_RELATIONS";
     }
+
+    enum CarouselImages {
+        ID("SCI_ID", "id"),
+        TITLE("SCI_TITLE", "title"),
+        FILE_NAME("SCI_FILE_NAME", "src") {
+            @Override
+            public void validateBeforeCreate(String value) throws ValidationException {
+                if (StringUtils.isEmpty(value)) {
+                    throw new ValidationException(String.format("'%s' field cannot be empty", this.DTO));
+                }
+            }
+        };
+
+        public String DB;
+        public String DTO;
+
+        CarouselImages(String dbProperty, String dtoProperty) {
+            this.DB = dbProperty;
+            this.DTO = dtoProperty;
+        }
+
+        public static Optional<String> fromDto(String dtoProp) {
+            return Stream.of(values()).filter(v -> Objects.equals(v.DTO, dtoProp)).map(v -> v.DB).findAny();
+        }
+
+        public static Optional<CarouselImages> fromDb(String dbProp) {
+            return Stream.of(values()).filter(v -> Objects.equals(v.DB, dbProp)).findAny();
+        }
+
+        public void validateBeforeCreate(String value) throws ValidationException {
+        }
+
+        public void validateBeforeUpdate(Object id, String value) throws ValidationException {
+        }
+
+        public void validateBeforeDelete(Object id) throws ValidationException {
+        }
+
+        public final static String TABLE_NAME = "SMA_CAROUSEL_IMAGES";
+    }
 }

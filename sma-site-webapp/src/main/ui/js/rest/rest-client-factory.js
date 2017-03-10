@@ -7,7 +7,8 @@ export const REST_CLIENT_RESOURCE = {
     REFERENCES: 'references',
     APPLICATION_FORMS: 'application-forms',
     USERS: 'users',
-    USER_ROLES: 'user-roles'
+    USER_ROLES: 'user-roles',
+    CAROUSEL_IMAGES: 'carousel-images'
 };
 
 let __resources = {
@@ -54,6 +55,13 @@ let __resources = {
     'user-roles': new RestClientBuilder('user-roles')
         .add('getAll')
         .add('getById')
+        .build(),
+    'carousel-images': new RestClientBuilder('carousel-images')
+        .add('getAll')
+        .add('getById')
+        .add('create')
+        .add('update')
+        .add('delete')
         .build()
 };
 

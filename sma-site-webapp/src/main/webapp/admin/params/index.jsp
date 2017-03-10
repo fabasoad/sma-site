@@ -8,10 +8,16 @@
     <title>Admin: Configuration</title>
     <link rel="shortcut icon" href="/public/img/logo/logo-48x48.png">
     <link rel="stylesheet" href="/public/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="/public/css/ekko-lightbox.min.css" />
+    <link rel="stylesheet" href="/public/css/min/gallery/editable/gallery-editable-control-panel.css" />
+    <link rel="stylesheet" href="/public/css/min/params.css" />
     <script src="/public/js/jquery.min.js"></script>
     <script src="/public/js/bootstrap.min.js"></script>
-    <script src="/public/js/system.js"></script>
     <script src="/public/js/bootbox.min.js"></script>
+    <script src="/public/js/require.js"></script>
+    <script src="/public/js/system.js"></script>
+    <script src="/public/js/modal.js"></script>
+    <script src="/public/js/ekko-lightbox.min.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             SystemJS.import('/public/js/min/admin/params.js');
@@ -45,6 +51,7 @@
                 <button id="param-footer-year-save-button" type="button" class="btn btn-primary pull-right">Save</button>
             </div>
         </div>
+        <div id="carousel-gallery"></div>
         <jsp:include page="/footer.jsp"/>
     </div>
 </body>

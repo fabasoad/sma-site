@@ -13,7 +13,7 @@ import org.fabasoad.db.pojo.*;
 public class DaoFactory extends ParametersAware {
 
     @SuppressWarnings("unchecked")
-    public static <T extends BasePojo, E extends Enum<E>> BaseDao<T> create(Class<T> pojoClazz) {
+    public static <T extends BasePojo> BaseDao<T> create(Class<T> pojoClazz) {
         readParameters();
 
         DbAdapter adapter = DbAdapterFactory.create(SqlType.SQLITE, properties.getProperty(DEPLOY_PATH_PARAM_NAME));
@@ -31,6 +31,8 @@ public class DaoFactory extends ParametersAware {
             return (BaseDao<T>) new ParamsDao(adapter);
         } else if (pojoClazz == UserRolePojo.class) {
             return (BaseDao<T>) new UserRolesDao(adapter);
+        } else if (pojoClazz == CarouselImagesPojo.class) {
+            return (BaseDao<T>) new CarouselImagesDao(adapter);
         } else {
             throw new RuntimeException(String.format("Unknown type '%s'", pojoClazz.getSimpleName()));
         }

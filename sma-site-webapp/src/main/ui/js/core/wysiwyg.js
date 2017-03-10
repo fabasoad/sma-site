@@ -1,3 +1,3 @@
-var editor = $('#editor');
-editor.wysiwyg();
-editor.cleanHtml();
+var $editor = $('#editor');
+$editor.wysiwyg();
+$editor.cleanHtml();
