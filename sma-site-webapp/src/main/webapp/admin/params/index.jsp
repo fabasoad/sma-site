@@ -32,27 +32,29 @@
             <jsp:param name="locationPrefix" value="/admin" />
         </jsp:include>
         <!-- Company name handling -->
-        <div class="row">
-            <div class="col-sm-2 form-group">
-                <label for="param-company-name">Company Name</label>
+        <div class="panel">
+            <div class="panel-body param-panel-body">
+                <div class="col-sm-2 form-group">
+                    <label for="param-company-name">Company Name</label>
+                </div>
+                <div class="col-sm-9 form-group">
+                    <input id="param-company-name" type="text" class="form-control" value="" placeholder="Enter company name"/>
+                </div>
+                <div class="col-sm-1 form-group">
+                    <button id="param-company-name-save-button" type="button" class="btn btn-primary pull-right">Save</button>
+                </div>
             </div>
-            <div class="col-sm-9 form-group">
-                <input id="param-company-name" type="text" class="form-control" value="" placeholder="Enter company name"/>
-            </div>
-            <div class="col-sm-1 form-group">
-                <button id="param-company-name-save-button" type="button" class="btn btn-primary pull-right">Save</button>
-            </div>
-        </div>
-        <!-- Company year handling -->
-        <div class="row">
-            <div class="col-sm-2 form-group">
-                <label for="param-footer-year">Company Year</label>
-            </div>
-            <div class="col-sm-9 form-group">
-                <input id="param-footer-year" type="text" class="form-control" value="" placeholder="Enter company year"/>
-            </div>
-            <div class="col-sm-1 form-group">
-                <button id="param-footer-year-save-button" type="button" class="btn btn-primary pull-right">Save</button>
+            <!-- Company year handling -->
+            <div class="panel-body param-panel-body">
+                <div class="col-sm-2 form-group">
+                    <label for="param-footer-year">Company Year</label>
+                </div>
+                <div class="col-sm-9 form-group">
+                    <input id="param-footer-year" type="text" class="form-control" value="" placeholder="Enter company year"/>
+                </div>
+                <div class="col-sm-1 form-group">
+                    <button id="param-footer-year-save-button" type="button" class="btn btn-primary pull-right">Save</button>
+                </div>
             </div>
         </div>
         <!-- Carousel handling -->
