@@ -18,9 +18,5 @@
         <span class="fa fa-angle-right" aria-hidden="true"></span>
         <span class="sr-only">Next</span>
     </a>
-    <ol class="carousel-indicators">
-        <li data-target="#sma-carousel" data-slide-to="0" class="active"></li>
-        <li data-target="#sma-carousel" data-slide-to="1"></li>
-        <li data-target="#sma-carousel" data-slide-to="2"></li>
-    </ol>
+    <ol class="carousel-indicators"></ol>
 </div>

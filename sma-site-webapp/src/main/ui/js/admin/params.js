@@ -25,6 +25,35 @@ loadParam(Constants.PARAMS.COMPANY_NAME, 'company-name');
 /* Footer year handling */
 loadParam(Constants.PARAMS.FOOTER_YEAR, 'footer-year');
 
+/* Carousel images upload field */
+$("#carousel-image-upload").fileinput({
+    uploadUrl: '/api/v1/carousel-images',
+    uploadAsync: false,
+    maxFileCount: 1,
+    previewFileType: 'image',
+    allowedFileTypes: ['image'],
+    elErrorContainer: "#carousel-image-upload-error-block"
+});
+
+$("#carousel-image-upload").on('filebatchuploadsuccess', (event, data) => {
+    if (data.response.type === 'error') {
+        BootboxAlert.show(data.response, refreshData);
+    } else {
+        let title = document.getElementById('carousel-image-title').value;
+        if (title === '') {
+            BootboxAlert.show({
+                type: 'success',
+                message: 'Carousel image created successfully'
+            }, refreshData);
+        } else {
+            carouselImagesRestClient.update(data.response.id, {title: title}, json2 => {
+                BootboxAlert.show(json2, refreshData);
+            });
+        }
+        document.getElementById('carousel-image-title').value = '';
+    }
+});
+
 /* Carousel images handling */
 $(document).on('click', '[data-toggle="lightbox"]', event => {
     event.preventDefault();
