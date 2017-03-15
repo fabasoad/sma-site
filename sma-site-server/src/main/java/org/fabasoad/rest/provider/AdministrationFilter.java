@@ -29,10 +29,10 @@ public class AdministrationFilter implements javax.servlet.Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain)
             throws IOException, ServletException {
-        HttpServletRequest httpReequest = (HttpServletRequest) request;
+        HttpServletRequest httpRequest = (HttpServletRequest) request;
         HttpServletResponse httpResponse = (HttpServletResponse) response;
 
-        Cookie[] cookies = httpReequest.getCookies();
+        Cookie[] cookies = httpRequest.getCookies();
         if (cookies == null) {
             httpResponse.sendRedirect("/login");
         } else {
@@ -47,6 +47,9 @@ public class AdministrationFilter implements javax.servlet.Filter {
                 } catch (AuthenticationException e) {
                     httpResponse.sendRedirect("/login");
                     return;
+                }
+                if (httpRequest.getServletPath().contains("login")) {
+                    httpResponse.sendRedirect("/admin");
                 }
                 filterChain.doFilter(request, response);
             } else {

@@ -1,6 +1,5 @@
 package org.fabasoad.auth;
 
-import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
 import org.fabasoad.crypto.CryptoUtils;
 import org.fabasoad.db.pojo.PojoProperties;
 import org.fabasoad.db.pojo.UserPojo;
@@ -18,6 +17,7 @@ import javax.ws.rs.core.Response;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
+import java.util.Base64;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -68,7 +68,7 @@ public class AuthenticateResource {
 
         NewCookie cookie = new NewCookie(
             SMA_SESSION_COOKIE_NAME,
-            Base64.encode(String.format("%s:%s", email, encryptedPassword).getBytes())
+            new String(Base64.getEncoder().encode(String.format("%s:%s", email, encryptedPassword).getBytes()))
         );
 
         return Response.status(Response.Status.CREATED)

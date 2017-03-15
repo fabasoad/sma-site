@@ -3,10 +3,10 @@ package org.fabasoad.rest.provider;
 import org.apache.commons.lang3.StringUtils;
 import org.fabasoad.db.dao.DaoFactory;
 import org.fabasoad.db.pojo.UserPojo;
-import org.glassfish.jersey.internal.util.Base64;
 
 import javax.ws.rs.core.Response;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.StringTokenizer;
@@ -26,7 +26,7 @@ public class AuthenticationUtils {
 
     static void validateUser(final String encodedValue, final String[] roles) throws AuthenticationException {
         //Decode username and password
-        String emailAndPassword = new String(Base64.decode(encodedValue.getBytes()));
+        String emailAndPassword = new String(Base64.getDecoder().decode(encodedValue.getBytes()));
 
         //Split username and password tokens
         final StringTokenizer tokenizer = new StringTokenizer(emailAndPassword, ":");
