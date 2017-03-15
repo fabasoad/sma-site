@@ -3,38 +3,46 @@
     <parent>
         <artifactId>sma-site-root</artifactId>
         <groupId>org.fabasoad</groupId>
-        <version>1.0-SNAPSHOT</version>
+        <version>0.3.1-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
     <artifactId>sma-site-server</artifactId>
     <packaging>jar</packaging>
 
+    <properties>
+        <javax.ws.rs-api.version>2.1-m05</javax.ws.rs-api.version>
+        <jersey-media-multipart.version>2.26-b03</jersey-media-multipart.version>
+        <jersey-server.version>2.26-b03</jersey-server.version>
+        <javax.servlet-api.version>4.0.0-b03</javax.servlet-api.version>
+        <json-simple.version>1.1.1</json-simple.version>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>javax.ws.rs</groupId>
             <artifactId>javax.ws.rs-api</artifactId>
-            <version>2.1-m01</version>
+            <version>${javax.ws.rs-api.version}</version>
         </dependency>
         <dependency>
             <groupId>org.glassfish.jersey.media</groupId>
             <artifactId>jersey-media-multipart</artifactId>
-            <version>2.19</version>
+            <version>${jersey-media-multipart.version}</version>
         </dependency>
         <dependency>
             <groupId>org.glassfish.jersey.core</groupId>
             <artifactId>jersey-server</artifactId>
-            <version>RELEASE</version>
+            <version>${jersey-server.version}</version>
         </dependency>
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
-            <version>3.1.0</version>
+            <version>${javax.servlet-api.version}</version>
         </dependency>
         <dependency>
             <groupId>com.googlecode.json-simple</groupId>
             <artifactId>json-simple</artifactId>
-            <version>1.1.1</version>
+            <version>${json-simple.version}</version>
         </dependency>
         <dependency>
             <groupId>commons-io</groupId>
@@ -48,7 +56,7 @@
         <dependency>
             <groupId>org.fabasoad</groupId>
             <artifactId>sma-site-db</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>${project.version}</version>
         </dependency>
     </dependencies>
 

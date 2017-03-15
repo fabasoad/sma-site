@@ -24,13 +24,23 @@ public class ParametersAware {
     protected static Properties properties = new Properties();
     private static Path PROPERTIES_FILE = Paths.get(System.getProperty("user.home"), "sma-db-setup.properties");
 
+    @SuppressWarnings("unchecked")
+    private static <T extends ParametersAware> Class<T> getClazz() {
+        try {
+            // 0 - Thread, 1 & 2 - ParametersAware, 3 - derived class
+            return (Class<T>) Class.forName(Thread.currentThread().getStackTrace()[3].getClassName());
+        } catch (ClassNotFoundException e) {
+            return (Class<T>) ParametersAware.class;
+        }
+    }
+
     protected static void readParameters() {
         if (PROPERTIES_FILE.toFile().exists() && !PROPERTIES_FILE.toFile().isDirectory() && Files.isReadable(PROPERTIES_FILE)) {
-            getLogger().flow(ParametersAware.class, String.format("Read parameters from %s file", PROPERTIES_FILE.toAbsolutePath()));
+            getLogger().flow(getClazz(), String.format("Read parameters from %s file", PROPERTIES_FILE.toAbsolutePath()));
             try (InputStream input = new FileInputStream(PROPERTIES_FILE.toFile())) {
                 properties.load(input);
             } catch (IOException e) {
-                getLogger().error(ParametersAware.class, e.getMessage());
+                getLogger().error(getClazz(), e.getMessage());
             }
         }
     }
@@ -42,7 +52,7 @@ public class ParametersAware {
         try (OutputStream output = new FileOutputStream(PROPERTIES_FILE.toFile())) {
             properties.store(output, null);
         } catch (IOException e) {
-            getLogger().error(ParametersAware.class, e.getMessage());
+            getLogger().error(getClazz(), e.getMessage());
         }
     }
 }

@@ -3,24 +3,28 @@
     <parent>
         <artifactId>sma-site-root</artifactId>
         <groupId>org.fabasoad</groupId>
-        <version>1.0-SNAPSHOT</version>
+        <version>0.3.1-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
     <artifactId>sma-site-webapp</artifactId>
     <packaging>war</packaging>
 
+    <properties>
+        <jersey-container-servlet-core.version>2.26-b03</jersey-container-servlet-core.version>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>org.glassfish.jersey.containers</groupId>
             <artifactId>jersey-container-servlet-core</artifactId>
-            <version>2.24.1</version>
+            <version>${jersey-container-servlet-core.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.fabasoad</groupId>
             <artifactId>sma-site-server</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>${project.version}</version>
         </dependency>
     </dependencies>
 

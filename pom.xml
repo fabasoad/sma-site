@@ -7,7 +7,7 @@
     <groupId>org.fabasoad</groupId>
     <artifactId>sma-site-root</artifactId>
     <packaging>pom</packaging>
-    <version>1.0-SNAPSHOT</version>
+    <version>0.3.1-SNAPSHOT</version>
 
     <modules>
         <module>sma-site-db</module>
@@ -20,7 +20,7 @@
         <apache.commons-lang3.version>3.5</apache.commons-lang3.version>
         <apache.commons-io.version>2.5</apache.commons-io.version>
         <apache.commons-validator.version>1.5.1</apache.commons-validator.version>
-        <fabasoad.commons-lang.version>0.3.0</fabasoad.commons-lang.version>
+        <fabasoad.commons-lang.version>0.3.1</fabasoad.commons-lang.version>
     </properties>
 
     <repositories>

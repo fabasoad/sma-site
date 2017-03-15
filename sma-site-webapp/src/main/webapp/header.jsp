@@ -6,7 +6,7 @@
     });
 </script>
 <div class="navbar navbar-inverse" role="navigation">
-    <div class="navbar-header">
+    <div class="navbar-header hide">
         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
@@ -15,7 +15,7 @@
         <a class="navbar-brand" href="${param.locationPrefix}/"></a>
     </div>
     <div class="collapse navbar-collapse">
-        <ul class="nav navbar-nav">
+        <ul class="nav navbar-nav hide">
             <li><a href="${param.locationPrefix}/">Main</a></li>
             <li><a href="${param.locationPrefix}/news">News</a></li>
             <li><a href="${param.locationPrefix}/vacancies">Vacancies</a></li>
