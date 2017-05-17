@@ -25,7 +25,7 @@ public class VacanciesDaoTest extends BaseDaoTest<VacanciesPojo, PojoProperties.
         VacanciesPojo pojo = new VacanciesPojo();
         pojo.setProperty(CONTRACT_DURATION.DB, "3 months");
         pojo.setProperty(DESCRIPTION.DB, "Good position");
-        pojo.setProperty(JOINING_DATE.DB, "2017-05-05");
+        pojo.setProperty(JOINING_DATE.DB, "2090-05-05");
         pojo.setProperty(NATIONALITY.DB, "Ukraine");
         pojo.setProperty(RANK.DB, "Chief Officer");
         pojo.setProperty(VESSEL_TYPE.DB, "OSV");

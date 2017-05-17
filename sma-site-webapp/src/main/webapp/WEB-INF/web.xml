@@ -51,6 +51,5 @@
     <filter-mapping>
         <filter-name>administration-filter</filter-name>
         <url-pattern>/admin/*</url-pattern>
-        <url-pattern>/login/*</url-pattern>
     </filter-mapping>
 </web-app>
