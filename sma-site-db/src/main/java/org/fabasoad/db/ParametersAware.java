@@ -1,10 +1,12 @@
 package org.fabasoad.db;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -22,7 +24,18 @@ public class ParametersAware {
     protected static String DEPLOY_PATH_PARAM_NAME = "deploy-path";
 
     protected static Properties properties = new Properties();
-    private static Path PROPERTIES_FILE = Paths.get(System.getProperty("user.home"), "sma-db-setup.properties");
+    private static Path PROPERTIES_FILE;
+
+    static {
+        try {
+            String path = new File(ParametersAware.class
+                    .getProtectionDomain().getCodeSource().getLocation().toURI().getPath()).getParentFile().getPath();
+            PROPERTIES_FILE = Paths.get(path, "sma-db-setup.properties");
+        } catch (URISyntaxException e) {
+            getLogger().error(getClazz(), e.getMessage());
+        }
+    }
+
 
     @SuppressWarnings("unchecked")
     private static <T extends ParametersAware> Class<T> getClazz() {
