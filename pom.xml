@@ -75,45 +75,35 @@
         <profile>
             <id>build-production</id>
             <properties>
-                <deploy.root.dir>deploy</deploy.root.dir>
+                <deploy.root.dir>releases\${project.version}</deploy.root.dir>
             </properties>
             <build>
                 <plugins>
                     <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-antrun-plugin</artifactId>
                         <version>1.7</version>
                         <executions>
                             <execution>
                                 <phase>compile</phase>
+                                <configuration>
+                                    <tasks>
+                                        <unzip src="${project.basedir}\sma-site-webapp\target\sma-site-webapp.war" dest="${deploy.root.dir}" />
+                                        <copy tofile="${deploy.root.dir}\sma-db.s3db" overwrite="true">
+                                            <fileset dir="${project.basedir}">
+                                                <include name="sma-db.s3db"/>
+                                            </fileset>
+                                        </copy>
+                                        <copy tofile="${deploy.root.dir}\sma-db-setup.properties" overwrite="true">
+                                            <fileset dir="${project.basedir}\sma-site-db\target">
+                                                <include name="sma-db-setup.properties"/>
+                                            </fileset>
+                                        </copy>
+                                    </tasks>
+                                </configuration>
                                 <goals>
                                     <goal>run</goal>
                                 </goals>
-                                <configuration>
-                                    <target name="copying-files">
-                                        <copy tofile="${deploy.root.dir}\sma-site-api.jar" overwrite="true">
-                                            <fileset dir="${project.basedir}\sma-site-api\target">
-                                                <include name="sma-site-api-*.jar" />
-                                            </fileset>
-                                        </copy>
-                                        <copy tofile="${deploy.root.dir}\sma-site-db.jar" overwrite="true">
-                                            <fileset dir="${project.basedir}\sma-site-db\target">
-                                                <include name="sma-site-db-*.jar" />
-                                            </fileset>
-                                        </copy>
-                                        <copy tofile="${deploy.root.dir}\sma-site-server.jar" overwrite="true">
-                                            <fileset dir="${project.basedir}\sma-site-server\target">
-                                                <include name="sma-site-server-*.jar" />
-                                            </fileset>
-                                        </copy>
-                                        <copy todir="${deploy.root.dir}\sma-site-webapp" overwrite="true">
-                                            <fileset dir="${project.basedir}\sma-site-webapp\target\sma-site-webapp" />
-                                        </copy>
-                                        <copy
-                                            file="${project.basedir}\sma-site-webapp\target\sma-site-webapp.war"
-                                            tofile="${deploy.root.dir}\sma-site-webapp.war"
-                                            overwrite="true" />
-                                    </target>
-                                </configuration>
                             </execution>
                         </executions>
                     </plugin>
