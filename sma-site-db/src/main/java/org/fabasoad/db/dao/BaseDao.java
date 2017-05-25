@@ -67,8 +67,10 @@ public abstract class BaseDao<T extends BasePojo> {
 
     private T buildObject(ResultSet rs) throws Exception {
         T result = getPojoClass().newInstance();
-        for (String column : getColumns()) {
-            result.setProperty(column, rs.getObject(column));
+        int i = 0;
+        while (i < getColumns().length && rs.next()) {
+            result.setProperty(getColumns()[i], rs.getObject(getColumns()[i]));
+            i++;
         }
         return result;
     }

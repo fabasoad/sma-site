@@ -53,7 +53,9 @@ public class MySqlDbAdapter extends DbAdapter {
     void initialize(Properties properties) {
         initialize(new String[] {
             properties.getProperty(HOST_PARAM_NAME),
-            properties.getProperty(PORT_PARAM_NAME)
+            properties.getProperty(PORT_PARAM_NAME),
+            properties.getProperty(USER_PARAM_NAME),
+            properties.getProperty(PASSWORD_PARAM_NAME)
         });
     }
 
