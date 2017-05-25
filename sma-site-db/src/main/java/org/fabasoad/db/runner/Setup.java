@@ -1,16 +1,15 @@
 package org.fabasoad.db.runner;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.fabasoad.db.DbAdapterFactory;
 import org.fabasoad.db.ParametersAware;
-import org.fabasoad.db.SqlType;
+import org.fabasoad.db.adapters.DbAdapter;
+import org.fabasoad.db.adapters.DbAdapterFactory;
+import org.fabasoad.db.base.DbType;
+import org.fabasoad.db.base.DbTypeFactory;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.stream.IntStream;
 
 import static org.fabasoad.api.Logger.getLogger;
 
@@ -20,39 +19,42 @@ import static org.fabasoad.api.Logger.getLogger;
  */
 public class Setup extends ParametersAware {
 
-    public static void main(String[] args) {
+    public static void main(final String[] args) {
         long startTime = System.currentTimeMillis();
         getLogger().flow(Setup.class, "Starting database creation...");
         readParameters();
 
-        SqlType dbType;
-        String deployPath;
+        DbType dbType;
+        String connectionPath;
+        DbAdapter dbAdapter;
 
         if (args.length == 0) {
-            dbType = SqlType.valueOfIgnoreCase(properties.getProperty(DB_TYPE_PARAM_NAME));
-            deployPath = properties.getProperty(DEPLOY_PATH_PARAM_NAME);
-        } else if (args.length == 2) {
-            dbType = SqlType.valueOfIgnoreCase(args[0]);
-            deployPath = Paths.get(args[1], DbAdapterFactory.getDbName(dbType)).toString();
+            dbType = DbTypeFactory.getDbType(properties.getProperty(DB_TYPE_PARAM_NAME));
+            connectionPath = properties.getProperty(CONNECTION_PATH_PARAM_NAME);
+            dbAdapter = DbAdapterFactory.create(dbType, connectionPath);
+        } else if (args.length > 0) {
+            dbType = DbTypeFactory.getDbType(args[0]);
 
-            if (!StringUtils.equalsIgnoreCase(properties.getProperty(DB_TYPE_PARAM_NAME), dbType.name())
-                    || !StringUtils.equalsIgnoreCase(properties.getProperty(DEPLOY_PATH_PARAM_NAME), deployPath)) {
-                writeParameters(dbType.name().toLowerCase(), deployPath);
+            String[] dbAdapterArgs = IntStream.range(1, args.length).mapToObj(i -> args[i]).toArray(String[]::new);
+            dbAdapter = DbAdapterFactory.create(dbType, dbAdapterArgs);
+            connectionPath = dbAdapter.CONNECTION_PATH.toString();
+
+            if (!StringUtils.equalsIgnoreCase(properties.getProperty(DB_TYPE_PARAM_NAME), dbType.getDbTypeName())
+                    || !StringUtils.equalsIgnoreCase(properties.getProperty(CONNECTION_PATH_PARAM_NAME), connectionPath)) {
+                writeParameters(dbType.getDbTypeName().toLowerCase(), connectionPath);
             }
         } else {
             String message = "Arguments are missing";
             getLogger().error(Setup.class, message);
             throw new RuntimeException(message);
         }
-        getLogger().flow(Setup.class, "Database type: " + dbType.name());
-        getLogger().flow(Setup.class, "Deployment path: " + deployPath);
+        getLogger().flow(Setup.class, "Database type: " + dbType.getDbTypeName());
+        getLogger().flow(Setup.class, "Connection path: " + connectionPath);
 
-        if (!StringUtils.isEmpty(deployPath)) {
-            if (deployDb(dbType, deployPath)) {
-                DbAdapterFactory.create(dbType, deployPath).setUp();
-            }
+        if (StringUtils.isEmpty(connectionPath)) {
+            getLogger().error(Setup.class, "Connection path is empty");
         } else {
-            getLogger().error(Setup.class, "Deploy path is empty");
+            dbAdapter.setUp();
         }
         long endTime = System.currentTimeMillis();
         getLogger().flow(Setup.class, "Database created successfully. Time: " + timeFormat(endTime - startTime));
@@ -62,14 +64,4 @@ public class Setup extends ParametersAware {
         return new SimpleDateFormat("ss:S").format(new Date(time));
     }
 
-    private static boolean deployDb(SqlType dbType, String deployPath) {
-        String from = Paths.get("db", dbType.name().toLowerCase(), DbAdapterFactory.getDbName(dbType)).toString();
-        try {
-            FileUtils.copyURLToFile(ClassLoader.getSystemResource(from), new File(deployPath));
-            return true;
-        } catch (IOException e) {
-            getLogger().error(Setup.class, e.getMessage());
-            return false;
-        }
-    }
 }

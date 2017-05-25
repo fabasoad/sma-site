@@ -1,5 +1,6 @@
-package org.fabasoad.db;
+package org.fabasoad.db.adapters;
 
+import org.fabasoad.db.base.DbType;
 import org.fabasoad.db.exceptions.FieldUniqueException;
 
 import java.io.BufferedReader;
@@ -24,19 +25,17 @@ import static org.fabasoad.api.Logger.getLogger;
  */
 public abstract class DbAdapter {
 
-    static Path DB_PATH;
-    private static Path FOLDER_PATH_SQL;
+    public Path CONNECTION_PATH;
 
-    DbAdapter(String dbPath) {
-        DB_PATH = Paths.get(dbPath);
-        FOLDER_PATH_SQL = Paths.get("db", getType().getFolderName(), "sql");
-    }
+    abstract void initialize(String connectionPath);
+
+    abstract void initialize(String[] args);
 
     abstract String getUrl();
 
-    abstract SqlType getType();
+    abstract DbType getType();
 
-    private Connection connect() {
+    protected Connection connect() {
         Connection result = null;
         try {
             result = DriverManager.getConnection(getUrl());
@@ -47,19 +46,7 @@ public abstract class DbAdapter {
         return result;
     }
 
-    public void setUp() {
-        try (Connection conn = connect(); Statement stmt = conn.createStatement()) {
-            final InputStream stream = ClassLoader.getSystemResourceAsStream(Paths.get(FOLDER_PATH_SQL.toString(), "init.sql").toString());
-            final String sqls = new BufferedReader(new InputStreamReader(stream)).lines().collect(Collectors.joining());
-            for (String sql : sqls.split(";")) {
-                stmt.execute(sql);
-            }
-        } catch (SQLException e) {
-            getLogger().error(this.getClass(), e.getMessage());
-        } finally {
-            getLogger().flow(this.getClass(), "Database connection closed");
-        }
-    }
+    public abstract void setUp();
 
     public void run(String sql, Consumer<ResultSet> callback) {
         try (Connection conn = connect();
@@ -133,7 +120,7 @@ public abstract class DbAdapter {
 
     public void runInsert(String sql, Object[] params, Consumer<Integer> callback) throws FieldUniqueException {
         try (Connection conn = connect();
-             PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             for (int i = 0; i < params.length; i++) {
                 if (params[i] == null) {
                     stmt.setString(i + 1, "");

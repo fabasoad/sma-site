@@ -1,9 +1,9 @@
 package org.fabasoad.db.dao;
 
-import org.fabasoad.db.DbAdapter;
-import org.fabasoad.db.DbAdapterFactory;
+import org.fabasoad.db.adapters.DbAdapter;
+import org.fabasoad.db.adapters.DbAdapterFactory;
 import org.fabasoad.db.ParametersAware;
-import org.fabasoad.db.SqlType;
+import org.fabasoad.db.base.DbTypeFactory;
 import org.fabasoad.db.pojo.*;
 
 /**
@@ -16,7 +16,10 @@ public class DaoFactory extends ParametersAware {
     public static <T extends BasePojo> BaseDao<T> create(Class<T> pojoClazz) {
         readParameters();
 
-        DbAdapter adapter = DbAdapterFactory.create(SqlType.SQLITE, properties.getProperty(DEPLOY_PATH_PARAM_NAME));
+        DbAdapter adapter = DbAdapterFactory.create(
+            DbTypeFactory.getDbType(properties.getProperty(DB_TYPE_PARAM_NAME)),
+            properties.getProperty(CONNECTION_PATH_PARAM_NAME)
+        );
         if (pojoClazz == ReferencePojo.class) {
             return (BaseDao<T>) new ReferencesDao(adapter);
         } else if (pojoClazz == UserPojo.class) {

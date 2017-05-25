@@ -21,7 +21,7 @@ import static org.fabasoad.api.Logger.getLogger;
 public class ParametersAware {
 
     protected static String DB_TYPE_PARAM_NAME = "db-type";
-    protected static String DEPLOY_PATH_PARAM_NAME = "deploy-path";
+    protected static String CONNECTION_PATH_PARAM_NAME = "connection-path";
 
     protected static Properties properties = new Properties();
     private static Path PROPERTIES_FILE;
@@ -60,7 +60,7 @@ public class ParametersAware {
 
     protected static void writeParameters(String dbType, String deployPath) {
         properties.setProperty(DB_TYPE_PARAM_NAME, dbType);
-        properties.setProperty(DEPLOY_PATH_PARAM_NAME, deployPath);
+        properties.setProperty(CONNECTION_PATH_PARAM_NAME, deployPath);
 
         try (OutputStream output = new FileOutputStream(PROPERTIES_FILE.toFile())) {
             properties.store(output, null);

@@ -2,7 +2,7 @@ package org.fabasoad.db.dao;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
-import org.fabasoad.db.DbAdapter;
+import org.fabasoad.db.adapters.DbAdapter;
 import org.fabasoad.db.exceptions.FieldUniqueException;
 import org.fabasoad.db.exceptions.ValidationException;
 import org.fabasoad.db.pojo.BasePojo;
