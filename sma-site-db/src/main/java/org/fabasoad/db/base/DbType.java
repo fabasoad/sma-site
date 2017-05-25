@@ -15,6 +15,11 @@ public abstract class DbType {
     }
 
     @Override
+    public String toString() {
+        return getDbTypeName();
+    }
+
+    @Override
     public int hashCode() {
         int result = 17;
         result = 37 * result + Optional.ofNullable(getDbTypeName()).map(String::hashCode).orElse(0);

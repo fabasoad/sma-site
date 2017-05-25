@@ -3,14 +3,20 @@ package org.fabasoad.db.adapters;
 import org.fabasoad.db.base.DbType;
 import org.fabasoad.db.exceptions.FieldUniqueException;
 
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Properties;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 import static org.fabasoad.api.Logger.getLogger;
 
@@ -20,19 +26,13 @@ import static org.fabasoad.api.Logger.getLogger;
  */
 public abstract class DbAdapter {
 
-    Path connectionPath;
-
-    abstract void initialize(String connectionPath);
+    abstract void initialize(Properties properties);
 
     abstract void initialize(String[] args);
 
     abstract String getUrl();
 
-    abstract DbType getType();
-
-    public Path getConnectionPath() {
-        return connectionPath;
-    }
+    public abstract DbType getDbType();
 
     protected Connection connect() {
         Connection result = null;
@@ -45,7 +45,24 @@ public abstract class DbAdapter {
         return result;
     }
 
-    public abstract void setUp();
+    abstract void deployDb();
+
+    public void setUp() {
+        deployDb();
+        try (Connection conn = connect(); Statement stmt = conn.createStatement()) {
+            final Path FOLDER_PATH_SQL = Paths.get("db", getDbType().getDbTypeName(), "scripts");
+            final InputStream stream = ClassLoader.getSystemResourceAsStream(
+                    Paths.get(FOLDER_PATH_SQL.toString(), "init.sql").toString());
+            final String sqls = new BufferedReader(new InputStreamReader(stream)).lines().collect(Collectors.joining());
+            for (String sql : sqls.split(";")) {
+                stmt.execute(sql);
+            }
+        } catch (SQLException e) {
+            getLogger().error(this.getClass(), e.getMessage());
+        } finally {
+            getLogger().flow(this.getClass(), "Database connection closed");
+        }
+    }
 
     public void run(String sql, Consumer<ResultSet> callback) {
         try (Connection conn = connect();

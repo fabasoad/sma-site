@@ -16,10 +16,7 @@ public class DaoFactory extends ParametersAware {
     public static <T extends BasePojo> BaseDao<T> create(Class<T> pojoClazz) {
         readParameters();
 
-        DbAdapter adapter = DbAdapterFactory.create(
-            DbTypeFactory.getDbType(properties.getProperty(DB_TYPE_PARAM_NAME)),
-            properties.getProperty(CONNECTION_PATH_PARAM_NAME)
-        );
+        DbAdapter adapter = DbAdapterFactory.create(properties);
         if (pojoClazz == ReferencePojo.class) {
             return (BaseDao<T>) new ReferencesDao(adapter);
         } else if (pojoClazz == UserPojo.class) {

@@ -1,22 +1,19 @@
 package org.fabasoad.db.adapters;
 
 import org.apache.commons.io.FileUtils;
+import org.fabasoad.annotations.UsedViaReflection;
 import org.fabasoad.db.base.DbType;
 import org.fabasoad.db.base.DbTypeFactory;
 import org.fabasoad.db.exceptions.FieldUniqueException;
+import org.fabasoad.db.runner.ParameterName;
 import org.sqlite.SQLiteException;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.sql.Connection;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.stream.Collectors;
+import java.util.Properties;
 
 import static org.fabasoad.api.Logger.getLogger;
 
@@ -24,15 +21,24 @@ import static org.fabasoad.api.Logger.getLogger;
  * @author efabizhevsky
  * @date 11/25/2016.
  */
-class SqliteDbAdapter extends DbAdapter {
+public class SqliteDbAdapter extends DbAdapter {
 
     private String url;
     private static final int SQLITE_CONSTRAINT_UNIQUE_CODE = 2067;
     private static final String DB_FILE_NAME = "sma-db.s3db";
+    private static final String CONNECTION_PATH_PARAM_NAME = "connection-path";
+
+    private Path connectionPath;
+
+    @UsedViaReflection
+    @ParameterName(CONNECTION_PATH_PARAM_NAME)
+    public String getConnectionPath() {
+        return connectionPath.toString();
+    }
 
     @Override
-    void initialize(String connectionPath) {
-        this.connectionPath = Paths.get(connectionPath);
+    void initialize(Properties properties) {
+        this.connectionPath = Paths.get(properties.getProperty(CONNECTION_PATH_PARAM_NAME));
     }
 
     @Override
@@ -40,7 +46,8 @@ class SqliteDbAdapter extends DbAdapter {
         this.connectionPath = FileSystems.getDefault().getPath(args[0], DB_FILE_NAME).normalize().toAbsolutePath();
     }
 
-    private void deployDb() {
+    @Override
+    void deployDb() {
         final String from = Paths.get("db", "sqlite", DB_FILE_NAME).toString();
         try {
             FileUtils.copyURLToFile(ClassLoader.getSystemResource(from), this.connectionPath.getFileName().toFile());
@@ -50,7 +57,8 @@ class SqliteDbAdapter extends DbAdapter {
     }
 
     @Override
-    DbType getType() {
+    @ParameterName(DbAdapterFactory.DB_TYPE_PARAM_NAME)
+    public DbType getDbType() {
         return DbTypeFactory.getDbType("sqlite");
     }
 
@@ -67,23 +75,6 @@ class SqliteDbAdapter extends DbAdapter {
         SQLiteException exception = (SQLiteException) e;
         if (SQLITE_CONSTRAINT_UNIQUE_CODE == exception.getResultCode().code) {
             throw new FieldUniqueException();
-        }
-    }
-
-    @Override
-    public void setUp() {
-        deployDb();
-        try (Connection conn = connect(); Statement stmt = conn.createStatement()) {
-            final Path FOLDER_PATH_SQL = Paths.get("db", getType().getDbTypeName(), "scripts");
-            final InputStream stream = ClassLoader.getSystemResourceAsStream(Paths.get(FOLDER_PATH_SQL.toString(), "init.sql").toString());
-            final String sqls = new BufferedReader(new InputStreamReader(stream)).lines().collect(Collectors.joining());
-            for (String sql : sqls.split(";")) {
-                stmt.execute(sql);
-            }
-        } catch (SQLException e) {
-            getLogger().error(this.getClass(), e.getMessage());
-        } finally {
-            getLogger().flow(this.getClass(), "Database connection closed");
         }
     }
 }

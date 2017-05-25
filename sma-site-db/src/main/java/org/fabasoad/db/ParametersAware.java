@@ -1,10 +1,15 @@
 package org.fabasoad.db;
 
+import org.fabasoad.db.adapters.DbAdapter;
+import org.fabasoad.db.runner.ParameterName;
+
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -17,9 +22,6 @@ import static org.fabasoad.api.Logger.getLogger;
  * @date 11/30/2016.
  */
 public class ParametersAware {
-
-    protected static String DB_TYPE_PARAM_NAME = "db-type";
-    protected static String CONNECTION_PATH_PARAM_NAME = "connection-path";
 
     protected static Properties properties = new Properties();
     private static Path PROPERTIES_FILE =
@@ -46,9 +48,17 @@ public class ParametersAware {
         }
     }
 
-    protected static void writeParameters(String dbType, String deployPath) {
-        properties.setProperty(DB_TYPE_PARAM_NAME, dbType);
-        properties.setProperty(CONNECTION_PATH_PARAM_NAME, deployPath);
+    protected static void writeParameters(DbAdapter dbAdapter) {
+        for (Method method : dbAdapter.getClass().getMethods()) {
+            if (method.isAnnotationPresent(ParameterName.class)) {
+                String parameterName = method.getAnnotation(ParameterName.class).value();
+                try {
+                    properties.setProperty(parameterName, String.valueOf(method.invoke(dbAdapter)));
+                } catch (IllegalAccessException | InvocationTargetException e) {
+                    getLogger().warning(getClazz(), String.format("Could not save parameter '%s'", parameterName));
+                }
+            }
+        }
 
         try (OutputStream output = new FileOutputStream(PROPERTIES_FILE.toFile())) {
             properties.store(output, null);
