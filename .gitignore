@@ -56,3 +56,5 @@ buildNumber.properties
 sma-site-webapp/node
 sma-site-webapp/src/main/webapp/public/
 releases
+sma-db.s3db
+sma-db-setup.properties

@@ -3,11 +3,7 @@ package org.fabasoad.db.adapters;
 import org.fabasoad.db.base.DbType;
 import org.fabasoad.db.exceptions.FieldUniqueException;
 
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -15,7 +11,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.function.Consumer;
-import java.util.stream.Collectors;
 
 import static org.fabasoad.api.Logger.getLogger;
 
@@ -25,7 +20,7 @@ import static org.fabasoad.api.Logger.getLogger;
  */
 public abstract class DbAdapter {
 
-    public Path CONNECTION_PATH;
+    Path connectionPath;
 
     abstract void initialize(String connectionPath);
 
@@ -34,6 +29,10 @@ public abstract class DbAdapter {
     abstract String getUrl();
 
     abstract DbType getType();
+
+    public Path getConnectionPath() {
+        return connectionPath;
+    }
 
     protected Connection connect() {
         Connection result = null;

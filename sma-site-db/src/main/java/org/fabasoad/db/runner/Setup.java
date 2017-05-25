@@ -37,7 +37,7 @@ public class Setup extends ParametersAware {
 
             String[] dbAdapterArgs = IntStream.range(1, args.length).mapToObj(i -> args[i]).toArray(String[]::new);
             dbAdapter = DbAdapterFactory.create(dbType, dbAdapterArgs);
-            connectionPath = dbAdapter.CONNECTION_PATH.toString();
+            connectionPath = dbAdapter.getConnectionPath().toString();
 
             if (!StringUtils.equalsIgnoreCase(properties.getProperty(DB_TYPE_PARAM_NAME), dbType.getDbTypeName())
                     || !StringUtils.equalsIgnoreCase(properties.getProperty(CONNECTION_PATH_PARAM_NAME), connectionPath)) {

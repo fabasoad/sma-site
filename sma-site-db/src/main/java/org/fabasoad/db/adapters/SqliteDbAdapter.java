@@ -1,7 +1,6 @@
 package org.fabasoad.db.adapters;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.FilenameUtils;
 import org.fabasoad.db.base.DbType;
 import org.fabasoad.db.base.DbTypeFactory;
 import org.fabasoad.db.exceptions.FieldUniqueException;
@@ -33,19 +32,18 @@ class SqliteDbAdapter extends DbAdapter {
 
     @Override
     void initialize(String connectionPath) {
-        initialize(Paths.get(connectionPath));
+        this.connectionPath = Paths.get(connectionPath);
     }
 
     @Override
     void initialize(String[] args) {
-        initialize(FileSystems.getDefault().getPath(args[0], DB_FILE_NAME).normalize().toAbsolutePath());
+        this.connectionPath = FileSystems.getDefault().getPath(args[0], DB_FILE_NAME).normalize().toAbsolutePath();
     }
 
-    private void initialize(Path connectionPath) {
-        CONNECTION_PATH = connectionPath;
+    private void deployDb() {
         final String from = Paths.get("db", "sqlite", DB_FILE_NAME).toString();
         try {
-            FileUtils.copyURLToFile(ClassLoader.getSystemResource(from), CONNECTION_PATH.getFileName().toFile());
+            FileUtils.copyURLToFile(ClassLoader.getSystemResource(from), this.connectionPath.getFileName().toFile());
         } catch (IOException e) {
             getLogger().error(this.getClass(), e.getMessage());
         }
@@ -59,7 +57,7 @@ class SqliteDbAdapter extends DbAdapter {
     @Override
     String getUrl() {
         if (url == null) {
-            url = "jdbc:sqlite:" + CONNECTION_PATH.toString();
+            url = "jdbc:sqlite:" + this.connectionPath.toString();
         }
         return url;
     }
@@ -74,6 +72,7 @@ class SqliteDbAdapter extends DbAdapter {
 
     @Override
     public void setUp() {
+        deployDb();
         try (Connection conn = connect(); Statement stmt = conn.createStatement()) {
             final Path FOLDER_PATH_SQL = Paths.get("db", getType().getDbTypeName(), "scripts");
             final InputStream stream = ClassLoader.getSystemResourceAsStream(Paths.get(FOLDER_PATH_SQL.toString(), "init.sql").toString());

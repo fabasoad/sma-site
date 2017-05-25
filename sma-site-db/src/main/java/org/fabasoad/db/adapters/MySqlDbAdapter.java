@@ -13,12 +13,10 @@ public class MySqlDbAdapter extends DbAdapter {
 
     @Override
     void initialize(String connectionPath) {
-
     }
 
     @Override
     void initialize(String[] args) {
-
     }
 
     @Override
