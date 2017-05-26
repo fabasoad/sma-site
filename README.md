@@ -5,14 +5,18 @@
 A web site for "Southern Maritime Agency" company.
 
 ## Requirements
-
-  - [Maven](https://maven.apache.org/): 3.3.9
-  - [Java](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html): 8
+### Front-end tools
   - [Bower](https://bower.io/): 1.8.0
   - [Gulp](http://gulpjs.com/): 3.9.1
   - [Node JS](http://nodejs.ru/): 7.1.0
   - [Npm](https://www.npmjs.com/): 3.10.10
+### Back-end tools
+  - [Maven](https://maven.apache.org/): 3.3.9
+  - [Java](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html): 8
   - [Jetty](http://www.eclipse.org/jetty/): 9.3.14
+### Database
+  - [SQLite](https://www.sqlite.org/): 3.15.0
+  - [MySQL](https://www.mysql.com/): 5.7.18
 
 You can get Jetty and Maven from the **lib** directory (you can find details below).
 
