@@ -67,10 +67,8 @@ public abstract class BaseDao<T extends BasePojo> {
 
     private T buildObject(ResultSet rs) throws Exception {
         T result = getPojoClass().newInstance();
-        int i = 0;
-        while (i < getColumns().length && rs.next()) {
-            result.setProperty(getColumns()[i], rs.getObject(getColumns()[i]));
-            i++;
+        for (String column : getColumns()) {
+            result.setProperty(column, rs.getObject(column));
         }
         return result;
     }
@@ -83,7 +81,7 @@ public abstract class BaseDao<T extends BasePojo> {
         return sqlSelect("");
     }
 
-    String sqlSelect(String whereClause) {
+    private String sqlSelect(String whereClause) {
         return String.format("SELECT %s FROM %s %s ORDER BY %s %s", String.join(",", getColumns()),
                 getTableName(), whereClause, getOrderByColumn().getLeft(), getOrderByColumn().getRight());
     }
@@ -109,7 +107,9 @@ public abstract class BaseDao<T extends BasePojo> {
         final int[] result = { -1 };
         adapter.run(sql, rs -> {
             try {
-                result[0] = rs.getInt(COLUMN_LABEL);
+                if (rs.next()) {
+                    result[0] = rs.getInt(COLUMN_LABEL);
+                }
             } catch (Exception e) {
                 getLogger().error(getClass(), e.getMessage());
             }
@@ -141,7 +141,9 @@ public abstract class BaseDao<T extends BasePojo> {
         final Object[] result = new Object[1];
         adapter.run(sql, new Object[] { id }, rs -> {
             try {
-                result[0] = buildObject(rs);
+                if (rs.next()) {
+                    result[0] = buildObject(rs);
+                }
             } catch (Exception e) {
                 getLogger().error(getClass(), e.getMessage());
             }

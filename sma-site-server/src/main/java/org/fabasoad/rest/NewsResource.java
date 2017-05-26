@@ -2,6 +2,7 @@ package org.fabasoad.rest;
 
 import org.fabasoad.db.dao.BaseDao;
 import org.fabasoad.db.dao.DaoFactory;
+import org.fabasoad.db.pojo.BasePojo;
 import org.fabasoad.db.pojo.NewsPojo;
 import org.fabasoad.db.pojo.PojoProperties;
 import org.json.simple.JSONObject;
@@ -18,9 +19,11 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -50,6 +53,15 @@ public class NewsResource extends BaseResource<NewsPojo> {
     @Override
     String getDisplayName() {
         return "News";
+    }
+
+    @Override
+    Object getJSONObjectProperty(BasePojo pojo, String propertyName) {
+        if (Objects.equals(PojoProperties.News.CREATION_DATE.DB, propertyName)) {
+            SimpleDateFormat dateFormat = new SimpleDateFormat(DATETIME_FORMAT);
+            return dateFormat.format(super.getJSONObjectProperty(pojo, propertyName));
+        }
+        return super.getJSONObjectProperty(pojo, propertyName);
     }
 
     @GET

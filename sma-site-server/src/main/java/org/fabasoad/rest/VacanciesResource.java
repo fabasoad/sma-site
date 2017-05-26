@@ -1,5 +1,6 @@
 package org.fabasoad.rest;
 
+import org.fabasoad.db.pojo.BasePojo;
 import org.fabasoad.db.pojo.PojoProperties;
 import org.fabasoad.db.pojo.VacanciesPojo;
 
@@ -14,7 +15,9 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.text.SimpleDateFormat;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -41,6 +44,15 @@ public class VacanciesResource extends BaseResource<VacanciesPojo> {
     @Override
     String getDisplayName() {
         return "Vacancy";
+    }
+
+    @Override
+    Object getJSONObjectProperty(BasePojo pojo, String propertyName) {
+        if (Objects.equals(PojoProperties.Vacancies.JOINING_DATE.DB, propertyName)) {
+            SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT);
+            return dateFormat.format(super.getJSONObjectProperty(pojo, propertyName));
+        }
+        return super.getJSONObjectProperty(pojo, propertyName);
     }
 
     @GET

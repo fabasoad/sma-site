@@ -38,6 +38,9 @@ import static org.fabasoad.api.Logger.getLogger;
  */
 abstract class BaseResource<T extends BasePojo> {
 
+    static final String DATETIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
+    static final String DATE_FORMAT = "yyyy-MM-dd";
+
     String webPath() {
         String folder = getClass().getAnnotation(javax.ws.rs.Path.class).value();
         return "/public/data/" + folder + "/";
