@@ -3,7 +3,7 @@
     <option name="JettyRunnerV112-WebAppPath" value="/" />
     <option name="JettyRunnerV112-WebAppFolder" value=".\sma-site-webapp\src\main\webapp" />
     <option name="JettyRunnerV112-ClassesDirectory" value=".\sma-site-webapp\target\classes" />
-    <option name="JettyRunnerV112-RunOnPort" value="80" />
+    <option name="JettyRunnerV112-RunOnPort" value="8080" />
     <option name="JettyRunnerV112-JettyXML" value="" />
     <option name="JettyRunnerV112-VmArgs" value="" />
     <option name="JettyRunnerV112-PassParentEnvVars" value="true" />

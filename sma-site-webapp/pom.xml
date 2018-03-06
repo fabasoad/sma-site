@@ -8,10 +8,10 @@
 
     <modelVersion>4.0.0</modelVersion>
     <artifactId>sma-site-webapp</artifactId>
-    <packaging>pom</packaging>
+    <packaging>war</packaging>
 
     <properties>
-        <jersey-container-servlet-core.version>2.26-b03</jersey-container-servlet-core.version>
+        <jersey-container-servlet-core.version>2.26</jersey-container-servlet-core.version>
     </properties>
 
     <dependencies>
@@ -45,8 +45,8 @@
                                 </goals>
                                 <phase>verify</phase>
                                 <configuration>
-                                    <nodeVersion>v7.3.0</nodeVersion>
-                                    <npmVersion>3.10.10</npmVersion>
+                                    <nodeVersion>v9.5.0</nodeVersion>
+                                    <npmVersion>5.6.0</npmVersion>
                                 </configuration>
                             </execution>
                             <execution>

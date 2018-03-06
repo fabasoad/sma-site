@@ -11,10 +11,12 @@
     <packaging>jar</packaging>
 
     <properties>
-        <javax.ws.rs-api.version>2.1-m05</javax.ws.rs-api.version>
-        <jersey-media-multipart.version>2.26-b03</jersey-media-multipart.version>
-        <jersey-server.version>2.26-b03</jersey-server.version>
-        <javax.servlet-api.version>4.0.0-b03</javax.servlet-api.version>
+        <javax.ws.rs-api.version>2.1</javax.ws.rs-api.version>
+        <jersey-media-multipart.version>2.26</jersey-media-multipart.version>
+        <jersey-server.version>2.26</jersey-server.version>
+        <jersey-common.version>2.26</jersey-common.version>
+        <jersey-hk2.version>2.26</jersey-hk2.version>
+        <javax.servlet-api.version>4.0.0</javax.servlet-api.version>
         <json-simple.version>1.1.1</json-simple.version>
     </properties>
 
@@ -33,6 +35,16 @@
             <groupId>org.glassfish.jersey.core</groupId>
             <artifactId>jersey-server</artifactId>
             <version>${jersey-server.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.glassfish.jersey.core</groupId>
+            <artifactId>jersey-common</artifactId>
+            <version>${jersey-common.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.glassfish.jersey.inject</groupId>
+            <artifactId>jersey-hk2</artifactId>
+            <version>${jersey-hk2.version}</version>
         </dependency>
         <dependency>
             <groupId>javax.servlet</groupId>
