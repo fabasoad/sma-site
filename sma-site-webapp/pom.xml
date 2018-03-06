@@ -8,7 +8,7 @@
 
     <modelVersion>4.0.0</modelVersion>
     <artifactId>sma-site-webapp</artifactId>
-    <packaging>pom</packaging>
+    <packaging>war</packaging>
 
     <properties>
         <jersey-container-servlet-core.version>2.26</jersey-container-servlet-core.version>

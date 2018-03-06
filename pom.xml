@@ -17,6 +17,8 @@
     </modules>
 
     <properties>
+        <maven-compiler-plugin.version>3.6.0</maven-compiler-plugin.version>
+        <jetty-maven-plugin.version>9.4.8.v20171121</jetty-maven-plugin.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <apache.commons-lang3.version>3.7</apache.commons-lang3.version>
         <apache.commons-io.version>2.6</apache.commons-io.version>
@@ -36,11 +38,19 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.6.0</version>
+                <version>${maven-compiler-plugin.version}</version>
                 <configuration>
                     <source>1.8</source>
                     <target>1.8</target>
                     <encoding>UTF-8</encoding>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.eclipse.jetty</groupId>
+                <artifactId>jetty-maven-plugin</artifactId>
+                <version>${jetty-maven-plugin.version}</version>
+                <configuration>
+                    <war>${project.basedir}\sma-site-webapp\target\sma-site-webapp.war</war>
                 </configuration>
             </plugin>
         </plugins>
