@@ -7,8 +7,8 @@ import org.fabasoad.db.base.DbType;
 import org.fabasoad.db.base.DbTypeFactory;
 
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
-import java.util.stream.IntStream;
 
 import static org.fabasoad.api.Logger.getLogger;
 
@@ -32,7 +32,7 @@ public class Setup extends ParametersAware {
         } else if (args.length > 0) {
             dbType = DbTypeFactory.getDbType(args[0]);
 
-            String[] dbAdapterArgs = IntStream.range(1, args.length).mapToObj(i -> args[i]).toArray(String[]::new);
+            String[] dbAdapterArgs = Arrays.stream(args, 1, args.length).toArray(String[]::new);
             dbAdapter = DbAdapterFactory.create(dbType, dbAdapterArgs);
 
             writeParameters(dbAdapter);

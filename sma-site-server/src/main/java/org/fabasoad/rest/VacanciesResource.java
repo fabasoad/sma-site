@@ -1,5 +1,6 @@
 package org.fabasoad.rest;
 
+import org.fabasoad.api.Logger;
 import org.fabasoad.db.pojo.BasePojo;
 import org.fabasoad.db.pojo.PojoProperties;
 import org.fabasoad.db.pojo.VacanciesPojo;
@@ -15,7 +16,9 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -50,7 +53,12 @@ public class VacanciesResource extends BaseResource<VacanciesPojo> {
     Object getJSONObjectProperty(BasePojo pojo, String propertyName) {
         if (Objects.equals(PojoProperties.Vacancies.JOINING_DATE.DB, propertyName)) {
             SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT);
-            return dateFormat.format(super.getJSONObjectProperty(pojo, propertyName));
+            try {
+                Date date = dateFormat.parse(super.getJSONObjectProperty(pojo, propertyName).toString());
+                return dateFormat.format(date);
+            } catch (ParseException ex) {
+                Logger.getLogger().error(getClass(), ex.getMessage());
+            }
         }
         return super.getJSONObjectProperty(pojo, propertyName);
     }
