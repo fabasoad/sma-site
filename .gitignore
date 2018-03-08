@@ -53,6 +53,7 @@ dependency-reduced-pom.xml
 buildNumber.properties
 .mvn/timing.properties
 
+sma-site-webapp/package-lock.json
 sma-site-webapp/node
 sma-site-webapp/src/main/webapp/public/
 releases
