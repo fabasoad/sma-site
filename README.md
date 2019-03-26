@@ -1,5 +1,5 @@
 # Web site for "Southern Maritime Agency"
-
+[![Total alerts](https://img.shields.io/lgtm/alerts/g/fabasoad/sma-site.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/fabasoad/sma-site/alerts/)
 ## Description
 
 A web site for "Southern Maritime Agency" company.
