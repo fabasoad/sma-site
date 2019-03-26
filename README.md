@@ -50,7 +50,7 @@ Run **Setup** configuration to install DB.
 > Edit **Setup** configuration and change second program argument to any path in case you want to change default deploy path.
 
 ## Run application
-- There are 2 ways of running application
+- There are two ways of running application
     - Using **IDEA Jetty Runner** plugin
         - Go to **File->Settings->Plugins** and be sure that **IDEA Jetty Runner** plugin is installed
         - Run **Jetty** configuration from Intellij IDEA.
