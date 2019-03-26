@@ -4,6 +4,7 @@ import org.fabasoad.db.base.DbType;
 import org.fabasoad.db.exceptions.FieldUniqueException;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.file.Path;
@@ -53,11 +54,17 @@ public abstract class DbAdapter {
             final Path FOLDER_PATH_SQL = Paths.get("db", getDbType().getDbTypeName(), "scripts");
             final InputStream stream = ClassLoader.getSystemResourceAsStream(
                     Paths.get(FOLDER_PATH_SQL.toString(), "init.sql").toString());
-            final String sqls = new BufferedReader(new InputStreamReader(stream)).lines().collect(Collectors.joining());
-            for (String sql : sqls.split(";")) {
-                stmt.execute(sql);
+            if (stream == null) {
+                getLogger().error(this.getClass(), "Cannot read init.sql file");
+            } else {
+                try (InputStreamReader inputStream = new InputStreamReader(stream)) {
+                    final String sqls = new BufferedReader(inputStream).lines().collect(Collectors.joining());
+                    for (String sql : sqls.split(";")) {
+                        stmt.execute(sql);
+                    }
+                }
             }
-        } catch (SQLException e) {
+        } catch (SQLException | IOException e) {
             getLogger().error(this.getClass(), e.getMessage());
         } finally {
             getLogger().flow(this.getClass(), "Database connection closed");

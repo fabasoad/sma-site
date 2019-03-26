@@ -6,7 +6,6 @@ A web site for "Southern Maritime Agency" company.
 
 ## Requirements
 ### Front-end tools
-  - [Bower](https://bower.io/): 1.8.0
   - [Gulp](http://gulpjs.com/): 3.9.1
   - [Node JS](http://nodejs.ru/): 7.1.0
   - [Npm](https://www.npmjs.com/): 3.10.10

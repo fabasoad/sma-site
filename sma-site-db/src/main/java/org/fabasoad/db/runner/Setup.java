@@ -5,6 +5,7 @@ import org.fabasoad.db.adapters.DbAdapter;
 import org.fabasoad.db.adapters.DbAdapterFactory;
 import org.fabasoad.db.base.DbType;
 import org.fabasoad.db.base.DbTypeFactory;
+import org.fabasoad.db.dao.context.DaoContextTest;
 
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -21,7 +22,7 @@ public class Setup extends ParametersAware {
     public static void main(final String[] args) {
         long startTime = System.currentTimeMillis();
         getLogger().flow(Setup.class, "Starting database creation...");
-        readParameters();
+        readParameters(DaoContextTest.class);
 
         DbType dbType;
         DbAdapter dbAdapter;
@@ -35,7 +36,7 @@ public class Setup extends ParametersAware {
             String[] dbAdapterArgs = Arrays.stream(args, 1, args.length).toArray(String[]::new);
             dbAdapter = DbAdapterFactory.create(dbType, dbAdapterArgs);
 
-            writeParameters(dbAdapter);
+            writeParameters(dbAdapter, DaoContextTest.class);
         } else {
             String message = "Arguments are missing";
             getLogger().error(Setup.class, message);

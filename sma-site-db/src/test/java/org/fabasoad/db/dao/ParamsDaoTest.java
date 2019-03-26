@@ -1,6 +1,7 @@
 package org.fabasoad.db.dao;
 
 import org.apache.commons.lang3.RandomStringUtils;
+import org.fabasoad.db.dao.context.DaoContextTest;
 import org.fabasoad.db.exceptions.ValidationException;
 import org.fabasoad.db.pojo.ParamPojo;
 import org.junit.Before;
@@ -29,7 +30,7 @@ public class ParamsDaoTest {
 
     @Before
     public void setUp() {
-        dao = DaoFactory.create(ParamPojo.class);
+        dao = DaoFactory.create(DaoContextTest.class, ParamPojo.class);
     }
 
     public ParamsDaoTest(String bodyKey) {

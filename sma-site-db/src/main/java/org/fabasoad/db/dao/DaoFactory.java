@@ -4,6 +4,7 @@ import org.fabasoad.db.adapters.DbAdapter;
 import org.fabasoad.db.adapters.DbAdapterFactory;
 import org.fabasoad.db.ParametersAware;
 import org.fabasoad.db.base.DbTypeFactory;
+import org.fabasoad.db.dao.context.DaoContext;
 import org.fabasoad.db.pojo.*;
 
 /**
@@ -13,26 +14,27 @@ import org.fabasoad.db.pojo.*;
 public class DaoFactory extends ParametersAware {
 
     @SuppressWarnings("unchecked")
-    public static <T extends BasePojo> BaseDao<T> create(Class<T> pojoClazz) {
-        readParameters();
+    public static <TPojo extends BasePojo, TContext extends DaoContext> BaseDao<TPojo> create(
+            Class<TContext> contextClazz, Class<TPojo> pojoClazz) {
+        readParameters(contextClazz);
 
         DbAdapter adapter = DbAdapterFactory.create(properties);
         if (pojoClazz == ReferencePojo.class) {
-            return (BaseDao<T>) new ReferencesDao(adapter);
+            return (BaseDao<TPojo>) new ReferencesDao(adapter);
         } else if (pojoClazz == UserPojo.class) {
-            return (BaseDao<T>) new UsersDao(adapter);
+            return (BaseDao<TPojo>) new UsersDao(adapter);
         } else if (pojoClazz == ApplicationFormPojo.class) {
-            return (BaseDao<T>) new ApplicationFormsDao(adapter);
+            return (BaseDao<TPojo>) new ApplicationFormsDao(adapter);
         } else if (pojoClazz == NewsPojo.class) {
-            return (BaseDao<T>) new NewsDao(adapter);
+            return (BaseDao<TPojo>) new NewsDao(adapter);
         } else if (pojoClazz == VacanciesPojo.class) {
-        return (BaseDao<T>) new VacanciesDao(adapter);
+        return (BaseDao<TPojo>) new VacanciesDao(adapter);
         } else if (pojoClazz == ParamPojo.class) {
-            return (BaseDao<T>) new ParamsDao(adapter);
+            return (BaseDao<TPojo>) new ParamsDao(adapter);
         } else if (pojoClazz == UserRolePojo.class) {
-            return (BaseDao<T>) new UserRolesDao(adapter);
+            return (BaseDao<TPojo>) new UserRolesDao(adapter);
         } else if (pojoClazz == CarouselImagesPojo.class) {
-            return (BaseDao<T>) new CarouselImagesDao(adapter);
+            return (BaseDao<TPojo>) new CarouselImagesDao(adapter);
         } else {
             throw new RuntimeException(String.format("Unknown type '%s'", pojoClazz.getSimpleName()));
         }

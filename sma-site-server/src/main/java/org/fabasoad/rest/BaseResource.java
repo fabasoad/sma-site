@@ -3,6 +3,7 @@ package org.fabasoad.rest;
 import org.fabasoad.api.Logger;
 import org.fabasoad.db.dao.BaseDao;
 import org.fabasoad.db.dao.DaoFactory;
+import org.fabasoad.db.dao.context.DaoContextImpl;
 import org.fabasoad.db.exceptions.ValidationException;
 import org.fabasoad.db.pojo.BasePojo;
 import org.json.simple.JSONArray;
@@ -60,14 +61,14 @@ abstract class BaseResource<T extends BasePojo> {
     abstract String getDisplayName();
 
     Response getAll() {
-        BaseDao<T> dao = DaoFactory.create(getPojoClass());
+        BaseDao<T> dao = DaoFactory.create(DaoContextImpl.class, getPojoClass());
         Collection<T> elements = dao.getAll();
         JSONObject json = buildObjects(elements, elements.size());
         return Response.ok(json.toJSONString()).build();
     }
 
     <C> Response get(C id) {
-        BaseDao<T> dao = DaoFactory.create(getPojoClass());
+        BaseDao<T> dao = DaoFactory.create(DaoContextImpl.class, getPojoClass());
         BasePojo pojo = dao.get(id);
         if (pojo == null) {
             final String message = String.format("There is no %s with id = %s", getDisplayName(), id);
@@ -80,7 +81,7 @@ abstract class BaseResource<T extends BasePojo> {
     }
 
     Response delete(int id) {
-        BaseDao<T> dao = DaoFactory.create(getPojoClass());
+        BaseDao<T> dao = DaoFactory.create(DaoContextImpl.class, getPojoClass());
         try {
             dao.delete(id);
         } catch (ValidationException e) {
@@ -159,7 +160,7 @@ abstract class BaseResource<T extends BasePojo> {
     }
 
     Response create(JSONObject json) {
-        BaseDao<T> dao = DaoFactory.create(getPojoClass());
+        BaseDao<T> dao = DaoFactory.create(DaoContextImpl.class, getPojoClass());
         int id;
         try {
             id = dao.create(buildPojo(json));
@@ -177,7 +178,7 @@ abstract class BaseResource<T extends BasePojo> {
     }
 
     Response update(JSONObject json) {
-        BaseDao<T> dao = DaoFactory.create(getPojoClass());
+        BaseDao<T> dao = DaoFactory.create(DaoContextImpl.class, getPojoClass());
         try {
             dao.update(buildPojo(json));
         } catch (ValidationException e) {
@@ -203,7 +204,7 @@ abstract class BaseResource<T extends BasePojo> {
     }
 
     void deleteFile(int id, String propertyName) throws IOException {
-        String fileName = (String) DaoFactory.create(getPojoClass()).get(id).getProperty(propertyName);
+        String fileName = (String) DaoFactory.create(DaoContextImpl.class, getPojoClass()).get(id).getProperty(propertyName);
         Files.delete(localPath().resolve(fileName));
     }
 

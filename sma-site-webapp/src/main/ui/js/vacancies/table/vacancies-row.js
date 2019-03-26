@@ -55,12 +55,12 @@ export default class VacanciesRow {
 
         let editColumn = this.createEditColumn();
         if (editColumn) {
-            tr.appendChild(editColumn)
+            tr.appendChild(editColumn);
         }
 
         let removeColumn = this.createRemoveColumn();
         if (removeColumn) {
-            tr.appendChild(removeColumn)
+            tr.appendChild(removeColumn);
         }
 
         return tr;

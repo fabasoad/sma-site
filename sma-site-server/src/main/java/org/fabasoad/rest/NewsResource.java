@@ -3,6 +3,7 @@ package org.fabasoad.rest;
 import org.fabasoad.api.Logger;
 import org.fabasoad.db.dao.BaseDao;
 import org.fabasoad.db.dao.DaoFactory;
+import org.fabasoad.db.dao.context.DaoContextImpl;
 import org.fabasoad.db.pojo.BasePojo;
 import org.fabasoad.db.pojo.NewsPojo;
 import org.fabasoad.db.pojo.PojoProperties;
@@ -79,7 +80,7 @@ public class NewsResource extends BaseResource<NewsPojo> {
             return getAll();
         }
 
-        BaseDao<NewsPojo> dao = DaoFactory.create(getPojoClass());
+        BaseDao<NewsPojo> dao = DaoFactory.create(DaoContextImpl.class, getPojoClass());
         Collection<NewsPojo> news = new ArrayList<>();
         int totalCount = dao.getLimit(limit, news);
         if (totalCount == -1) {

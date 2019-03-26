@@ -1,6 +1,7 @@
 package org.fabasoad.db;
 
 import org.fabasoad.db.adapters.DbAdapter;
+import org.fabasoad.db.dao.context.DaoContext;
 import org.fabasoad.db.runner.ParameterName;
 
 import java.io.FileInputStream;
@@ -21,11 +22,9 @@ import static org.fabasoad.api.Logger.getLogger;
  * @author efabizhevsky
  * @date 11/30/2016.
  */
-public class ParametersAware {
+public class ParametersAware<T extends DaoContext> {
 
     protected static Properties properties = new Properties();
-    private static Path PROPERTIES_FILE =
-            FileSystems.getDefault().getPath("sma-db-setup.properties").normalize().toAbsolutePath();
 
     @SuppressWarnings("unchecked")
     private static <T extends ParametersAware> Class<T> getClazz() {
@@ -37,10 +36,16 @@ public class ParametersAware {
         }
     }
 
-    protected static void readParameters() {
-        if (PROPERTIES_FILE.toFile().exists() && !PROPERTIES_FILE.toFile().isDirectory() && Files.isReadable(PROPERTIES_FILE)) {
-            getLogger().flow(getClazz(), String.format("Read parameters from %s file", PROPERTIES_FILE.toAbsolutePath()));
-            try (InputStream input = new FileInputStream(PROPERTIES_FILE.toFile())) {
+    protected static <TContext extends DaoContext> void readParameters(Class<TContext> daoContextClazz) {
+        Path propertiesFile;
+        try {
+            propertiesFile = daoContextClazz.getDeclaredConstructor().newInstance().getPropertiesFilePath();
+        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+            return;
+        }
+        if (propertiesFile.toFile().exists() && !propertiesFile.toFile().isDirectory() && Files.isReadable(propertiesFile)) {
+            getLogger().flow(getClazz(), String.format("Read parameters from %s file", propertiesFile.toAbsolutePath()));
+            try (InputStream input = new FileInputStream(propertiesFile.toFile())) {
                 properties.load(input);
             } catch (IOException e) {
                 getLogger().error(getClazz(), e.getMessage());
@@ -48,7 +53,15 @@ public class ParametersAware {
         }
     }
 
-    protected static void writeParameters(DbAdapter dbAdapter) {
+    protected static <TContext extends DaoContext> void writeParameters(
+            DbAdapter dbAdapter, Class<TContext> daoContextClazz) {
+        Path propertiesFile;
+        try {
+            propertiesFile = daoContextClazz.getDeclaredConstructor().newInstance().getPropertiesFilePath();
+        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+            return;
+        }
+
         for (Method method : dbAdapter.getClass().getMethods()) {
             if (method.isAnnotationPresent(ParameterName.class)) {
                 String parameterName = method.getAnnotation(ParameterName.class).value();
@@ -60,7 +73,7 @@ public class ParametersAware {
             }
         }
 
-        try (OutputStream output = new FileOutputStream(PROPERTIES_FILE.toFile())) {
+        try (OutputStream output = new FileOutputStream(propertiesFile.toFile())) {
             properties.store(output, null);
         } catch (IOException e) {
             getLogger().error(getClazz(), e.getMessage());

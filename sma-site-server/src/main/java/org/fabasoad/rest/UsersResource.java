@@ -3,6 +3,7 @@ package org.fabasoad.rest;
 import org.fabasoad.crypto.CryptoUtils;
 import org.fabasoad.db.dao.DaoFactory;
 import org.fabasoad.db.dao.UsersDao;
+import org.fabasoad.db.dao.context.DaoContextImpl;
 import org.fabasoad.db.exceptions.ValidationException;
 import org.fabasoad.db.pojo.PojoProperties;
 import org.fabasoad.db.pojo.UserPojo;
@@ -126,7 +127,7 @@ public class UsersResource extends BaseResource<UserPojo> {
             final Function<Integer, String> prop =
                     i -> CryptoUtils.BCrypt.encrypt((String) json.get(keys.get(i)), ConfigUtils.getCryptoSalt());
 
-            UsersDao dao = (UsersDao) DaoFactory.create(getPojoClass());
+            UsersDao dao = (UsersDao) DaoFactory.create(DaoContextImpl.class, getPojoClass());
             try {
                 dao.changePassword(
                     (String) json.get(keys.get(0)),
