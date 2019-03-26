@@ -2,6 +2,7 @@ package org.fabasoad.rest.provider;
 
 import org.apache.commons.lang3.StringUtils;
 import org.fabasoad.db.dao.DaoFactory;
+import org.fabasoad.db.dao.context.DaoContextImpl;
 import org.fabasoad.db.pojo.UserPojo;
 
 import javax.ws.rs.core.Response;
@@ -51,6 +52,6 @@ public class AuthenticationUtils {
         final Predicate<UserPojo> matches = u -> StringUtils.equalsIgnoreCase(email, (String) u.getProperty(EMAIL.DB))
                 && Objects.equals(password, u.getProperty(PASSWORD.DB));
 
-        return DaoFactory.create(UserPojo.class).getAll().stream().filter(matches).findAny();
+        return DaoFactory.create(DaoContextImpl.class, UserPojo.class).getAll().stream().filter(matches).findAny();
     }
 }

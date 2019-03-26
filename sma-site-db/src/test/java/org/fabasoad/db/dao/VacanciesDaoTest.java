@@ -1,7 +1,10 @@
 package org.fabasoad.db.dao;
 
+import org.fabasoad.db.exceptions.ValidationException;
 import org.fabasoad.db.pojo.PojoProperties;
 import org.fabasoad.db.pojo.VacanciesPojo;
+import org.junit.Ignore;
+import org.junit.Test;
 
 import java.util.EnumSet;
 
@@ -51,5 +54,12 @@ public class VacanciesDaoTest extends BaseDaoTest<VacanciesPojo, PojoProperties.
     @Override
     String getColumnForUpdate() {
         return VESSEL_TYPE.DB;
+    }
+
+    @Test
+    @Ignore
+    @Override
+    public void testCRUD() throws ValidationException {
+        super.testCRUD();
     }
 }

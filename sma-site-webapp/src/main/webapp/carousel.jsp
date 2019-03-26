@@ -1,5 +1,5 @@
-<link rel="stylesheet" href="/public/css/min/carousel.css" />
-<script type="application/javascript" src="/public/js/carousel.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/owl-carousel/1.3.3/owl.carousel.min.css" integrity="sha256-fDncdclXlALqR3HOO34OGHxek91q8ApmD3gGldM+Rng=" crossorigin="anonymous" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/owl-carousel/1.3.3/owl.carousel.min.js" integrity="sha256-4OK8Th0+5QJMThqlimytmqQvxjqMic4YATocjyuUh1w=" crossorigin="anonymous"></script>
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         SystemJS.import('/public/js/min/core/carousel.js');

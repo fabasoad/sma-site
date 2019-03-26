@@ -1,6 +1,6 @@
 <link rel="stylesheet" href="/public/css/min/admin/wysiwyg.css" />
-<script src="/public/js/jquery.hotkeys.js"></script>
-<script src="/public/js/bootstrap-wysiwyg.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery.hotkeys@0.1.0/jquery.hotkeys.js" integrity="sha256-kvb4z6BdcTgy2c8PcpBRijmYasAbX9Djgyzw7aYUCiE=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-wysiwyg/0.3.3/bootstrap3-wysihtml5.min.js" integrity="sha256-mumxR2KEPXAwa2YFtqPTi91mrqackBT8GIF8TFNGf4k=" crossorigin="anonymous"></script>
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         SystemJS.import('/public/js/min/core/wysiwyg.js');

@@ -1,5 +1,6 @@
 package org.fabasoad.db.dao;
 
+import org.fabasoad.db.dao.context.DaoContextTest;
 import org.fabasoad.db.exceptions.ValidationException;
 import org.fabasoad.db.pojo.BasePojo;
 import org.junit.Test;
@@ -37,7 +38,7 @@ abstract class BaseDaoTest<T extends BasePojo, E extends Enum<E>> {
 
         @SuppressWarnings("unchecked")
         Class<T> clazz = (Class<T>) expected.getClass();
-        final BaseDao<T> dao = DaoFactory.create(clazz);
+        final BaseDao<T> dao = DaoFactory.create(DaoContextTest.class, clazz);
         dao.create(expected);
 
         final Predicate<T> predicateMatch = p -> EnumSet.allOf(getEnumClazz()).stream()
