@@ -6,10 +6,7 @@ const gulp = require('gulp');
 const install = require("gulp-install");
 const uglify = require('gulp-uglify');
 const babel = require('gulp-babel');
-const merge = require('merge-stream');
 const less = require('gulp-less');
-const watch = require('gulp-watch');
-const concat = require('gulp-concat');
 const cssmin = require('gulp-cssmin');
 
 gulp.task('install', () => gulp.src(['./package.json']).pipe(install()));

@@ -57,8 +57,8 @@ public abstract class DbAdapter {
             if (stream == null) {
                 getLogger().error(this.getClass(), "Cannot read init.sql file");
             } else {
-                try (InputStreamReader inputStream = new InputStreamReader(stream)) {
-                    final String sqls = new BufferedReader(inputStream).lines().collect(Collectors.joining());
+                try (BufferedReader reader = new BufferedReader(new InputStreamReader(stream))) {
+                    final String sqls = reader.lines().collect(Collectors.joining());
                     for (String sql : sqls.split(";")) {
                         stmt.execute(sql);
                     }
