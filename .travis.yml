@@ -1,0 +1,6 @@
+language: java
+jdk:
+  - openjdk12
+before_script:
+  - mvn install -P frontend-install
+  - mvn install -P frontend-build

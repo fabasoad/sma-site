@@ -17,13 +17,14 @@
     </modules>
 
     <properties>
-        <maven-compiler-plugin.version>3.6.0</maven-compiler-plugin.version>
-        <jetty-maven-plugin.version>9.4.8.v20171121</jetty-maven-plugin.version>
+        <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
+        <jetty-maven-plugin.version>9.4.18.v20190429</jetty-maven-plugin.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <apache.commons-lang3.version>3.7</apache.commons-lang3.version>
+        <apache.commons-lang3.version>3.9</apache.commons-lang3.version>
         <apache.commons-io.version>2.6</apache.commons-io.version>
         <apache.commons-validator.version>1.6</apache.commons-validator.version>
         <fabasoad.commons-lang.version>0.3.1</fabasoad.commons-lang.version>
+        <maven-antrun-plugin.version>1.8</maven-antrun-plugin.version>
     </properties>
 
     <repositories>
@@ -40,8 +41,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>${maven-compiler-plugin.version}</version>
                 <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
+                    <source>12</source>
+                    <target>12</target>
                     <encoding>UTF-8</encoding>
                 </configuration>
             </plugin>
@@ -92,7 +93,7 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-antrun-plugin</artifactId>
-                        <version>1.7</version>
+                        <version>${maven-antrun-plugin.version}</version>
                         <executions>
                             <execution>
                                 <phase>compile</phase>
@@ -130,7 +131,7 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-antrun-plugin</artifactId>
-                        <version>1.7</version>
+                        <version>${maven-antrun-plugin.version}</version>
                         <executions>
                             <execution>
                                 <phase>compile</phase>
@@ -163,5 +164,4 @@
             </build>
         </profile>
     </profiles>
-
 </project>
