@@ -7,6 +7,6 @@ public class DaoContextTest implements DaoContext {
 
     @Override
     public Path getPropertiesFilePath() {
-        return Paths.get(System.getProperty("user.dir"), "sma-db-setup.properties");
+        return Paths.get(System.getProperty("user.dir"), "sma-site-db", "sma-db-setup.properties");
     }
 }
