@@ -51,9 +51,8 @@ public abstract class DbAdapter {
     public void setUp() {
         deployDb();
         try (Connection conn = connect(); Statement stmt = conn.createStatement()) {
-            final Path FOLDER_PATH_SQL = Paths.get("db", getDbType().getDbTypeName(), "scripts");
-            final InputStream stream = ClassLoader.getSystemResourceAsStream(
-                    Paths.get(FOLDER_PATH_SQL.toString(), "init.sql").toString());
+            final InputStream stream = getClass().getClassLoader().getResourceAsStream(
+                Paths.get("db", getDbType().getDbTypeName(), "scripts", "init.sql").toString());
             if (stream == null) {
                 getLogger().error(this.getClass(), "Cannot read init.sql file");
             } else {
