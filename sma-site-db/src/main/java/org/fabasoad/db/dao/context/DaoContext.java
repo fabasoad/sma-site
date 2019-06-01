@@ -4,5 +4,5 @@ import java.nio.file.Path;
 
 public interface DaoContext {
 
-    Path getPropertiesFilePath();
+    Path getPropertiesFilePath(Path root);
 }

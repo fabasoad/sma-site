@@ -14,6 +14,7 @@ import java.lang.reflect.Method;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Properties;
 
 import static org.fabasoad.api.Logger.getLogger;
@@ -39,7 +40,7 @@ public class ParametersAware<T extends DaoContext> {
     protected static <TContext extends DaoContext> void readParameters(Class<TContext> daoContextClazz) {
         Path propertiesFile;
         try {
-            propertiesFile = daoContextClazz.getDeclaredConstructor().newInstance().getPropertiesFilePath();
+            propertiesFile = daoContextClazz.getDeclaredConstructor().newInstance().getPropertiesFilePath(Paths.get(System.getProperty("user.dir")));
             getLogger().flow(getClazz(), String.format("Trying to read property file from the following path: %s...", propertiesFile));
         } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
             return;
@@ -58,7 +59,8 @@ public class ParametersAware<T extends DaoContext> {
             DbAdapter dbAdapter, Class<TContext> daoContextClazz) {
         Path propertiesFile;
         try {
-            propertiesFile = daoContextClazz.getDeclaredConstructor().newInstance().getPropertiesFilePath();
+            propertiesFile = daoContextClazz.getDeclaredConstructor().newInstance().getPropertiesFilePath(
+                Paths.get(System.getProperty("user.dir"), "sma-site-db"));
         } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
             return;
         }
