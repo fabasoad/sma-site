@@ -1,6 +1,6 @@
 language: java
-jdk:
-  - openjdk12
-before_script:
-  - mvn install -P frontend-install
-  - mvn install -P frontend-build
+jdk: openjdk12
+script: mvn test -DfailIfNoTests=false -Dtest=!org.fabasoad.db.* -B
+after_script:
+  - mvn install -DskipTests -P frontend-install
+  - mvn install -DskipTests -P frontend-build

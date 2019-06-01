@@ -19,6 +19,7 @@
     <properties>
         <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
         <jetty-maven-plugin.version>9.4.18.v20190429</jetty-maven-plugin.version>
+        <versions-maven-plugin.version>2.7</versions-maven-plugin.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <apache.commons-lang3.version>3.9</apache.commons-lang3.version>
         <apache.commons-io.version>2.6</apache.commons-io.version>
@@ -41,9 +42,7 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>${maven-compiler-plugin.version}</version>
                 <configuration>
-                    <source>12</source>
-                    <target>12</target>
-                    <encoding>UTF-8</encoding>
+                    <release>12</release>
                 </configuration>
             </plugin>
             <plugin>
@@ -53,6 +52,11 @@
                 <configuration>
                     <war>${project.basedir}\sma-site-webapp\target\sma-site-webapp.war</war>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>versions-maven-plugin</artifactId>
+                <version>${versions-maven-plugin.version}</version>
             </plugin>
         </plugins>
     </build>
