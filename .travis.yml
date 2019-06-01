@@ -7,8 +7,10 @@ jobs:
       script: mvn test -DfailIfNoTests=false -Dtest=!org.fabasoad.db.* -B
     - name: "Integration Tests"
       services: mysql
-      before_script: mysql -e 'create database sma_db;'
-      script: true
+      before_script:
+        - mysql -e 'create database sma_db;'
+        - mysql -u root -p sma_db < sma-site-db/src/main/resources/db/mysql/scripts/init.sql
+      script: mvn test -DfailIfNoTests=false -Dtest=org.fabasoad.db.* -B
     - stage: install
       name: "Installation"
       script:
