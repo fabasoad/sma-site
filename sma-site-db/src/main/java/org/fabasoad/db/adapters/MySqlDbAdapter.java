@@ -24,6 +24,11 @@ public class MySqlDbAdapter extends DbAdapter {
     private static final String USER_PARAM_NAME = "user";
     private static final String PASSWORD_PARAM_NAME = "password";
 
+    private static final String DEFAULT_HOST = "127.0.0.1";
+    private static final String DEFAULT_PORT = "3306";
+    private static final String DEFAULT_USER = "root";
+    private static final String DEFAULT_PASSWORD = "";
+
     private String host;
     private String port;
     private String user;
@@ -61,10 +66,10 @@ public class MySqlDbAdapter extends DbAdapter {
 
     @Override
     void initialize(String[] args) {
-        host = args[0];
-        port = args[1];
-        user = args[2];
-        password = args[3];
+        host = args.length > 0 ? args[0] : DEFAULT_HOST;
+        port = args.length > 1 ? args[1] : DEFAULT_PORT;
+        user = args.length > 2 ? args[2] : DEFAULT_USER;
+        password = args.length > 3 ? args[3] : DEFAULT_PASSWORD;
     }
 
     @Override
