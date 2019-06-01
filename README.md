@@ -1,5 +1,5 @@
 # Web site for "Southern Maritime Agency"
-[![Total alerts](https://img.shields.io/lgtm/alerts/g/fabasoad/sma-site.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/fabasoad/sma-site/alerts/) [![Language grade: Java](https://img.shields.io/lgtm/grade/java/g/fabasoad/sma-site.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/fabasoad/sma-site/context:java) [![Language grade: JavaScript](https://img.shields.io/lgtm/grade/javascript/g/fabasoad/sma-site.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/fabasoad/sma-site/context:javascript)
+[![Build Status](https://travis-ci.org/fabasoad/sma-site.svg?branch=master)](https://travis-ci.org/fabasoad/sma-site) [![Total alerts](https://img.shields.io/lgtm/alerts/g/fabasoad/sma-site.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/fabasoad/sma-site/alerts/) [![Language grade: Java](https://img.shields.io/lgtm/grade/java/g/fabasoad/sma-site.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/fabasoad/sma-site/context:java) [![Language grade: JavaScript](https://img.shields.io/lgtm/grade/javascript/g/fabasoad/sma-site.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/fabasoad/sma-site/context:javascript)
 ## Description
 
 A web site for "Southern Maritime Agency" company.
