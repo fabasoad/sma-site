@@ -11,7 +11,7 @@ A web site for "Southern Maritime Agency" company.
   - [Npm](https://www.npmjs.com/): >= 3.10.10
 ### Back-end tools
   - [Maven](https://maven.apache.org/): >= 3.3.9
-  - [Java](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html): >= 8
+  - [Java](https://jdk.java.net/12/): >= 12
   - [Jetty](http://www.eclipse.org/jetty/): >= 9.3.14
 ### Database
   - [SQLite](https://www.sqlite.org/): >= 3.15.0

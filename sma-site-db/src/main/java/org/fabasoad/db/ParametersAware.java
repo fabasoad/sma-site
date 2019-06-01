@@ -40,6 +40,7 @@ public class ParametersAware<T extends DaoContext> {
         Path propertiesFile;
         try {
             propertiesFile = daoContextClazz.getDeclaredConstructor().newInstance().getPropertiesFilePath();
+            getLogger().flow(getClazz(), String.format("Trying to read property file from the following path: %s...", propertiesFile));
         } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
             return;
         }
@@ -75,6 +76,7 @@ public class ParametersAware<T extends DaoContext> {
 
         try (OutputStream output = new FileOutputStream(propertiesFile.toFile())) {
             properties.store(output, null);
+            getLogger().flow(getClazz(), "Properties file has been created here: " + propertiesFile);
         } catch (IOException e) {
             getLogger().error(getClazz(), e.getMessage());
         }
