@@ -1,6 +1,14 @@
 language: java
 jdk: openjdk12
-script: mvn test -DfailIfNoTests=false -Dtest=!org.fabasoad.db.* -B
-after_script:
-  - mvn install -DskipTests -P frontend-install
-  - mvn install -DskipTests -P frontend-build
+jobs:
+  include:
+    - stage: test
+      name: "Unit Tests"
+      script: mvn test -DfailIfNoTests=false -Dtest=!org.fabasoad.db.* -B
+    - name: "Integration Tests"
+      script: true
+    - stage: install
+      name: "Installation"
+      script:
+        - mvn install -DskipTests -P frontend-install
+        - mvn install -DskipTests -P frontend-build
