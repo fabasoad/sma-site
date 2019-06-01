@@ -9,7 +9,8 @@ jobs:
       services: mysql
       before_script:
         - mysql -e 'CREATE DATABASE sma_db;'
-        - mysql -u root -p sma_db --password="" < sma-site-db/src/main/resources/db/mysql/scripts/init.sql
+        - mysql -u root -p sma_db --password=$(printenv MYSQL_ROOT_PASSWORD) < sma-site-db/src/main/resources/db/mysql/scripts/init.sql
+        - mysql -u root -p sma_db --password=$(printenv MYSQL_ROOT_PASSWORD) -e 'show tables;'
       script: mvn -pl sma-site-db test -B
     - stage: install
       name: "Installation"
