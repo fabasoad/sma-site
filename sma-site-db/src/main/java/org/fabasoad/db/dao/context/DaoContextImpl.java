@@ -1,12 +1,12 @@
 package org.fabasoad.db.dao.context;
 
-import java.nio.file.FileSystems;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 
 public class DaoContextImpl implements DaoContext {
 
     @Override
     public Path getPropertiesFilePath() {
-        return FileSystems.getDefault().getPath("sma-db-setup.properties").normalize().toAbsolutePath();
+        return Paths.get(System.getProperty("user.dir"), "sma-db-setup.properties");
     }
 }
