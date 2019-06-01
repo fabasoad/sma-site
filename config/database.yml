@@ -1,5 +1,0 @@
-test:
-    adapter: mysql-connector-java
-    database: sma_db
-    username: root
-    encoding: utf8
