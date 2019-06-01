@@ -9,7 +9,7 @@ jobs:
       services: mysql
       before_script:
         - mysql -e 'CREATE DATABASE sma_db;'
-        - mysql -e $(cat sma-site-db/src/main/resources/db/mysql/scripts/init.sql)
+        - mysql -u root -p sma_db --password="" < sma-site-db/src/main/resources/db/mysql/scripts/init.sql
       script: mvn test -DfailIfNoTests=false -Dtest=org.fabasoad.db.* -B
     - stage: install
       name: "Installation"
