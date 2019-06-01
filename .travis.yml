@@ -6,6 +6,8 @@ jobs:
       name: "Unit Tests"
       script: mvn test -DfailIfNoTests=false -Dtest=!org.fabasoad.db.* -B
     - name: "Integration Tests"
+      services: mysql
+      before_script: mysql -e 'create database sma_db;'
       script: true
     - stage: install
       name: "Installation"
