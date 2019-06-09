@@ -23,11 +23,11 @@ jobs:
         - echo "Deploying ${RELEASE_FILE} to GitHub..."
         - export RELEASE_TAG=$(echo "$RELEASE_FILE" | sed 's/^.*sma-site-webapp-\(.*\).war.*$/\1/')
         - echo "Deploy tag is ${RELEASE_TAG}"
+        - git tag ${RELEASE_TAG}
       deploy:
         provider: releases
         api_key: $GITHUB_TOKEN
         file: "${RELEASE_FILE}"
         skip_cleanup: true
-        tag: $RELEASE_TAG
         on:
           branch: master
