@@ -17,12 +17,15 @@ jobs:
         - mvn install -DskipTests -P frontend-build
     - stage: deploy
       name: "Deploy"
-      if: branch = master
       script: true
+      before_deploy:
+        - export RELEASE_FILE=$(ls sma-site-webapp/target/sma-site-webapp-*.war)
+        - echo "Deploying $RELEASE_FILE to GitHub"
       deploy:
         provider: releases
         api_key: $GITHUB_TOKEN
-        file: "/sma-site-webapp/target/sma-site-webapp-*.war"
+        file: "${RELEASE_FILE}"
         skip_cleanup: true
         on:
           tags: true
+          branch: master
