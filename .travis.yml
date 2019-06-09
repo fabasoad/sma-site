@@ -18,7 +18,6 @@ jobs:
     - stage: deploy
       name: "Deploy"
       script: true
-      if: tag IS present
       before_deploy:
         - export RELEASE_FILE=$(ls sma-site-webapp/target/sma-site-webapp-*.war)
         - echo "Deploying ${RELEASE_FILE} to GitHub..."
