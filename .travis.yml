@@ -26,5 +26,6 @@ jobs:
         api_key: $GITHUB_TOKEN
         file: "${RELEASE_FILE}"
         skip_cleanup: true
+        tag: $TRAVIS_TAG
         on:
           branch: master
