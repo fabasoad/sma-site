@@ -21,11 +21,13 @@ jobs:
       before_deploy:
         - export RELEASE_FILE=$(ls sma-site-webapp/target/sma-site-webapp-*.war)
         - echo "Deploying ${RELEASE_FILE} to GitHub..."
+        - export RELEASE_TAG=$($RELEASE_FILE | grep -Po 'sma-site-webapp-(.*).war')
+        - echo "Deploy tag is ${RELEASE_TAG}"
       deploy:
         provider: releases
         api_key: $GITHUB_TOKEN
         file: "${RELEASE_FILE}"
         skip_cleanup: true
-        tag: $TRAVIS_TAG
+        tag: $RELEASE_TAG
         on:
           branch: master
