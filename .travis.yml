@@ -15,3 +15,11 @@ jobs:
       script:
         - mvn install -DskipTests -P frontend-install
         - mvn install -DskipTests -P frontend-build
+    - stage: deploy
+      name: "Deploy"
+      if: branch = master
+      deploy:
+        provider: releases
+        api_key: $GITHUB_TOKEN
+        skip_cleanup: true
+        draft: true
