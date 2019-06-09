@@ -22,8 +22,11 @@ jobs:
         - export RELEASE_FILE=$(ls sma-site-webapp/target/sma-site-webapp-*.war)
         - echo "Deploying ${RELEASE_FILE} to GitHub..."
         - export RELEASE_TAG=$(echo "$RELEASE_FILE" | sed 's/^.*sma-site-webapp-\(.*\).war.*$/\1/')
-        - echo "Deploy tag is ${RELEASE_TAG}"
+        - echo "Current deploy tag is ${RELEASE_TAG}"
         - git tag ${RELEASE_TAG}
+        - export LATEST_TAG=$(git describe --tags $(git rev-list --tags --max-count=1))
+        - echo "Latest deploy tag is ${RELEASE_TAG}"
+      if: env(LATEST_TAG) != env(RELEASE_TAG)
       deploy:
         provider: releases
         api_key: $GITHUB_TOKEN
