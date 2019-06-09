@@ -22,5 +22,8 @@ jobs:
       deploy:
         provider: releases
         api_key: $GITHUB_TOKEN
+        file: "/sma-site-webapp/target/sma-site-webapp-*.war"
         skip_cleanup: true
         draft: true
+        on:
+          tags: true
