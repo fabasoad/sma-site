@@ -33,4 +33,4 @@ jobs:
         skip_cleanup: true
         on:
           branch: master
-          condition: "$LATEST_TAG != $RELEASE_TAG"
+          condition: $LATEST_TAG != $RELEASE_TAG
