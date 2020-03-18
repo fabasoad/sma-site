@@ -26,7 +26,7 @@ gulp.task('build-test-data', () =>
 gulp.task('js-min', () =>
     gulp.src('src/main/ui/js/**/*.js')
         .pipe(babel({
-            presets: ['es2015']
+            presets: ['@babel/preset-env']
         }))
         .pipe(uglify())
         .pipe(gulp.dest('src/main/webapp/public/js/min'))
@@ -35,12 +35,12 @@ gulp.task('js-min', () =>
 gulp.task('js-dev', () =>
     gulp.src('src/main/ui/js/**/*.js')
         .pipe(babel({
-            presets: ['es2015']
+            presets: ['@babel/preset-env']
         }))
         .pipe(gulp.dest('src/main/webapp/public/js/dev'))
 );
 
 gulp.task('build-fonts', () => gulp.src('src/main/ui/fonts/**/*.*').pipe(gulp.dest('src/main/webapp/public/fonts')));
 gulp.task('build-img', () => gulp.src('src/main/ui/img/**/*.*').pipe(gulp.dest('src/main/webapp/public/img')));
-gulp.task('build-js', ['js-min', 'js-dev']);
-gulp.task('default', ['install', 'build-js', 'less', 'build-img', 'build-fonts']);
+gulp.task('build-js', gulp.series('js-min', 'js-dev'));
+gulp.task('default', gulp.series('install', gulp.parallel('build-js', 'less', 'build-img', 'build-fonts')));
