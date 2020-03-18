@@ -15,7 +15,7 @@
         <servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>
         <init-param>
             <param-name>jersey.config.server.provider.packages</param-name>
-            <param-value>org.fabasoad.rest</param-value>
+            <param-value>io.github.fabasoad.rest</param-value>
         </init-param>
         <init-param>
             <param-name>jersey.config.server.provider.classnames</param-name>
@@ -23,7 +23,7 @@
         </init-param>
         <init-param>
             <param-name>javax.ws.rs.Application</param-name>
-            <param-value>org.fabasoad.rest.SmaApplication</param-value>
+            <param-value>io.github.fabasoad.rest.SmaApplication</param-value>
         </init-param>
         <load-on-startup>1</load-on-startup>
     </servlet>
@@ -37,7 +37,7 @@
         <servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>
         <init-param>
             <param-name>jersey.config.server.provider.packages</param-name>
-            <param-value>org.fabasoad.auth</param-value>
+            <param-value>io.github.fabasoad.auth</param-value>
         </init-param>
     </servlet>
     <servlet-mapping>
@@ -46,7 +46,7 @@
     </servlet-mapping>
     <filter>
         <filter-name>administration-filter</filter-name>
-        <filter-class>org.fabasoad.rest.provider.AdministrationFilter</filter-class>
+        <filter-class>io.github.fabasoad.rest.provider.AdministrationFilter</filter-class>
     </filter>
     <filter-mapping>
         <filter-name>administration-filter</filter-name>

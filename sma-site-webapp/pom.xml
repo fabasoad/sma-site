@@ -2,8 +2,8 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <parent>
         <artifactId>sma-site-root</artifactId>
-        <groupId>org.fabasoad</groupId>
-        <version>2.1-SNAPSHOT</version>
+        <groupId>io.github.fabasoad</groupId>
+        <version>2.2.0</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -11,7 +11,7 @@
     <packaging>war</packaging>
 
     <properties>
-        <jersey-container-servlet-core.version>2.26</jersey-container-servlet-core.version>
+        <jersey-container-servlet-core.version>2.30.1</jersey-container-servlet-core.version>
     </properties>
 
     <dependencies>
@@ -22,7 +22,7 @@
         </dependency>
 
         <dependency>
-            <groupId>org.fabasoad</groupId>
+            <groupId>io.github.fabasoad</groupId>
             <artifactId>sma-site-server</artifactId>
             <version>${project.version}</version>
         </dependency>

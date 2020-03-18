@@ -1,7 +1,7 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="Setup" type="Application" factoryName="Application">
     <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
-    <option name="MAIN_CLASS_NAME" value="org.fabasoad.db.runner.Setup" />
+    <option name="MAIN_CLASS_NAME" value="Setup" />
     <option name="VM_PARAMETERS" value="" />
     <option name="PROGRAM_PARAMETERS" value="sqlite C:\temp" />
     <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />

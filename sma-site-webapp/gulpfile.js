@@ -1,7 +1,3 @@
-/**
-* @author Yevhen Fabizhevskyi
-* @date 16.11.2016.
-*/
 const gulp = require('gulp');
 const install = require("gulp-install");
 const uglify = require('gulp-uglify');

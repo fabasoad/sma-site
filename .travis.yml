@@ -1,10 +1,10 @@
 language: java
-jdk: openjdk12
+jdk: openjdk13
 jobs:
   include:
     - stage: tests
       name: "Unit Tests"
-      script: mvn test -DfailIfNoTests=false -Dtest=!org.fabasoad.db.* -B
+      script: mvn test -DfailIfNoTests=false -Dtest=!io.github.fabasoad.db.* -B
     - name: "Integration Tests"
       services: mysql
       before_script:
