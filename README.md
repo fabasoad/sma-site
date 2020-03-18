@@ -1,21 +1,21 @@
 # Web site for "Southern Maritime Agency"
-[![Build Status](https://travis-ci.org/fabasoad/sma-site.svg?branch=master)](https://travis-ci.org/fabasoad/sma-site) [![Total alerts](https://img.shields.io/lgtm/alerts/g/fabasoad/sma-site.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/fabasoad/sma-site/alerts/) [![Language grade: Java](https://img.shields.io/lgtm/grade/java/g/fabasoad/sma-site.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/fabasoad/sma-site/context:java) [![Language grade: JavaScript](https://img.shields.io/lgtm/grade/javascript/g/fabasoad/sma-site.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/fabasoad/sma-site/context:javascript)
+[![Build Status](https://travis-ci.org/fabasoad/sma-site.svg?branch=master)](https://travis-ci.org/fabasoad/sma-site) [![Total alerts](https://img.shields.io/lgtm/alerts/g/fabasoad/sma-site.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/fabasoad/sma-site/alerts/) [![Language grade: Java](https://img.shields.io/lgtm/grade/java/g/fabasoad/sma-site.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/fabasoad/sma-site/context:java) [![Language grade: JavaScript](https://img.shields.io/lgtm/grade/javascript/g/fabasoad/sma-site.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/fabasoad/sma-site/context:javascript) [![Maintainability](https://api.codeclimate.com/v1/badges/35955772b835d953d79d/maintainability)](https://codeclimate.com/github/fabasoad/sma-site/maintainability)
 ## Description
 
 A web site for "Southern Maritime Agency" company.
 
 ## Requirements
 ### Front-end tools
-  - [Gulp](http://gulpjs.com/): >= 3.9.1
-  - [Node JS](http://nodejs.ru/): >= 7.1.0
-  - [Npm](https://www.npmjs.com/): >= 3.10.10
+  - [Gulp](http://gulpjs.com/)
+  - [Node JS](http://nodejs.ru/)
+  - [Npm](https://www.npmjs.com/)
 ### Back-end tools
-  - [Maven](https://maven.apache.org/): >= 3.3.9
-  - [Java](https://jdk.java.net/12/): >= 12
-  - [Jetty](http://www.eclipse.org/jetty/): >= 9.3.14
+  - [Maven](https://maven.apache.org/)
+  - [Java](https://jdk.java.net/12/)
+  - [Jetty](http://www.eclipse.org/jetty/)
 ### Database
-  - [SQLite](https://www.sqlite.org/): >= 3.15.0
-  - [MySQL](https://www.mysql.com/): >= 5.7.18
+  - [SQLite](https://www.sqlite.org/)
+  - [MySQL](https://www.mysql.com/)
 
 You can get Jetty and Maven from the **lib** directory (you can find details below).
 

@@ -73,7 +73,7 @@
                 <artifactId>exec-maven-plugin</artifactId>
                 <version>${exec-maven-plugin.version}</version>
                 <configuration>
-                    <mainClass>Setup</mainClass>
+                    <mainClass>io.github.fabasoad.db.runner.Setup</mainClass>
                 </configuration>
             </plugin>
         </plugins>
