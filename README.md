@@ -1,5 +1,7 @@
 # Web site for "Southern Maritime Agency"
-[![Build Status](https://travis-ci.org/fabasoad/sma-site.svg?branch=master)](https://travis-ci.org/fabasoad/sma-site) [![Total alerts](https://img.shields.io/lgtm/alerts/g/fabasoad/sma-site.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/fabasoad/sma-site/alerts/) [![Language grade: Java](https://img.shields.io/lgtm/grade/java/g/fabasoad/sma-site.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/fabasoad/sma-site/context:java) [![Language grade: JavaScript](https://img.shields.io/lgtm/grade/javascript/g/fabasoad/sma-site.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/fabasoad/sma-site/context:javascript) [![Maintainability](https://api.codeclimate.com/v1/badges/35955772b835d953d79d/maintainability)](https://codeclimate.com/github/fabasoad/sma-site/maintainability)
+
+![GitHub release](https://img.shields.io/github/v/release/fabasoad/sma-site?include_prereleases) ![Security Tests](https://github.com/fabasoad/sma-site/workflows/Security%20Tests/badge.svg) ![YAML Lint](https://github.com/fabasoad/sma-site/workflows/YAML%20Lint/badge.svg) [![Known Vulnerabilities](https://snyk.io/test/github/fabasoad/sma-site/badge.svg)](https://snyk.io/test/github/fabasoad/sma-site) [![Total alerts](https://img.shields.io/lgtm/alerts/g/fabasoad/sma-site.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/fabasoad/sma-site/alerts/) [![Language grade: Java](https://img.shields.io/lgtm/grade/java/g/fabasoad/sma-site.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/fabasoad/sma-site/context:java) [![Language grade: JavaScript](https://img.shields.io/lgtm/grade/javascript/g/fabasoad/sma-site.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/fabasoad/sma-site/context:javascript) [![Maintainability](https://api.codeclimate.com/v1/badges/35955772b835d953d79d/maintainability)](https://codeclimate.com/github/fabasoad/sma-site/maintainability)
+
 ## Description
 
 A web site for "Southern Maritime Agency" company.
@@ -11,7 +13,7 @@ A web site for "Southern Maritime Agency" company.
   - [Npm](https://www.npmjs.com/)
 ### Back-end tools
   - [Maven](https://maven.apache.org/)
-  - [Java](https://jdk.java.net/12/)
+  - [Java](https://jdk.java.net/15/)
   - [Jetty](http://www.eclipse.org/jetty/)
 ### Database
   - [SQLite](https://www.sqlite.org/)
