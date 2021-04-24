@@ -22,7 +22,7 @@
         <versions-maven-plugin.version>2.8.1</versions-maven-plugin.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <apache.commons-lang3.version>3.12.0</apache.commons-lang3.version>
-        <apache.commons-io.version>2.8.0</apache.commons-io.version>
+        <apache.commons-io.version>20030203.000550</apache.commons-io.version>
         <apache.commons-validator.version>1.7</apache.commons-validator.version>
         <fabasoad.commons-lang.version>0.4.5</fabasoad.commons-lang.version>
         <lombok.version>1.18.20</lombok.version>
@@ -121,7 +121,7 @@
                                 <phase>compile</phase>
                                 <configuration>
                                     <tasks>
-                                        <unzip src="${project.basedir}\sma-site-webapp\target\sma-site-webapp.war" dest="${deploy.root.dir}" />
+                                        <unzip src="${project.basedir}\sma-site-webapp\target\sma-site-webapp.war" dest="${deploy.root.dir}"/>
                                         <copy tofile="${deploy.root.dir}\sma-db.s3db" overwrite="true">
                                             <fileset dir="${project.basedir}">
                                                 <include name="sma-db.s3db"/>
