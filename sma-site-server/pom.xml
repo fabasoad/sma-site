@@ -12,10 +12,10 @@
 
     <properties>
         <javax.ws.rs-api.version>2.1.1</javax.ws.rs-api.version>
-        <jersey-media-multipart.version>2.30.1</jersey-media-multipart.version>
-        <jersey-server.version>2.30.1</jersey-server.version>
-        <jersey-common.version>2.30.1</jersey-common.version>
-        <jersey-hk2.version>2.30.1</jersey-hk2.version>
+        <jersey-media-multipart.version>3.0.1</jersey-media-multipart.version>
+        <jersey-server.version>3.0.1</jersey-server.version>
+        <jersey-common.version>3.0.1</jersey-common.version>
+        <jersey-hk2.version>3.0.1</jersey-hk2.version>
         <javax.servlet-api.version>4.0.1</javax.servlet-api.version>
         <json-simple.version>1.1.1</json-simple.version>
     </properties>

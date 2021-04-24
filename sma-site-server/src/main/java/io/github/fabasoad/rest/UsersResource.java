@@ -11,7 +11,7 @@ import io.github.fabasoad.rest.config.ConfigUtils;
 import io.github.fabasoad.ws.rs.PATCH;
 import org.json.simple.JSONObject;
 
-import javax.annotation.security.RolesAllowed;
+import jakarta.annotation.security.RolesAllowed;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
