@@ -37,10 +37,11 @@ jobs:
         uses: github/codeql-action/init@v1
         with:
           languages: ${{ matrix.language }}
+      - uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt'
+          java-version: '15'
       - name: Build
-        run: |
-          mvn --version
-          java --version
-          mvn clean install -Dmaven.test.skip=true -B
+        run: mvn clean install -Dmaven.test.skip=true -B
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v1
