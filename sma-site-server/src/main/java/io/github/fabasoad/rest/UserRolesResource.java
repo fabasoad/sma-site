@@ -3,7 +3,7 @@ package io.github.fabasoad.rest;
 import io.github.fabasoad.db.pojo.PojoProperties;
 import io.github.fabasoad.db.pojo.UserRolePojo;
 
-import javax.annotation.security.RolesAllowed;
+import jakarta.annotation.security.RolesAllowed;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;

@@ -2,9 +2,9 @@ package io.github.fabasoad.rest.provider;
 
 import lombok.extern.slf4j.Slf4j;
 
-import javax.annotation.security.DenyAll;
-import javax.annotation.security.PermitAll;
-import javax.annotation.security.RolesAllowed;
+import jakarta.annotation.security.DenyAll;
+import jakarta.annotation.security.PermitAll;
+import jakarta.annotation.security.RolesAllowed;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
 import javax.ws.rs.container.ResourceInfo;
@@ -55,18 +55,11 @@ public class AuthenticationFilter implements ContainerRequestFilter {
     }
 
     private static void abort(ContainerRequestContext requestContext, Response.Status status) {
-        String message;
-        switch (status) {
-            case UNAUTHORIZED:
-                message = "You are not authorized to access this resource";
-                break;
-            case FORBIDDEN:
-                message = "You have no permissions to access this resource";
-                break;
-            default:
-                message = "Server error";
-                break;
-        }
+        final String message = switch (status) {
+            case UNAUTHORIZED -> "You are not authorized to access this resource";
+            case FORBIDDEN -> "You have no permissions to access this resource";
+            default -> "Server error";
+        };
         log.warn(message);
         requestContext.abortWith(Response.status(status).entity(message).build());
     }
